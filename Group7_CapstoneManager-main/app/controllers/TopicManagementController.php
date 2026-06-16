@@ -1,0 +1,86 @@
+﻿<?php
+/**
+ * TopicManagementController
+ * 
+ * Gá»™p Topics + Registrations vÃ o 1 trang vá»›i tab switching
+ */
+class TopicManagementController {
+
+    private $topicModel;
+    private $regModel;
+    private $semesterModel;
+    private $lecturerModel;
+
+    public function __construct() {
+        AuthMiddleware::check();
+        $this->topicModel    = new Topic();
+        $this->regModel      = new TopicRegistration();
+        $this->semesterModel = new Semester();
+        $this->lecturerModel = new Lecturer();
+    }
+
+    /**
+     * Trang chÃ­nh: hiá»ƒn thá»‹ cáº£ Topics vÃ  Registrations trong 1 view vá»›i tabs
+     */
+    public function index() {
+        $role = $_SESSION['user']['role'] ?? '';
+
+        // â”€â”€ TOPICS DATA â”€â”€
+        $search     = trim($_GET['search']      ?? '');
+        $filterSem  = (int)($_GET['semester_id'] ?? 0);
+        $filterStat = trim($_GET['status']       ?? '');
+
+        if ($role === 'admin') {
+            $topics = $this->topicModel->search($search, $filterSem, $filterStat);
+        } elseif ($role === 'lecturer') {
+            $lecturerId = $_SESSION['user']['lecturer_id'] ?? null;
+            if (!$lecturerId) {
+                $lecturerModel = new Lecturer();
+                $lecturer = $lecturerModel->findByUserId($_SESSION['user']['id']);
+                if ($lecturer) {
+                    $_SESSION['user']['lecturer_id'] = $lecturer['id'];
+                    $lecturerId = $lecturer['id'];
+                }
+            }
+            $topics = $this->topicModel->getByLecturer($lecturerId, $search, $filterSem, $filterStat);
+        } else {
+            // student: chá»‰ xem approved
+            $topics = $this->topicModel->search($search, $filterSem, 'approved');
+        }
+
+        // â”€â”€ REGISTRATIONS DATA â”€â”€
+        if ($role === 'admin') {
+            $registrations = $this->regModel->getAll();
+        } elseif ($role === 'lecturer') {
+            $lecturerId = $_SESSION['user']['lecturer_id'] ?? null;
+            if (!$lecturerId) {
+                $lecturerModel = new Lecturer();
+                $lecturer = $lecturerModel->findByUserId($_SESSION['user']['id']);
+                if ($lecturer) {
+                    $_SESSION['user']['lecturer_id'] = $lecturer['id'];
+                    $lecturerId = $lecturer['id'];
+                }
+            }
+            $registrations = $lecturerId ? $this->regModel->getByLecturer($lecturerId) : [];
+        } elseif ($role === 'student') {
+            $studentId = $_SESSION['user']['student_id'] ?? null;
+            if (!$studentId) {
+                $studentModel = new Student();
+                $student = $studentModel->findByUserId($_SESSION['user']['id']);
+                if ($student) {
+                    $_SESSION['user']['student_id'] = $student['id'];
+                    $studentId = $student['id'];
+                }
+            }
+            $registrations = $studentId ? $this->regModel->getByStudent($studentId) : [];
+        } else {
+            $registrations = [];
+        }
+
+        // â”€â”€ COMMON DATA â”€â”€
+        $semesters = $this->semesterModel->getAll();
+
+        // â”€â”€ RENDER VIEW â”€â”€
+        require '../app/views/topic-management/index.php';
+    }
+}
