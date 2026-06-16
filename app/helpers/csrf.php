@@ -23,6 +23,6 @@ function verifyCSRF(){
         $_POST['csrf_token'] !== $_SESSION['csrf_token']
     ){
 
-        die("CSRF Token Invalid");
+        abort(403, "CSRF Token Invalid");
     }
 }

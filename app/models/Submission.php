@@ -40,14 +40,15 @@ class Submission {
     public function create($data){
         // submissions.topic_id có thể null nếu không truyền
         $sql = "INSERT INTO submissions
-                (student_id, topic_id, milestone_id, file_path, status, submitted_at)
-                VALUES(?, ?, ?, ?, 'submitted', NOW())";
+                (student_id, topic_id, milestone_id, file_path, status, attempt, submitted_at)
+                VALUES(?, ?, ?, ?, 'submitted', ?, NOW())";
         $stmt = $this->conn->prepare($sql);
         return $stmt->execute([
             $data['student_id'],
             $data['topic_id']    ?? null,
             $data['milestone_id'],
             $data['file_path'],
+            $data['attempt']     ?? 1,
         ]);
     }
 

@@ -1,12 +1,12 @@
-<?php require '../app/views/layouts/header.php'; ?>
+﻿<?php require '../app/views/layouts/header.php'; ?>
 <?php require '../app/views/layouts/sidebar.php'; ?>
 
 <div class="main-content" style="padding: 32px; background: #f4f7fe; min-height: 100vh;">
     <div class="mb-4">
         <a href="index.php?page=students" class="text-decoration-none text-muted small fw-bold">
-            <i class="fa-solid fa-arrow-left me-1"></i> QUAY LẠI
+            <i class="fa-solid fa-arrow-left me-1"></i> QUAY Láº I
         </a>
-        <h2 class="fw-bold mt-2" style="color:#0f172a">Chỉnh sửa sinh viên</h2>
+        <h2 class="fw-bold mt-2" style="color:#0f172a">Chá»‰nh sá»­a sinh viÃªn</h2>
     </div>
 
     <?php if (isset($_SESSION['error'])): ?>
@@ -15,37 +15,37 @@
     <?php endif; ?>
 
     <div class="card border-0 shadow-sm p-4" style="border-radius:20px; max-width:600px">
-        <form method="POST" action="index.php?page=student-update&id=<?= $student['id'] ?>">
+        <form method="POST" action="index.php?page=student-update&id=<?= $student['id'] ?>"> <?= csrfField() ?>
 
             <div class="mb-3">
-                <label class="fw-bold small text-muted">MÃ SINH VIÊN</label>
+                <label class="fw-bold small text-muted">MÃƒ SINH VIÃŠN</label>
                 <input type="text" name="student_code" class="form-control rounded-pill px-3"
                        value="<?= htmlspecialchars($student['student_code'] ?? '') ?>" required>
             </div>
 
             <div class="mb-3">
-                <label class="fw-bold small text-muted">HỌ VÀ TÊN</label>
+                <label class="fw-bold small text-muted">Há»Œ VÃ€ TÃŠN</label>
                 <input type="text" name="full_name" class="form-control rounded-pill px-3"
                        value="<?= htmlspecialchars($student['full_name']) ?>" required>
             </div>
 
             <div class="mb-3">
-                <label class="fw-bold small text-muted">SỐ ĐIỆN THOẠI</label>
+                <label class="fw-bold small text-muted">Sá» ÄIá»†N THOáº I</label>
                 <input type="text" name="phone" class="form-control rounded-pill px-3"
                        value="<?= htmlspecialchars($student['phone'] ?? '') ?>">
             </div>
 
             <div class="mb-4">
-                <label class="fw-bold small text-muted">EMAIL (chỉ xem)</label>
+                <label class="fw-bold small text-muted">EMAIL (chá»‰ xem)</label>
                 <input type="text" class="form-control rounded-pill px-3 bg-light"
                        value="<?= htmlspecialchars($student['email'] ?? '') ?>" readonly>
             </div>
 
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-warning rounded-pill px-5 fw-bold text-white shadow-sm">
-                    Cập nhật
+                    Cáº­p nháº­t
                 </button>
-                <a href="index.php?page=students" class="btn btn-light rounded-pill px-4">Hủy</a>
+                <a href="index.php?page=students" class="btn btn-light rounded-pill px-4">Há»§y</a>
             </div>
         </form>
     </div>

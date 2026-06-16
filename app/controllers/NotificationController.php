@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 class NotificationController {
 
@@ -25,6 +25,7 @@ class NotificationController {
 
     public function create() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            verifyCSRF();
             $this->notificationModel->create($_POST);
         }
         redirect('notifications');

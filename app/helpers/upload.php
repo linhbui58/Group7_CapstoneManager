@@ -7,20 +7,26 @@ function uploadFile($file, $folder = 'general'){
     }
 
     $allowed = ['pdf','doc','docx'];
+    $allowedMimes = [
+        'application/pdf', 
+        'application/msword', 
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    ];
 
     $filename = $file['name'];
-
     $tmp = $file['tmp_name'];
-
     $size = $file['size'];
-
     $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
 
-    if(!in_array($ext, $allowed)){
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $mime = finfo_file($finfo, $tmp);
+    finfo_close($finfo);
+
+    if(!in_array($ext, $allowed) || !in_array($mime, $allowedMimes)){
 
         return [
             'status' => false,
-            'message' => 'Invalid file type'
+            'message' => 'Invalid file type. Only PDF, DOC, DOCX are allowed.'
         ];
     }
 

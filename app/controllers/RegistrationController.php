@@ -8,21 +8,21 @@ class RegistrationController {
         $this->regModel = new TopicRegistration();
     }
 
-    /* ──────────────────────────────────────────────
+    /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
      | LIST
-     | Admin / Lecturer : xem tất cả
-     | Student          : chỉ xem của mình
-     ────────────────────────────────────────────── */
+     | Admin / Lecturer : xem táº¥t cáº£
+     | Student          : chá»‰ xem cá»§a mÃ¬nh
+     â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
     public function index() {
         $role = $_SESSION['user']['role'] ?? '';
 
         if ($role === 'admin') {
             $registrations = $this->regModel->getAll();
         } elseif ($role === 'lecturer') {
-            // Lecturer chỉ thấy đăng ký của sinh viên chọn mình
+            // Lecturer chá»‰ tháº¥y Ä‘Äƒng kÃ½ cá»§a sinh viÃªn chá»n mÃ¬nh
             $lecturerId = $_SESSION['user']['lecturer_id'] ?? null;
 
-            // Nếu session chưa có lecturer_id, thử lấy lại từ DB
+            // Náº¿u session chÆ°a cÃ³ lecturer_id, thá»­ láº¥y láº¡i tá»« DB
             if (!$lecturerId) {
                 $lecturerModel = new Lecturer();
                 $lecturer = $lecturerModel->findByUserId($_SESSION['user']['id']);
@@ -38,7 +38,7 @@ class RegistrationController {
         } elseif ($role === 'student') {
             $studentId = $_SESSION['user']['student_id'] ?? null;
 
-            // Nếu session chưa có student_id, thử lấy lại từ DB
+            // Náº¿u session chÆ°a cÃ³ student_id, thá»­ láº¥y láº¡i tá»« DB
             if (!$studentId) {
                 $studentModel = new Student();
                 $student = $studentModel->findByUserId($_SESSION['user']['id']);
@@ -58,9 +58,9 @@ class RegistrationController {
         require '../app/views/registrations/index.php';
     }
 
-    /* ──────────────────────────────────────────────
+    /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
      | CREATE FORM  (student only)
-     ────────────────────────────────────────────── */
+     â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
     public function create() {
         if ($_SESSION['user']['role'] !== 'student') {
             header("Location: index.php?page=registrations");
@@ -71,17 +71,17 @@ class RegistrationController {
         $semesterModel = new Semester();
         $lecturerModel = new Lecturer();
 
-        $topics    = $topicModel->getAvailable();   // chỉ topic đang mở
+        $topics    = $topicModel->getAvailable();   // chá»‰ topic Ä‘ang má»Ÿ
         $semesters = $semesterModel->getAll();
         $lecturers = $lecturerModel->getAll();
 
         require '../app/views/registrations/create.php';
     }
 
-    /* ──────────────────────────────────────────────
+    /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
      | STORE  (student only)
-     | Constraint: không đăng ký > 1 đề tài / học kỳ
-     ────────────────────────────────────────────── */
+     | Constraint: khÃ´ng Ä‘Äƒng kÃ½ > 1 Ä‘á» tÃ i / há»c ká»³
+     â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
     public function store() {
         if ($_SESSION['user']['role'] !== 'student') {
             header("Location: index.php?page=registrations");
@@ -89,13 +89,15 @@ class RegistrationController {
         }
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            verifyCSRF();
             header("Location: index.php?page=registration-create");
             exit();
+        verifyCSRF();
         }
 
         $studentId  = $_SESSION['user']['student_id'] ?? null;
 
-        // Fallback: lấy student_id từ DB nếu session chưa có
+        // Fallback: láº¥y student_id tá»« DB náº¿u session chÆ°a cÃ³
         if (!$studentId) {
             $studentModel = new Student();
             $student = $studentModel->findByUserId($_SESSION['user']['id']);
@@ -116,9 +118,18 @@ class RegistrationController {
             exit();
         }
 
+        // Kiểm tra deadline đăng ký đề tài (dựa vào end_date của semester)
+        $semesterModel = new Semester();
+        $semester = $semesterModel->find($semesterId);
+        if ($semester && time() > strtotime($semester['end_date'] . ' 23:59:59')) {
+            $_SESSION['error'] = "Đã hết hạn đăng ký đề tài cho học kỳ này.";
+            header("Location: index.php?page=registration-create");
+            exit();
+        }
+
         // Constraint: 1 đề tài / học kỳ
         if ($this->regModel->hasAlreadyRegistered($studentId, $semesterId)) {
-            $_SESSION['error'] = "Bạn đã đăng ký đề tài trong học kỳ này rồi.";
+            $_SESSION['error'] = "Báº¡n Ä‘Ã£ Ä‘Äƒng kÃ½ Ä‘á» tÃ i trong há»c ká»³ nÃ y rá»“i.";
             header("Location: index.php?page=registration-create");
             exit();
         }
@@ -131,21 +142,23 @@ class RegistrationController {
             'keywords'            => $keywords,
         ]);
 
-        $_SESSION['success'] = "Đăng ký đề tài thành công. Vui lòng chờ duyệt.";
+        LogService::log('register_topic', "Student ID: $studentId registered Topic ID: $topicId");
+
+        $_SESSION['success'] = "ÄÄƒng kÃ½ Ä‘á» tÃ i thÃ nh cÃ´ng. Vui lÃ²ng chá» duyá»‡t.";
         header("Location: index.php?page=topic-management&tab=registrations");
         exit();
     }
 
-    /* ──────────────────────────────────────────────
+    /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
      | UPDATE STATUS  (admin / lecturer only)
-     ────────────────────────────────────────────── */
+     â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
     public function updateStatus() {
         $role = $_SESSION['user']['role'];
 
         if (!in_array($role, ['admin', 'lecturer'])) {
-            // Student cố tình gọi URL này → chặn cứng
+            // Student cá»‘ tÃ¬nh gá»i URL nÃ y â†’ cháº·n cá»©ng
             http_response_code(403);
-            $_SESSION['error'] = "Bạn không có quyền thực hiện thao tác này.";
+            $_SESSION['error'] = "Báº¡n khÃ´ng cÃ³ quyá»n thá»±c hiá»‡n thao tÃ¡c nÃ y.";
             header("Location: index.php?page=registrations");
             exit();
         }
@@ -160,17 +173,17 @@ class RegistrationController {
         }
 
         if ($id) {
-            // Lecturer chỉ được duyệt đăng ký chọn mình HOẶC thuộc topic được assign cho mình
+            // Lecturer chá»‰ Ä‘Æ°á»£c duyá»‡t Ä‘Äƒng kÃ½ chá»n mÃ¬nh HOáº¶C thuá»™c topic Ä‘Æ°á»£c assign cho mÃ¬nh
             if ($role === 'lecturer') {
                 $lecturerId = $_SESSION['user']['lecturer_id'] ?? null;
                 $reg = $this->regModel->find($id);
                 if (!$reg) {
-                    $_SESSION['error'] = "Không tìm thấy đăng ký.";
+                    $_SESSION['error'] = "KhÃ´ng tÃ¬m tháº¥y Ä‘Äƒng kÃ½.";
                     header("Location: index.php?page=registrations");
                     exit();
                 }
                 $isDesired  = (int)($reg['desired_lecturer_id'] ?? 0) === (int)$lecturerId;
-                // Kiểm tra topic có được assign cho lecturer không
+                // Kiá»ƒm tra topic cÃ³ Ä‘Æ°á»£c assign cho lecturer khÃ´ng
                 $db   = Database::getInstance()->getConnection();
                 $stmt = $db->prepare(
                     "SELECT COUNT(*) FROM topic_assignments WHERE topic_id = ? AND lecturer_id = ?"
@@ -179,13 +192,14 @@ class RegistrationController {
                 $isAssigned = (int)$stmt->fetchColumn() > 0;
 
                 if (!$isDesired && !$isAssigned) {
-                    $_SESSION['error'] = "Bạn không có quyền duyệt đăng ký này.";
+                    $_SESSION['error'] = "Báº¡n khÃ´ng cÃ³ quyá»n duyá»‡t Ä‘Äƒng kÃ½ nÃ y.";
                     header("Location: index.php?page=registrations");
                     exit();
                 }
             }
             $this->regModel->updateStatus($id, $status);
-            $_SESSION['success'] = "Cập nhật trạng thái thành công.";
+            LogService::log('update_registration_status', "Updated registration ID: $id status to $status");
+            $_SESSION['success'] = "Cáº­p nháº­t tráº¡ng thÃ¡i thÃ nh cÃ´ng.";
         }
 
         header("Location: index.php?page=registrations");

@@ -1,4 +1,4 @@
-<?php require '../app/views/layouts/header.php'; ?>
+﻿<?php require '../app/views/layouts/header.php'; ?>
 <?php require '../app/views/layouts/sidebar.php'; ?>
 
 <div class="main-content" style="padding: 30px; background-color: #f8fafc;">
@@ -8,7 +8,7 @@
     </div>
 
     <div class="card border-0 shadow-sm p-4" style="border-radius: 20px; max-width: 600px; border: 1px solid #f1f5f9;">
-        <form action="index.php?page=lecturer-store" method="POST">
+        <form action="index.php?page=lecturer-store" method="POST"> <?= csrfField() ?>
             <div class="mb-3">
                 <label class="form-label small fw-bold text-muted">FULL NAME</label>
                 <input type="text" name="full_name" class="form-control rounded-pill px-3" placeholder="Enter lecturer's name" required>

@@ -28,6 +28,25 @@ class TopicAssignment {
         }
     }
 
+    public function find($id) {
+        $stmt = $this->conn->prepare("SELECT * FROM topic_assignments WHERE id = ?");
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function update($id, $data) {
+        try {
+            $stmt = $this->conn->prepare("UPDATE topic_assignments SET topic_id = ?, lecturer_id = ? WHERE id = ?");
+            return $stmt->execute([
+                $data['topic_id'],
+                $data['lecturer_id'],
+                $id
+            ]);
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
     public function delete($id) {
         $stmt = $this->conn->prepare("DELETE FROM topic_assignments WHERE id = ?");
         return $stmt->execute([$id]);

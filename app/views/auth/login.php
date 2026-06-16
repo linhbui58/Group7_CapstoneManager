@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -19,29 +19,29 @@
                 <span class="ms-3 fs-2 fw-bold">Capstone</span>
             </div>
             
-            <h1 class="display-5 fw-bold mb-4">Quản lý đồ án <br><span class="text-info">thông minh hơn.</span></h1>
-            <p class="lead opacity-75 mb-5">Hệ thống hỗ trợ sinh viên IS-VNU tối ưu hóa quy trình thực hiện Capstone Project.</p>
+            <h1 class="display-5 fw-bold mb-4">Quáº£n lÃ½ Ä‘á»“ Ã¡n <br><span class="text-info">thÃ´ng minh hÆ¡n.</span></h1>
+            <p class="lead opacity-75 mb-5">Há»‡ thá»‘ng há»— trá»£ sinh viÃªn IS-VNU tá»‘i Æ°u hÃ³a quy trÃ¬nh thá»±c hiá»‡n Capstone Project.</p>
 
             <div class="workflow-steps mb-5">
                 <div class="step-item mb-4">
                     <div class="step-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
                     <div class="step-info">
-                        <h6>Đề xuất Đề tài</h6>
-                        <p class="small opacity-75">Hệ thống matching giảng viên dựa trên chuyên môn.</p>
+                        <h6>Äá» xuáº¥t Äá» tÃ i</h6>
+                        <p class="small opacity-75">Há»‡ thá»‘ng matching giáº£ng viÃªn dá»±a trÃªn chuyÃªn mÃ´n.</p>
                     </div>
                 </div>
                 <div class="step-item mb-4">
                     <div class="step-icon"><i class="fa-solid fa-list-check"></i></div>
                     <div class="step-info">
-                        <h6>Quản lý Milestones</h6>
-                        <p class="small opacity-75">Nộp báo cáo giai đoạn và theo dõi tiến độ thực tế.</p>
+                        <h6>Quáº£n lÃ½ Milestones</h6>
+                        <p class="small opacity-75">Ná»™p bÃ¡o cÃ¡o giai Ä‘oáº¡n vÃ  theo dÃµi tiáº¿n Ä‘á»™ thá»±c táº¿.</p>
                     </div>
                 </div>
                 <div class="step-item">
                     <div class="step-icon"><i class="fa-solid fa-star"></i></div>
                     <div class="step-info">
-                        <h6>Đánh giá & Kết quả</h6>
-                        <p class="small opacity-75">Nhận phản hồi trực tiếp và điểm số từ hội đồng.</p>
+                        <h6>ÄÃ¡nh giÃ¡ & Káº¿t quáº£</h6>
+                        <p class="small opacity-75">Nháº­n pháº£n há»“i trá»±c tiáº¿p vÃ  Ä‘iá»ƒm sá»‘ tá»« há»™i Ä‘á»“ng.</p>
                     </div>
                 </div>
             </div>
@@ -49,20 +49,20 @@
             <div class="stats-grid">
                 <div class="stat-box">
                     <h4 class="fw-bold">1500+</h4>
-                    <p class="small m-0">Sinh viên</p>
+                    <p class="small m-0">Sinh viÃªn</p>
                 </div>
                 <div class="stat-box">
                     <h4 class="fw-bold">85+</h4>
-                    <p class="small m-0">Giảng viên</p>
+                    <p class="small m-0">Giáº£ng viÃªn</p>
                 </div>
                 <div class="stat-box">
                     <h4 class="fw-bold">500+</h4>
-                    <p class="small m-0">Đề tài</p>
+                    <p class="small m-0">Äá» tÃ i</p>
                 </div>
             </div>
 
             <div class="sidebar-footer mt-auto pt-5">
-                <p class="small opacity-50">© 2026 Trường Quốc tế - ĐHQGHN (IS-VNU)</p>
+                <p class="small opacity-50">Â© 2026 TrÆ°á»ng Quá»‘c táº¿ - ÄHQGHN (IS-VNU)</p>
             </div>
         </div>
     </div>
@@ -70,13 +70,13 @@
     <div class="auth-main">
         <div class="auth-card-new">
             <div class="auth-tabs mb-4">
-                <a href="index.php?page=login" class="tab-item active">Đăng nhập</a>
-                <a href="index.php?page=register" class="tab-item">Đăng ký</a>
+                <a href="index.php?page=login" class="tab-item active">ÄÄƒng nháº­p</a>
+                <a href="index.php?page=register" class="tab-item">ÄÄƒng kÃ½</a>
             </div>
 
             <div class="auth-header-text mb-4">
-                <h3 class="fw-bold">Chào mừng trở lại!</h3>
-                <p class="text-muted small">Vui lòng đăng nhập để tiếp tục quản lý dự án.</p>
+                <h3 class="fw-bold">ChÃ o má»«ng trá»Ÿ láº¡i!</h3>
+                <p class="text-muted small">Vui lÃ²ng Ä‘Äƒng nháº­p Ä‘á»ƒ tiáº¿p tá»¥c quáº£n lÃ½ dá»± Ã¡n.</p>
             </div>
 
             <?php if(isset($_SESSION['success'])): ?>
@@ -92,9 +92,9 @@
                 </div>
             <?php endif; ?>
 
-            <form method="POST" action="index.php?page=login">
+            <form method="POST" action="index.php?page=login"> <?= csrfField() ?>
                 <div class="mb-3">
-                    <label class="form-label small fw-bold">Địa chỉ Email</label>
+                    <label class="form-label small fw-bold">Äá»‹a chá»‰ Email</label>
                     <div class="input-group">
                         <span class="input-group-text bg-light border-end-0"><i class="fa-regular fa-envelope text-muted"></i></span>
                         <input type="email" name="email" class="form-control bg-light border-start-0 shadow-none" placeholder="name@vnu.edu.vn" required>
@@ -103,22 +103,22 @@
 
                 <div class="mb-4">
                     <div class="d-flex justify-content-between align-items-center">
-                        <label class="form-label small fw-bold">Mật khẩu</label>
-                        <a href="#" class="text-decoration-none small fw-bold" style="font-size: 11px;">Quên mật khẩu?</a>
+                        <label class="form-label small fw-bold">Máº­t kháº©u</label>
+                        <a href="#" class="text-decoration-none small fw-bold" style="font-size: 11px;">QuÃªn máº­t kháº©u?</a>
                     </div>
                     <div class="input-group">
                         <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-lock text-muted"></i></span>
-                        <input type="password" name="password" class="form-control bg-light border-start-0 shadow-none" placeholder="••••••••" required>
+                        <input type="password" name="password" class="form-control bg-light border-start-0 shadow-none" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" required>
                     </div>
                 </div>
 
                 <button type="submit" class="btn btn-primary w-100 fw-bold py-3 shadow-sm">
-                    Đăng nhập hệ thống <i class="fa-solid fa-arrow-right ms-2"></i>
+                    ÄÄƒng nháº­p há»‡ thá»‘ng <i class="fa-solid fa-arrow-right ms-2"></i>
                 </button>
             </form>
 
             <div class="text-center mt-5">
-                <p class="small text-muted">Bạn mới sử dụng hệ thống? <a href="index.php?page=register" class="fw-bold text-decoration-none">Đăng ký ngay</a></p>
+                <p class="small text-muted">Báº¡n má»›i sá»­ dá»¥ng há»‡ thá»‘ng? <a href="index.php?page=register" class="fw-bold text-decoration-none">ÄÄƒng kÃ½ ngay</a></p>
             </div>
         </div>
     </div>

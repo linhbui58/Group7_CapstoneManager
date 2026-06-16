@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 class SemesterController {
 
@@ -20,6 +20,7 @@ class SemesterController {
 
     public function store() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            verifyCSRF();
             if ($this->semesterModel->create($_POST)) {
                 $_SESSION['success'] = "Semester created";
             } else {
@@ -38,6 +39,7 @@ class SemesterController {
     public function update() {
         $id = (int)($_GET['id'] ?? 0);
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $id) {
+            verifyCSRF();
             $this->semesterModel->update($id, $_POST);
             $_SESSION['success'] = "Semester updated";
         }

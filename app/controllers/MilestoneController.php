@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 class MilestoneController {
 
@@ -23,6 +23,7 @@ class MilestoneController {
 
     public function store() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            verifyCSRF();
             if ($this->milestoneModel->create($_POST)) {
                 $_SESSION['success'] = "Milestone created";
             } else {
@@ -42,6 +43,7 @@ class MilestoneController {
     public function update() {
         $id = (int)($_GET['id'] ?? 0);
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $id) {
+            verifyCSRF();
             if ($this->milestoneModel->update($id, $_POST)) {
                 $_SESSION['success'] = "Milestone updated";
             } else {

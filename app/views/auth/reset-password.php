@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -40,7 +40,7 @@
 
         <?php endif; ?>
 
-        <form method="POST">
+        <form method="POST"> <?= csrfField() ?>
 
             <div class="mb-3">
 

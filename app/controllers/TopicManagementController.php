@@ -1,8 +1,8 @@
-<?php
+﻿<?php
 /**
  * TopicManagementController
  * 
- * Gộp Topics + Registrations vào 1 trang với tab switching
+ * Gá»™p Topics + Registrations vÃ o 1 trang vá»›i tab switching
  */
 class TopicManagementController {
 
@@ -20,12 +20,12 @@ class TopicManagementController {
     }
 
     /**
-     * Trang chính: hiển thị cả Topics và Registrations trong 1 view với tabs
+     * Trang chÃ­nh: hiá»ƒn thá»‹ cáº£ Topics vÃ  Registrations trong 1 view vá»›i tabs
      */
     public function index() {
         $role = $_SESSION['user']['role'] ?? '';
 
-        // ── TOPICS DATA ──
+        // â”€â”€ TOPICS DATA â”€â”€
         $search     = trim($_GET['search']      ?? '');
         $filterSem  = (int)($_GET['semester_id'] ?? 0);
         $filterStat = trim($_GET['status']       ?? '');
@@ -44,11 +44,11 @@ class TopicManagementController {
             }
             $topics = $this->topicModel->getByLecturer($lecturerId, $search, $filterSem, $filterStat);
         } else {
-            // student: chỉ xem approved
+            // student: chá»‰ xem approved
             $topics = $this->topicModel->search($search, $filterSem, 'approved');
         }
 
-        // ── REGISTRATIONS DATA ──
+        // â”€â”€ REGISTRATIONS DATA â”€â”€
         if ($role === 'admin') {
             $registrations = $this->regModel->getAll();
         } elseif ($role === 'lecturer') {
@@ -77,10 +77,10 @@ class TopicManagementController {
             $registrations = [];
         }
 
-        // ── COMMON DATA ──
+        // â”€â”€ COMMON DATA â”€â”€
         $semesters = $this->semesterModel->getAll();
 
-        // ── RENDER VIEW ──
+        // â”€â”€ RENDER VIEW â”€â”€
         require '../app/views/topic-management/index.php';
     }
 }

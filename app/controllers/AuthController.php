@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 class AuthController {
 
@@ -24,6 +24,9 @@ class AuthController {
         }
 
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            verifyCSRF();
+
+            verifyCSRF();
 
             $email = trim($_POST['email']);
             $password = trim($_POST['password']);
@@ -129,17 +132,7 @@ class AuthController {
             |--------------------------------------------------------------------------
             */
 
-            if(class_exists('SystemLog')){
-
-                $logModel = new SystemLog();
-
-                $logModel->create([
-
-                    'user_id' => $user['id'],
-                    'action' => 'User logged in'
-
-                ]);
-            }
+            LogService::log('login', 'User logged in');
 
             header("Location: index.php?page=dashboard");
             exit;
@@ -157,6 +150,9 @@ class AuthController {
     public function register(){
 
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            verifyCSRF();
+
+            verifyCSRF();
 
             /*
             |--------------------------------------------------------------------------
@@ -184,26 +180,26 @@ class AuthController {
                 empty($email) ||
                 empty($password)
             ){
-                $error = "Vui lòng điền đầy đủ thông tin bắt buộc.";
+                $error = "Vui lÃ²ng Ä‘iá»n Ä‘áº§y Ä‘á»§ thÃ´ng tin báº¯t buá»™c.";
                 require '../app/views/auth/register.php';
                 return;
             }
 
-            // Bắt buộc chọn role hợp lệ
+            // Báº¯t buá»™c chá»n role há»£p lá»‡
             if(!in_array($role, ['student', 'lecturer'])){
-                $error = "Vui lòng chọn vai trò: Sinh viên hoặc Giảng viên.";
+                $error = "Vui lÃ²ng chá»n vai trÃ²: Sinh viÃªn hoáº·c Giáº£ng viÃªn.";
                 require '../app/views/auth/register.php';
                 return;
             }
 
             if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-                $error = "Email không hợp lệ.";
+                $error = "Email khÃ´ng há»£p lá»‡.";
                 require '../app/views/auth/register.php';
                 return;
             }
 
             if(strlen($password) < 6){
-                $error = "Mật khẩu phải có ít nhất 6 ký tự.";
+                $error = "Máº­t kháº©u pháº£i cÃ³ Ã­t nháº¥t 6 kÃ½ tá»±.";
                 require '../app/views/auth/register.php';
                 return;
             }
@@ -226,51 +222,45 @@ class AuthController {
 
             /*
             |--------------------------------------------------------------------------
-            | CREATE USER
+            | CREATE USER & PROFILE WITH TRANSACTION
             |--------------------------------------------------------------------------
             */
 
-            $userId = $this->userModel->create([
+            $db = Database::getInstance()->getConnection();
+            try {
+                $db->beginTransaction();
 
-                'email' => $email,
-                'password' => $password,
-                'role' => $role
-            ]);
-
-            /*
-            |--------------------------------------------------------------------------
-            | CREATE STUDENT
-            |--------------------------------------------------------------------------
-            */
-
-            if($role == 'student'){
-
-                $studentModel = new Student();
-
-                $studentModel->create([
-
-                    'user_id' => $userId,
-                    'student_code' => $student_code,
-                    'full_name' => $full_name,
-                    'phone' => $phone
+                $userId = $this->userModel->create([
+                    'email' => $email,
+                    'password' => $password,
+                    'role' => $role
                 ]);
-            }
 
-            /*
-            |--------------------------------------------------------------------------
-            | CREATE LECTURER
-            |--------------------------------------------------------------------------
-            */
+                if($role == 'student'){
+                    $studentModel = new Student();
+                    $studentModel->create([
+                        'user_id' => $userId,
+                        'student_code' => $student_code,
+                        'full_name' => $full_name,
+                        'phone' => $phone
+                    ]);
+                }
 
-            if($role == 'lecturer'){
+                if($role == 'lecturer'){
+                    $lecturerModel = new Lecturer();
+                    $lecturerModel->create([
+                        'user_id'   => $userId,
+                        'full_name' => $full_name,
+                        'expertise' => ''
+                    ]);
+                }
 
-                $lecturerModel = new Lecturer();
-
-                $lecturerModel->create([
-                    'user_id'   => $userId,
-                    'full_name' => $full_name,
-                    'expertise' => ''
-                ]);
+                $db->commit();
+            } catch (Exception $e) {
+                $db->rollBack();
+                $error = "Registration failed: " . $e->getMessage();
+                require '../app/views/auth/register.php';
+                return;
             }
 
             /*
@@ -297,18 +287,7 @@ class AuthController {
     public function logout(){
 
         if(isset($_SESSION['user'])){
-
-            if(class_exists('SystemLog')){
-
-                $logModel = new SystemLog();
-
-                $logModel->create([
-
-                    'user_id' => $_SESSION['user']['id'],
-                    'action' => 'User logged out'
-
-                ]);
-            }
+            LogService::log('logout', 'User logged out');
         }
 
         session_destroy();

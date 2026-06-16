@@ -27,6 +27,8 @@
                             <td><?= htmlspecialchars($a['lecturer_name']) ?></td>
                             <td><?= date('d/m/Y', strtotime($a['assigned_at'])) ?></td>
                             <td class="text-end">
+                                <a href="index.php?page=assignment-edit&id=<?= $a['id'] ?>" 
+                                   class="btn btn-sm btn-outline-primary rounded-pill px-3 me-1">Sửa</a>
                                 <a href="index.php?page=assignment-delete&id=<?= $a['id'] ?>" 
                                    class="btn btn-sm btn-outline-danger rounded-pill px-3" 
                                    onclick="return confirm('Xóa phân công này?')">Xóa</a>

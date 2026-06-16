@@ -1,4 +1,4 @@
-<?php require '../app/views/layouts/header.php'; ?>
+﻿<?php require '../app/views/layouts/header.php'; ?>
 <?php require '../app/views/layouts/sidebar.php'; ?>
 
 <div class="main-content">
@@ -17,7 +17,7 @@
 
         <?php endif; ?>
 
-        <form method="POST" action="index.php?page=user-store">
+        <form method="POST" action="index.php?page=user-store"> <?= csrfField() ?>
 
             <div class="mb-3">
 

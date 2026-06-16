@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 class ScoreController {
 
@@ -14,7 +14,7 @@ class ScoreController {
 
         if ($role === 'lecturer') {
             $lecturerId = $_SESSION['user']['lecturer_id'] ?? null;
-            // Chỉ xem điểm của các submission thuộc đề tài mình phụ trách
+            // Chá»‰ xem Ä‘iá»ƒm cá»§a cÃ¡c submission thuá»™c Ä‘á» tÃ i mÃ¬nh phá»¥ trÃ¡ch
             $db  = Database::getInstance()->getConnection();
             $sql = "SELECT es.*,
                            s.full_name  AS student_name,
@@ -47,7 +47,7 @@ class ScoreController {
         $db         = Database::getInstance()->getConnection();
 
         if ($role === 'lecturer' && $lecturerId) {
-            // Chỉ hiện submissions của sinh viên mình phụ trách
+            // Chá»‰ hiá»‡n submissions cá»§a sinh viÃªn mÃ¬nh phá»¥ trÃ¡ch
             $sql = "SELECT sub.id, s.full_name AS student_name, m.title AS topic_title
                     FROM submissions sub
                     JOIN students   s ON sub.student_id   = s.id
@@ -69,7 +69,7 @@ class ScoreController {
             $stmt = $db->prepare($sql);
             $stmt->execute([$lecturerId, $lecturerId, $lecturerId]);
         } else {
-            // Admin thấy tất cả
+            // Admin tháº¥y táº¥t cáº£
             $sql = "SELECT sub.id, s.full_name AS student_name, m.title AS topic_title
                     FROM submissions sub
                     JOIN students  s ON sub.student_id   = s.id
@@ -84,8 +84,10 @@ class ScoreController {
 
     public function store() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            verifyCSRF();
             redirect('scores');
         }
+        verifyCSRF();
 
         $lecturerId = $_SESSION['user']['lecturer_id'] ?? null;
 
@@ -94,17 +96,17 @@ class ScoreController {
         }
 
         if (!$lecturerId) {
-            $_SESSION['error'] = "Không xác định được giảng viên chấm điểm.";
+            $_SESSION['error'] = "KhÃ´ng xÃ¡c Ä‘á»‹nh Ä‘Æ°á»£c giáº£ng viÃªn cháº¥m Ä‘iá»ƒm.";
             redirect('score-create');
         }
 
         $submissionId = (int)($_POST['submission_id'] ?? 0);
 
-        // Lecturer chỉ được chấm submission thuộc đề tài mình
+        // Lecturer chá»‰ Ä‘Æ°á»£c cháº¥m submission thuá»™c Ä‘á» tÃ i mÃ¬nh
         if ($_SESSION['user']['role'] === 'lecturer') {
             $subModel = new Submission();
             if (!$subModel->belongsToLecturer($submissionId, $lecturerId)) {
-                $_SESSION['error'] = "Bạn không có quyền chấm điểm bài nộp này.";
+                $_SESSION['error'] = "Báº¡n khÃ´ng cÃ³ quyá»n cháº¥m Ä‘iá»ƒm bÃ i ná»™p nÃ y.";
                 redirect('score-create');
             }
         }
@@ -116,7 +118,7 @@ class ScoreController {
             'feedback'      => trim($_POST['feedback'] ?? ''),
         ]);
 
-        // Gửi notification cho sinh viên
+        // Gá»­i notification cho sinh viÃªn
         $db   = Database::getInstance()->getConnection();
         $stmt = $db->prepare(
             "SELECT s.user_id, m.title AS milestone_title
@@ -131,12 +133,14 @@ class ScoreController {
             $notifModel = new Notification();
             $notifModel->create([
                 'user_id' => $row['user_id'],
-                'content' => "Bài nộp cột mốc \"{$row['milestone_title']}\" của bạn đã được chấm điểm.",
+                'content' => "BÃ i ná»™p cá»™t má»‘c \"{$row['milestone_title']}\" cá»§a báº¡n Ä‘Ã£ Ä‘Æ°á»£c cháº¥m Ä‘iá»ƒm.",
                 'type'    => 'score',
             ]);
         }
 
-        $_SESSION['success'] = "Lưu điểm thành công.";
+        LogService::log('create_score', "Scored Submission ID: $submissionId");
+
+        $_SESSION['success'] = "LÆ°u Ä‘iá»ƒm thÃ nh cÃ´ng.";
         redirect('scores');
     }
 
@@ -144,15 +148,15 @@ class ScoreController {
         $id    = (int)($_GET['id'] ?? 0);
         $score = $this->scoreModel->find($id);
         if (!$score) {
-            $_SESSION['error'] = "Không tìm thấy điểm số.";
+            $_SESSION['error'] = "KhÃ´ng tÃ¬m tháº¥y Ä‘iá»ƒm sá»‘.";
             redirect('scores');
         }
 
-        // Lecturer chỉ được sửa điểm do mình chấm
+        // Lecturer chá»‰ Ä‘Æ°á»£c sá»­a Ä‘iá»ƒm do mÃ¬nh cháº¥m
         if ($_SESSION['user']['role'] === 'lecturer') {
             $lecturerId = $_SESSION['user']['lecturer_id'] ?? null;
             if ((int)$score['lecturer_id'] !== (int)$lecturerId) {
-                $_SESSION['error'] = "Bạn không có quyền sửa điểm này.";
+                $_SESSION['error'] = "Báº¡n khÃ´ng cÃ³ quyá»n sá»­a Ä‘iá»ƒm nÃ y.";
                 redirect('scores');
             }
         }
@@ -171,22 +175,24 @@ class ScoreController {
     public function update() {
         $id = (int)($_GET['id'] ?? 0);
 
-        // Lecturer chỉ được cập nhật điểm do mình chấm
+        // Lecturer chá»‰ Ä‘Æ°á»£c cáº­p nháº­t Ä‘iá»ƒm do mÃ¬nh cháº¥m
         if ($_SESSION['user']['role'] === 'lecturer' && $id) {
             $score      = $this->scoreModel->find($id);
             $lecturerId = $_SESSION['user']['lecturer_id'] ?? null;
             if (!$score || (int)$score['lecturer_id'] !== (int)$lecturerId) {
-                $_SESSION['error'] = "Bạn không có quyền cập nhật điểm này.";
+                $_SESSION['error'] = "Báº¡n khÃ´ng cÃ³ quyá»n cáº­p nháº­t Ä‘iá»ƒm nÃ y.";
                 redirect('scores');
             }
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $id) {
+            verifyCSRF();
             $this->scoreModel->update($id, [
                 'score'    => $_POST['score']    ?? 0,
                 'feedback' => trim($_POST['feedback'] ?? ''),
             ]);
-            $_SESSION['success'] = "Cập nhật điểm thành công.";
+            LogService::log('update_score', "Updated Score ID: $id");
+            $_SESSION['success'] = "Cáº­p nháº­t Ä‘iá»ƒm thÃ nh cÃ´ng.";
         }
         redirect('scores');
     }
@@ -194,19 +200,20 @@ class ScoreController {
     public function delete() {
         $id = (int)($_GET['id'] ?? 0);
 
-        // Lecturer chỉ được xóa điểm do mình chấm
+        // Lecturer chá»‰ Ä‘Æ°á»£c xÃ³a Ä‘iá»ƒm do mÃ¬nh cháº¥m
         if ($_SESSION['user']['role'] === 'lecturer' && $id) {
             $score      = $this->scoreModel->find($id);
             $lecturerId = $_SESSION['user']['lecturer_id'] ?? null;
             if (!$score || (int)$score['lecturer_id'] !== (int)$lecturerId) {
-                $_SESSION['error'] = "Bạn không có quyền xóa điểm này.";
+                $_SESSION['error'] = "Báº¡n khÃ´ng cÃ³ quyá»n xÃ³a Ä‘iá»ƒm nÃ y.";
                 redirect('scores');
             }
         }
 
         if ($id) {
             $this->scoreModel->delete($id);
-            $_SESSION['success'] = "Đã xóa điểm.";
+            LogService::log('delete_score', "Deleted Score ID: $id");
+            $_SESSION['success'] = "ÄÃ£ xÃ³a Ä‘iá»ƒm.";
         }
         redirect('scores');
     }

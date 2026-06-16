@@ -28,7 +28,7 @@ class AuthMiddleware {
 
             session_destroy();
 
-            die("Your account has been locked.");
+            abort(403, "Your account has been locked.");
         }
     }
 }

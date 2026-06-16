@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 class LecturerController {
 
@@ -19,10 +19,11 @@ class LecturerController {
     }
 
     /**
-     * Admin tạo giảng viên mới — Lecturer::create() sẽ tạo cả user + lecturer row.
+     * Admin táº¡o giáº£ng viÃªn má»›i â€” Lecturer::create() sáº½ táº¡o cáº£ user + lecturer row.
      */
     public function store() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            verifyCSRF();
             if ($this->lecturerModel->create($_POST)) {
                 $_SESSION['success'] = "Lecturer created successfully";
             } else {
@@ -47,6 +48,7 @@ class LecturerController {
     public function update() {
         $id = (int)($_GET['id'] ?? 0);
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $id) {
+            verifyCSRF();
             $this->lecturerModel->update($id, $_POST);
             $_SESSION['success'] = "Lecturer updated";
         }
