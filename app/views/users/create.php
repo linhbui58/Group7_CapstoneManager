@@ -1,11 +1,11 @@
-﻿<?php require '../app/views/layouts/header.php'; ?>
+<?php require '../app/views/layouts/header.php'; ?>
 <?php require '../app/views/layouts/sidebar.php'; ?>
 
 <div class="main-content">
 
     <div class="form-container">
 
-        <h2>Create User</h2>
+        <h2>Tạo người dùng</h2>
 
         <?php if(isset($error)): ?>
 
@@ -32,7 +32,7 @@
 
             <div class="mb-3">
 
-                <label>Password</label>
+                <label>Mật khẩu</label>
 
                 <input type="password"
                        name="password"
@@ -43,14 +43,14 @@
 
             <div class="mb-3">
 
-                <label>Role</label>
+                <label>Vai trò</label>
 
                 <select name="role"
                         class="form-control"
                         required>
 
                     <option value="">
-                        -- Select Role --
+                        -- Chọn vai trò --
                     </option>
 
                     <option value="student">
@@ -68,7 +68,7 @@
             <button type="submit"
                     class="btn btn-success">
 
-                Create User
+                Tạo người dùng
 
             </button>
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 
 <head>
 
@@ -54,7 +54,7 @@
     <!-- ENTERPRISE LOADER -->
     <div id="global-loader">
         <div class="spinner-border text-primary" role="status" style="width: 2.5rem; height: 2.5rem;">
-            <span class="visually-hidden">Loading...</span>
+            <span class="visually-hidden">Đang tải...</span>
         </div>
     </div>
 

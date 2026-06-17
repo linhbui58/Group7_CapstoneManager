@@ -13,7 +13,7 @@
                 <a href="index.php?page=dashboard"
                    class="<?= $currentPage === 'dashboard' ? 'active' : '' ?>">
                     <i class="fa fa-chart-line"></i> 
-                    <span>Dashboard</span>
+                    <span>Tổng quan</span>
                 </a>
             </li>
 
@@ -30,17 +30,17 @@
                     <ul class="submenu">
                         <li>
                             <a href="index.php?page=users" class="<?= $currentPage === 'users' ? 'active' : '' ?>">
-                                <i class="fa fa-users"></i> <span>Users</span>
+                                <i class="fa fa-users"></i> <span>Tài khoản</span>
                             </a>
                         </li>
                         <li>
                             <a href="index.php?page=students" class="<?= $currentPage === 'students' ? 'active' : '' ?>">
-                                <i class="fa fa-user-graduate"></i> <span>Students</span>
+                                <i class="fa fa-user-graduate"></i> <span>Sinh viên</span>
                             </a>
                         </li>
                         <li>
                             <a href="index.php?page=lecturers" class="<?= $currentPage === 'lecturers' ? 'active' : '' ?>">
-                                <i class="fa fa-chalkboard-teacher"></i> <span>Lecturers</span>
+                                <i class="fa fa-chalkboard-teacher"></i> <span>Giảng viên</span>
                             </a>
                         </li>
                     </ul>
@@ -56,17 +56,17 @@
                     <ul class="submenu">
                         <li>
                             <a href="index.php?page=semesters" class="<?= $currentPage === 'semesters' ? 'active' : '' ?>">
-                                <i class="fa fa-calendar"></i> <span>Semesters</span>
+                                <i class="fa fa-calendar"></i> <span>Học kỳ</span>
                             </a>
                         </li>
                         <li>
                             <a href="index.php?page=topic-management" class="<?= in_array($currentPage, ['topic-management', 'topics', 'registrations']) ? 'active' : '' ?>">
-                                <i class="fa fa-book-open"></i> <span>Topics & Đăng Ký</span>
+                                <i class="fa fa-book-open"></i> <span>Đề tài & Đăng ký</span>
                             </a>
                         </li>
                         <li>
                             <a href="index.php?page=assignments" class="<?= $currentPage === 'assignments' ? 'active' : '' ?>">
-                                <i class="fa fa-user-check"></i> <span>Assignments</span>
+                                <i class="fa fa-user-check"></i> <span>Phân công</span>
                             </a>
                         </li>
                     </ul>
@@ -82,17 +82,17 @@
                     <ul class="submenu">
                         <li>
                             <a href="index.php?page=milestones" class="<?= $currentPage === 'milestones' ? 'active' : '' ?>">
-                                <i class="fa fa-flag"></i> <span>Milestones</span>
+                                <i class="fa fa-flag"></i> <span>Cột mốc</span>
                             </a>
                         </li>
                         <li>
                             <a href="index.php?page=submissions" class="<?= $currentPage === 'submissions' ? 'active' : '' ?>">
-                                <i class="fa fa-upload"></i> <span>Submissions</span>
+                                <i class="fa fa-upload"></i> <span>Bài nộp</span>
                             </a>
                         </li>
                         <li>
                             <a href="index.php?page=scores" class="<?= $currentPage === 'scores' ? 'active' : '' ?>">
-                                <i class="fa fa-star"></i> <span>Scores</span>
+                                <i class="fa fa-star"></i> <span>Điểm số</span>
                             </a>
                         </li>
                     </ul>
@@ -108,12 +108,12 @@
                     <ul class="submenu">
                         <li>
                             <a href="index.php?page=notifications" class="<?= $currentPage === 'notifications' ? 'active' : '' ?>">
-                                <i class="fa fa-bell"></i> <span>Notifications</span>
+                                <i class="fa fa-bell"></i> <span>Thông báo</span>
                             </a>
                         </li>
                         <li>
                             <a href="index.php?page=logs" class="<?= $currentPage === 'logs' ? 'active' : '' ?>">
-                                <i class="fa fa-clock-rotate-left"></i> <span>System Logs</span>
+                                <i class="fa fa-clock-rotate-left"></i> <span>Nhật ký hệ thống</span>
                             </a>
                         </li>
                     </ul>
@@ -123,52 +123,109 @@
 
             <!-- ── STUDENT ── -->
             <?php if ($_SESSION['user']['role'] === 'student'): ?>
+
+                <li class="menu-group <?= in_array($currentPage, ['topic-management', 'topics', 'registrations']) ? 'open' : '' ?>">
+                    <div class="menu-group-toggle">
+                        <i class="fa fa-book"></i>
+                        <span>Đề tài của tôi</span>
+                        <i class="fa fa-chevron-right toggle-icon"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li>
+                            <a href="index.php?page=topic-management" class="<?= in_array($currentPage, ['topic-management', 'topics']) ? 'active' : '' ?>">
+                                <i class="fa fa-book-open"></i> <span>Danh sách đề tài</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="index.php?page=registrations" class="<?= $currentPage === 'registrations' ? 'active' : '' ?>">
+                                <i class="fa fa-pen-to-square"></i> <span>Đăng ký của tôi</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="menu-group <?= in_array($currentPage, ['submissions', 'milestones']) ? 'open' : '' ?>">
+                    <div class="menu-group-toggle">
+                        <i class="fa fa-list-check"></i>
+                        <span>Tiến độ</span>
+                        <i class="fa fa-chevron-right toggle-icon"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li>
+                            <a href="index.php?page=milestones" class="<?= $currentPage === 'milestones' ? 'active' : '' ?>">
+                                <i class="fa fa-flag"></i> <span>Milestones</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="index.php?page=submissions" class="<?= $currentPage === 'submissions' ? 'active' : '' ?>">
+                                <i class="fa fa-upload"></i> <span>Bài nộp của tôi</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
                 <li>
-                    <a href="index.php?page=topic-management"
-                       class="<?= in_array($currentPage, ['topic-management', 'topics', 'registrations']) ? 'active' : '' ?>">
-                        <i class="fa fa-book-open"></i> <span>Topics & Đăng Ký</span>
+                    <a href="index.php?page=notifications" class="<?= $currentPage === 'notifications' ? 'active' : '' ?>">
+                        <i class="fa fa-bell"></i> <span>Thông báo</span>
                     </a>
                 </li>
-                <li>
-                    <a href="index.php?page=submissions"
-                       class="<?= $currentPage === 'submissions' ? 'active' : '' ?>">
-                        <i class="fa fa-upload"></i> <span>My Submissions</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="index.php?page=notifications"
-                       class="<?= $currentPage === 'notifications' ? 'active' : '' ?>">
-                        <i class="fa fa-bell"></i> <span>Notifications</span>
-                    </a>
-                </li>
+
             <?php endif; ?>
 
             <!-- ── LECTURER ── -->
             <?php if ($_SESSION['user']['role'] === 'lecturer'): ?>
+
+                <li class="menu-group <?= in_array($currentPage, ['topic-management', 'topics', 'registrations']) ? 'open' : '' ?>">
+                    <div class="menu-group-toggle">
+                        <i class="fa fa-book"></i>
+                        <span>Quản lý đề tài</span>
+                        <i class="fa fa-chevron-right toggle-icon"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li>
+                            <a href="index.php?page=topic-management" class="<?= in_array($currentPage, ['topic-management', 'topics']) ? 'active' : '' ?>">
+                                <i class="fa fa-book-open"></i> <span>Danh sách đề tài</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="index.php?page=registrations" class="<?= $currentPage === 'registrations' ? 'active' : '' ?>">
+                                <i class="fa fa-users"></i> <span>Sinh viên đăng ký</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="menu-group <?= in_array($currentPage, ['submissions', 'scores', 'milestones']) ? 'open' : '' ?>">
+                    <div class="menu-group-toggle">
+                        <i class="fa fa-tasks"></i>
+                        <span>Chấm điểm & Nộp bài</span>
+                        <i class="fa fa-chevron-right toggle-icon"></i>
+                    </div>
+                    <ul class="submenu">
+                        <li>
+                            <a href="index.php?page=milestones" class="<?= $currentPage === 'milestones' ? 'active' : '' ?>">
+                                <i class="fa fa-flag"></i> <span>Cột mốc</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="index.php?page=submissions" class="<?= $currentPage === 'submissions' ? 'active' : '' ?>">
+                                <i class="fa fa-upload"></i> <span>Bài nộp</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="index.php?page=scores" class="<?= $currentPage === 'scores' ? 'active' : '' ?>">
+                                <i class="fa fa-star"></i> <span>Chấm điểm</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
                 <li>
-                    <a href="index.php?page=topic-management"
-                       class="<?= in_array($currentPage, ['topic-management', 'topics', 'registrations']) ? 'active' : '' ?>">
-                        <i class="fa fa-book-open"></i> <span>Topics & Đăng Ký</span>
+                    <a href="index.php?page=notifications" class="<?= $currentPage === 'notifications' ? 'active' : '' ?>">
+                        <i class="fa fa-bell"></i> <span>Thông báo</span>
                     </a>
                 </li>
-                <li>
-                    <a href="index.php?page=submissions"
-                       class="<?= $currentPage === 'submissions' ? 'active' : '' ?>">
-                        <i class="fa fa-upload"></i> <span>Submissions</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="index.php?page=scores"
-                       class="<?= $currentPage === 'scores' ? 'active' : '' ?>">
-                        <i class="fa fa-star"></i> <span>Scores</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="index.php?page=notifications"
-                       class="<?= $currentPage === 'notifications' ? 'active' : '' ?>">
-                        <i class="fa fa-bell"></i> <span>Notifications</span>
-                    </a>
-                </li>
+
             <?php endif; ?>
 
         </ul>
@@ -180,13 +237,15 @@
                 <div class="user-profile-wrapper">
                     <div class="user-avatar-circle">
                         <?php
+                            $fullName = $_SESSION['user']['full_name'] ?? '';
                             $email    = $_SESSION['user']['email'] ?? 'User';
-                            $username = explode('@', $email)[0];
-                            echo strtoupper(substr($username, 0, 1));
+                            $displayName = $fullName ?: explode('@', $email)[0];
+                            $avatarChar  = strtoupper(mb_substr($displayName, 0, 1));
+                            echo $avatarChar;
                         ?>
                     </div>
                     <div class="user-text">
-                        <span class="user-name"><?= htmlspecialchars($username) ?></span>
+                        <span class="user-name"><?= htmlspecialchars($displayName) ?></span>
                         <span class="user-role"><?= ucfirst($_SESSION['user']['role'] ?? 'Guest') ?></span>
                     </div>
                 </div>

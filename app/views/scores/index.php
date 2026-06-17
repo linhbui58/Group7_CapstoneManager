@@ -16,7 +16,7 @@
 <div class="main-content" style="padding: 40px; background-color: #f4f7fe; min-height: 100vh;">
     <div class="d-flex justify-content-between align-items-center mb-5">
         <div>
-            <h2 class="fw-bold mb-1" style="color: #0f172a;">Evaluation Results</h2>
+            <h2 class="fw-bold mb-1" style="color: #0f172a;">Kết quả đánh giá</h2>
             <p class="text-muted mb-0">Theo dõi và quản lý điểm số bảo vệ đồ án của sinh viên.</p>
         </div>
         <?php if($_SESSION['user']['role'] == 'lecturer'): ?>
@@ -32,11 +32,11 @@
                 <table class="table datatable table-hover mb-0" id="scoreTable">
                     <thead>
                         <tr class="text-muted small">
-                            <th class="ps-4">STUDENT & TOPIC</th>
-                            <th class="text-center">SCORE</th>
-                            <th>SUPERVISOR</th>
-                            <th>FEEDBACK</th>
-                            <th class="text-end pe-4">ACTIONS</th>
+                            <th class="ps-4">SINH VIÊN & ĐỀ TÀI</th>
+                            <th class="text-center">ĐIỂM</th>
+                            <th>GIẢNG VIÊN</th>
+                            <th>NHẬN XÉT</th>
+                            <th class="text-end pe-4">THAO TÁC</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -61,7 +61,7 @@
                                     </td>
                                     <td>
                                         <small class="text-muted d-block text-truncate" style="max-width: 200px;">
-                                            <?= htmlspecialchars($s['feedback'] ?? 'No feedback provided.') ?>
+                                            <?= htmlspecialchars($s['feedback'] ?? 'Chưa có nhận xét.') ?>
                                         </small>
                                     </td>
                                     <td class="text-end pe-4">

@@ -5,7 +5,7 @@
 
     <div class="page-header">
         <div>
-            <h2>Users Management</h2>
+            <h2>Quản lý tài khoản</h2>
             <p class="text-muted small mb-0 mt-1">Quản lý tài khoản người dùng trong hệ thống</p>
         </div>
         <a href="index.php?page=user-create" class="btn btn-primary">
@@ -35,7 +35,7 @@
                     <tr>
                         <th class="ps-4">#</th>
                         <th>Email</th>
-                        <th>Role</th>
+                        <th>Vai trò</th>
                         <th>Trạng thái</th>
                         <th class="text-end pe-4">Thao tác</th>
                     </tr>

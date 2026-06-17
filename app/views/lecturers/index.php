@@ -89,12 +89,12 @@
 <div class="main-content" style="padding: 40px;">
     <div class="d-flex justify-content-between align-items-center mb-5">
         <div>
-            <h2 class="fw-bold mb-1" style="color: #0f172a; letter-spacing: -0.02em;">Lecturers Management</h2>
-            <p class="text-muted mb-0">Overview and management of your academic faculty members.</p>
+            <h2 class="fw-bold mb-1" style="color: #0f172a; letter-spacing: -0.02em;">Quản lý giảng viên</h2>
+            <p class="text-muted mb-0">Danh sách giảng viên trong hệ thống.</p>
         </div>
         <?php if($_SESSION['user']['role'] == 'admin'): ?>
             <a href="index.php?page=lecturer-create" class="btn btn-primary rounded-pill px-4 py-2 shadow-sm fw-bold d-flex align-items-center" style="background: #6366f1; border: none;">
-                <i class="fa-solid fa-plus me-2"></i> Add New Lecturer
+                <i class="fa-solid fa-plus me-2"></i> Thêm giảng viên
             </a>
         <?php endif; ?>
     </div>
@@ -106,8 +106,8 @@
                     <i class="fa-solid fa-user-tie fa-lg"></i>
                 </div>
                 <div>
-                    <small class="text-muted d-block fw-medium">Total Faculty</small>
-                    <span class="fw-bold h5 mb-0"><?= count($lecturers ?? []) ?> Members</span>
+                    <small class="text-muted d-block fw-medium">Tổng số</small>
+                    <span class="fw-bold h5 mb-0"><?= count($lecturers ?? []) ?> giảng viên</span>
                 </div>
             </div>
         </div>
@@ -120,10 +120,10 @@
                     <thead>
                         <tr>
                             <th class="ps-4">ID</th>
-                            <th>Lecturer Information</th>
-                            <th>Expertise</th>
+                            <th>Thông tin giảng viên</th>
+                            <th>Chuyên môn</th>
                             <?php if($_SESSION['user']['role'] == 'admin'): ?>
-                                <th class="text-end pe-4">Actions</th>
+                                <th class="text-end pe-4">Thao tác</th>
                             <?php endif; ?>
                         </tr>
                     </thead>
@@ -155,16 +155,16 @@
                                         <td class="text-end pe-4">
                                             <div class="d-flex justify-content-end gap-2">
                                                 <a href="index.php?page=lecturer-show&id=<?= $lecturer['id'] ?>" 
-                                                   class="btn-action bg-info bg-opacity-10 text-info" title="View Details">
+                                                   class="btn-action bg-info bg-opacity-10 text-info" title="Xem chi tiết">
                                                     <i class="fa-solid fa-eye"></i>
                                                 </a>
                                                 <a href="index.php?page=lecturer-edit&id=<?= $lecturer['id'] ?>" 
-                                                   class="btn-action bg-warning bg-opacity-10 text-warning" title="Edit">
+                                                   class="btn-action bg-warning bg-opacity-10 text-warning" title="Chỉnh sửa">
                                                     <i class="fa-solid fa-pen-to-square"></i>
                                                 </a>
                                                 <a href="index.php?page=lecturer-delete&id=<?= $lecturer['id'] ?>" 
                                                    class="btn-action bg-danger bg-opacity-10 text-danger" 
-                                                   onclick="return confirm('Are you sure you want to delete this lecturer?')" title="Delete">
+                                                   onclick="return confirm('Bạn chắc chắn muốn xóa giảng viên này?')" title="Xóa">
                                                     <i class="fa-solid fa-trash-can"></i>
                                                 </a>
                                             </div>
@@ -175,7 +175,7 @@
                         <?php else: ?>
                             <tr>
                                 <td colspan="4" class="text-center py-5 text-muted">
-                                    <p class="mb-0">No lecturers found in the database.</p>
+                                    <p class="mb-0">Chưa có giảng viên nào trong hệ thống.</p>
                                 </td>
                             </tr>
                         <?php endif; ?>
@@ -202,9 +202,9 @@ $(document).ready(function() {
             "responsive": true,
             "language": {
                 "search": "",
-                "searchPlaceholder": "Search faculty...",
-                "lengthMenu": "_MENU_ per page",
-                "info": "Showing _START_ to _END_ of _TOTAL_ members",
+                "searchPlaceholder": "Tìm kiếm giảng viên...",
+                "lengthMenu": "_MENU_ dòng/trang",
+                "info": "Hiển thị _START_ đến _END_ trong _TOTAL_ giảng viên",
                 "paginate": {
                     "next": '<i class="fa-solid fa-chevron-right"></i>',
                     "previous": '<i class="fa-solid fa-chevron-left"></i>'

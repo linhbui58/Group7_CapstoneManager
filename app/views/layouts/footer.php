@@ -90,9 +90,9 @@
 
             Swal.fire({
 
-                title: 'Are you sure?',
+                title: 'Bạn chắc chắn?',
 
-                text: "This data will be deleted.",
+                text: "Dữ liệu này sẽ bị xóa vĩnh viễn.",
 
                 icon: 'warning',
 
@@ -102,7 +102,9 @@
 
                 cancelButtonColor: '#ef4444',
 
-                confirmButtonText: 'Delete'
+                confirmButtonText: 'Xóa',
+
+                cancelButtonText: 'Hủy'
 
             }).then((result) => {
 

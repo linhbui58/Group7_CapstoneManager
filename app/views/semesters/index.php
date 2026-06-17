@@ -11,12 +11,12 @@
 <div class="main-content" style="padding: 40px; background-color: #f4f7fe;">
     <div class="d-flex justify-content-between align-items-center mb-5">
         <div>
-            <h2 class="fw-bold mb-1" style="color: #0f172a;">Semesters Management</h2>
-            <p class="text-muted mb-0">Manage academic periods and deadlines.</p>
+            <h2 class="fw-bold mb-1" style="color: #0f172a;">Quản lý học kỳ</h2>
+            <p class="text-muted mb-0">Quản lý các học kỳ và thời hạn nộp bài.</p>
         </div>
         <?php if($_SESSION['user']['role'] == 'admin'): ?>
             <a href="index.php?page=semester-create" class="btn btn-primary rounded-pill px-4 py-2 shadow-sm fw-bold" style="background: #6366f1; border: none;">
-                <i class="fa-solid fa-plus me-2"></i> Add Semester
+                <i class="fa-solid fa-plus me-2"></i> Thêm học kỳ
             </a>
         <?php endif; ?>
     </div>
@@ -28,9 +28,9 @@
                     <thead>
                         <tr class="text-muted small">
                             <th class="ps-4">ID</th>
-                            <th>Semester Name</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
+                            <th>Tên học kỳ</th>
+                            <th>Ngày bắt đầu</th>
+                            <th>Ngày kết thúc</th>
                             <?php if($_SESSION['user']['role'] == 'admin'): ?>
                                 <th class="text-end pe-4">Actions</th>
                             <?php endif; ?>
@@ -48,7 +48,7 @@
                                         <td class="text-end pe-4">
                                             <div class="d-flex justify-content-end gap-2">
                                                 <a href="index.php?page=semester-edit&id=<?= $s['id'] ?>" class="btn-action bg-warning bg-opacity-10 text-warning"><i class="fa-solid fa-pen-to-square"></i></a>
-                                                <a href="index.php?page=semester-delete&id=<?= $s['id'] ?>" class="btn-action bg-danger bg-opacity-10 text-danger" onclick="return confirm('Delete this semester?')"><i class="fa-solid fa-trash-can"></i></a>
+                                                <a href="index.php?page=semester-delete&id=<?= $s['id'] ?>" class="btn-action bg-danger bg-opacity-10 text-danger" onclick="return confirm('Xóa học kỳ này?')"><i class="fa-solid fa-trash-can"></i></a>
                                             </div>
                                         </td>
                                     <?php endif; ?>
@@ -68,7 +68,7 @@ $(document).ready(function() {
     if ($.fn.DataTable.isDataTable('#semesterTable')) { $('#semesterTable').DataTable().destroy(); }
     $('#semesterTable').DataTable({
         "retrieve": true,
-        "language": { "search": "", "searchPlaceholder": "Search semester..." },
+        "language": { "search": "", "searchPlaceholder": "Tìm kiếm học kỳ..." },
         "dom": '<"d-flex justify-content-between align-items-center mb-3"<"small"l><"small"f>>rt<"d-flex justify-content-between align-items-center mt-3"<"small"i><"small"p>>',
     });
 });

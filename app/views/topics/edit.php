@@ -21,8 +21,8 @@
                 <div class="col-md-6">
                     <label class="fw-bold small text-muted">TRẠNG THÁI</label>
                     <select name="status" class="form-select rounded-pill px-3">
-                        <option value="pending" <?= $topic['status'] == 'pending' ? 'selected' : '' ?>>Pending</option>
-                        <option value="approved" <?= $topic['status'] == 'approved' ? 'selected' : '' ?>>Approved</option>
+                        <option value="pending" <?= $topic['status'] == 'pending' ? 'selected' : '' ?>>Chờ duyệt</option>
+                        <option value="approved" <?= $topic['status'] == 'approved' ? 'selected' : '' ?>>Đã duyệt</option>
                     </select>
                 </div>
             </div>

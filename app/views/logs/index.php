@@ -4,7 +4,7 @@
 <div class="main-content" style="padding: 40px; background-color: #f4f7fe; min-height: 100vh;">
     <div class="d-flex justify-content-between align-items-center mb-5">
         <div>
-            <h2 class="fw-bold mb-1" style="color: #0f172a;">System Logs</h2>
+            <h2 class="fw-bold mb-1" style="color: #0f172a;">Nhật ký hệ thống</h2>
             <p class="text-muted mb-0">Lịch sử hoạt động chi tiết của người dùng trên hệ thống.</p>
         </div>
         <button onclick="window.location.reload()" class="btn btn-white shadow-sm rounded-pill px-4 fw-bold">

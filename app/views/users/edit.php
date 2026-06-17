@@ -1,4 +1,4 @@
-﻿<?php require '../app/views/layouts/header.php'; ?>
+<?php require '../app/views/layouts/header.php'; ?>
 <?php require '../app/views/layouts/sidebar.php'; ?>
 
 <div class="main-content" style="padding:32px; background:#f4f7fe; min-height:100vh;">
@@ -19,19 +19,19 @@
             </div>
 
             <div class="mb-3">
-                <label class="fw-bold small text-muted">ROLE</label>
+                <label class="fw-bold small text-muted">VAI TRÒ</label>
                 <select name="role" class="form-select rounded-pill px-3">
-                    <option value="student"  <?= $user['role'] === 'student'  ? 'selected' : '' ?>>Student</option>
-                    <option value="lecturer" <?= $user['role'] === 'lecturer' ? 'selected' : '' ?>>Lecturer</option>
-                    <option value="admin"    <?= $user['role'] === 'admin'    ? 'selected' : '' ?>>Admin</option>
+                    <option value="student"  <?= $user['role'] === 'student'  ? 'selected' : '' ?>>Sinh viên</option>
+                    <option value="lecturer" <?= $user['role'] === 'lecturer' ? 'selected' : '' ?>>Giảng viên</option>
+                    <option value="admin"    <?= $user['role'] === 'admin'    ? 'selected' : '' ?>>Quản trị viên</option>
                 </select>
             </div>
 
             <div class="mb-4">
                 <label class="fw-bold small text-muted">TRẠNG THÁI</label>
                 <select name="status" class="form-select rounded-pill px-3">
-                    <option value="active" <?= ($user['status'] ?? '') === 'active' ? 'selected' : '' ?>>Active</option>
-                    <option value="locked" <?= ($user['status'] ?? '') === 'locked' ? 'selected' : '' ?>>Locked</option>
+                    <option value="active" <?= ($user['status'] ?? '') === 'active' ? 'selected' : '' ?>>Hoạt động</option>
+                    <option value="locked" <?= ($user['status'] ?? '') === 'locked' ? 'selected' : '' ?>>Đã khóa</option>
                 </select>
             </div>
 
