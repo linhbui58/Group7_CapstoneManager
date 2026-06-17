@@ -75,74 +75,104 @@
         .auth-main {
             flex: 1; background: #f8fafc;
             display: flex; align-items: center; justify-content: center;
-            padding: 40px 32px;
+            padding: 24px 32px;
         }
         .auth-card {
             width: 100%; max-width: 460px;
             background: #ffffff; border-radius: 24px;
-            padding: 44px; box-shadow: 0 8px 32px rgba(15,23,42,.07), 0 1px 0 rgba(255,255,255,.9) inset;
+            padding: 32px 36px; box-shadow: 0 8px 32px rgba(15,23,42,.07), 0 1px 0 rgba(255,255,255,.9) inset;
             border: 1px solid #e8edf3;
         }
 
         .auth-tabs {
-            display: flex; background: #f1f5f9; padding: 4px; border-radius: 12px; margin-bottom: 32px;
+            display: flex; background: #f1f5f9; padding: 4px; border-radius: 12px; margin-bottom: 20px;
         }
         .tab-link {
-            flex: 1; text-align: center; padding: 10px 8px;
-            font-size: 13.5px; font-weight: 600; color: #64748b;
+            flex: 1; text-align: center; padding: 9px 8px;
+            font-size: 13px; font-weight: 600; color: #64748b;
             border-radius: 9px; transition: all .25s; text-decoration: none;
         }
         .tab-link.active { background: #ffffff; color: #0f172a; box-shadow: 0 1px 6px rgba(15,23,42,.1); }
         .tab-link:hover:not(.active) { color: #0f172a; }
 
-        .card-heading h3 { font-size: 22px; font-weight: 700; color: #0f172a; letter-spacing: -.4px; margin-bottom: 4px; }
-        .card-heading p  { font-size: 13.5px; color: #64748b; }
+        .card-heading h3 { font-size: 20px; font-weight: 700; color: #0f172a; letter-spacing: -.4px; margin-bottom: 2px; }
+        .card-heading p  { font-size: 13px; color: #64748b; margin-bottom: 0; }
 
-        .field-group { margin-bottom: 16px; }
-        .field-label { font-size: 12.5px; font-weight: 600; color: #374151; margin-bottom: 7px; display: block; }
+        .field-group { margin-bottom: 12px; }
+        .field-label { font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 5px; display: block; }
         .input-wrap {
             display: flex; align-items: center;
-            border: 1.5px solid #e2e8f0; border-radius: 12px;
+            border: 1.5px solid #e2e8f0; border-radius: 10px;
             background: #f8fafc; overflow: hidden;
             transition: border-color .2s, box-shadow .2s;
         }
         .input-wrap:focus-within {
             border-color: #6366f1; background: #fff;
-            box-shadow: 0 0 0 4px rgba(99,102,241,.1);
+            box-shadow: 0 0 0 3px rgba(99,102,241,.1);
         }
         .input-wrap .ic {
-            width: 44px; display: flex; align-items: center; justify-content: center;
+            width: 40px; display: flex; align-items: center; justify-content: center;
             color: #94a3b8; font-size: 13px; flex-shrink: 0;
         }
         .input-wrap input, .input-wrap select {
             flex: 1; border: none; background: transparent;
-            height: 44px; font-size: 13.5px; color: #0f172a;
-            outline: none; padding-right: 12px;
+            height: 40px; font-size: 13px; color: #0f172a;
+            outline: none; padding-right: 10px;
         }
         .input-wrap input::placeholder { color: #c4cdd8; }
         .input-wrap select { appearance: auto; padding-right: 8px; }
         .input-wrap .toggle-pw {
-            width: 38px; height: 44px; display: flex; align-items: center; justify-content: center;
+            width: 36px; height: 40px; display: flex; align-items: center; justify-content: center;
             cursor: pointer; color: #94a3b8; font-size: 13px; flex-shrink: 0;
             background: transparent; border: none; transition: color .2s;
         }
         .input-wrap .toggle-pw:hover { color: #6366f1; }
 
-        .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
         .btn-auth {
-            width: 100%; height: 48px; font-size: 14.5px; font-weight: 600;
-            border-radius: 12px; border: none; color: #fff;
+            width: 100%; height: 44px; font-size: 14px; font-weight: 600;
+            border-radius: 10px; border: none; color: #fff;
             background: linear-gradient(135deg, #1e293b, #0f172a);
             box-shadow: 0 4px 14px rgba(15,23,42,.25);
-            transition: all .25s; cursor: pointer; margin-top: 8px;
+            transition: all .25s; cursor: pointer; margin-top: 6px;
             display: flex; align-items: center; justify-content: center; gap: 8px;
         }
         .btn-auth:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(15,23,42,.35); background: #1e3a5f; }
 
-        .auth-footer-text { text-align: center; margin-top: 20px; font-size: 13px; color: #94a3b8; }
+        .auth-footer-text { text-align: center; margin-top: 14px; font-size: 13px; color: #94a3b8; }
         .auth-footer-text a { color: #6366f1; font-weight: 600; text-decoration: none; }
         .auth-footer-text a:hover { text-decoration: underline; }
+
+        /* role cards */
+        .role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .role-card {
+            position: relative; cursor: pointer;
+            border: 1.5px solid #e2e8f0; border-radius: 12px;
+            padding: 14px 12px; text-align: center;
+            background: #f8fafc; transition: all .2s;
+            user-select: none;
+        }
+        .role-card input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
+        .role-card:hover { border-color: #a5b4fc; background: #fff; }
+        .role-card.selected,
+        .role-card:has(input:checked) {
+            border-color: #6366f1; background: #eef2ff;
+            box-shadow: 0 0 0 3px rgba(99,102,241,.12);
+        }
+        .role-icon {
+            width: 36px; height: 36px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 15px; margin: 0 auto 8px;
+        }
+        .role-icon.blue   { background: rgba(56,189,248,.15); color: #0ea5e9; }
+        .role-icon.indigo { background: rgba(99,102,241,.15); color: #6366f1; }
+        .role-card.selected .role-icon.blue,
+        .role-card:has(input:checked) .role-icon.blue   { background: rgba(56,189,248,.25); }
+        .role-card.selected .role-icon.indigo,
+        .role-card:has(input:checked) .role-icon.indigo { background: rgba(99,102,241,.25); }
+        .role-name { font-size: 13px; font-weight: 700; color: #0f172a; margin-bottom: 2px; }
+        .role-desc { font-size: 11px; color: #94a3b8; line-height: 1.3; }
 
         .auth-alert {
             border-radius: 10px; padding: 11px 16px; font-size: 13px;
@@ -217,7 +247,7 @@
                 <a href="index.php?page=register" class="tab-link active">Đăng ký</a>
             </div>
 
-            <div class="card-heading mb-4">
+            <div class="card-heading mb-3">
                 <h3>Tạo tài khoản mới</h3>
                 <p>Điền thông tin bên dưới để bắt đầu.</p>
             </div>
@@ -241,12 +271,13 @@
                     </div>
                 </div>
 
-                <div class="row-2 field-group">
+                <!-- Sinh viên: MSV + SDT | Giảng viên: chỉ SDT -->
+                <div id="field-student" class="row-2 field-group" style="display:none;">
                     <div>
                         <label class="field-label">Mã sinh viên</label>
                         <div class="input-wrap">
                             <span class="ic"><i class="fa-solid fa-id-card"></i></span>
-                            <input type="text" name="student_code"
+                            <input type="text" name="student_code" id="student_code"
                                    placeholder="2101xxxx"
                                    value="<?= htmlspecialchars($_POST['student_code'] ?? '') ?>">
                         </div>
@@ -255,10 +286,20 @@
                         <label class="field-label">Số điện thoại</label>
                         <div class="input-wrap">
                             <span class="ic"><i class="fa-solid fa-phone"></i></span>
-                            <input type="text" name="phone"
+                            <input type="text" name="phone" id="phone_student"
                                    placeholder="09xxxxxxxx"
                                    value="<?= htmlspecialchars($_POST['phone'] ?? '') ?>">
                         </div>
+                    </div>
+                </div>
+
+                <div id="field-lecturer" class="field-group" style="display:none;">
+                    <label class="field-label">Số điện thoại</label>
+                    <div class="input-wrap">
+                        <span class="ic"><i class="fa-solid fa-phone"></i></span>
+                        <input type="text" name="phone" id="phone_lecturer"
+                               placeholder="09xxxxxxxx"
+                               value="<?= htmlspecialchars($_POST['phone'] ?? '') ?>">
                     </div>
                 </div>
 
@@ -288,13 +329,19 @@
 
                 <div class="field-group">
                     <label class="field-label">Vai trò</label>
-                    <div class="input-wrap">
-                        <span class="ic"><i class="fa-solid fa-users-gear"></i></span>
-                        <select name="role" required>
-                            <option value="" disabled <?= empty($_POST['role']) ? 'selected' : '' ?>>— Chọn vai trò —</option>
-                            <option value="student"  <?= ($_POST['role'] ?? '') === 'student'  ? 'selected' : '' ?>>Sinh viên</option>
-                            <option value="lecturer" <?= ($_POST['role'] ?? '') === 'lecturer' ? 'selected' : '' ?>>Giảng viên</option>
-                        </select>
+                    <div class="role-grid">
+                        <label class="role-card <?= ($_POST['role'] ?? '') === 'student' ? 'selected' : '' ?>">
+                            <input type="radio" name="role" value="student" <?= ($_POST['role'] ?? '') === 'student' ? 'checked' : '' ?> required>
+                            <div class="role-icon blue"><i class="fa-solid fa-user-graduate"></i></div>
+                            <div class="role-name">Sinh viên</div>
+                            <div class="role-desc">Đăng ký &amp; theo dõi đề tài</div>
+                        </label>
+                        <label class="role-card <?= ($_POST['role'] ?? '') === 'lecturer' ? 'selected' : '' ?>">
+                            <input type="radio" name="role" value="lecturer" <?= ($_POST['role'] ?? '') === 'lecturer' ? 'checked' : '' ?>>
+                            <div class="role-icon indigo"><i class="fa-solid fa-chalkboard-user"></i></div>
+                            <div class="role-name">Giảng viên</div>
+                            <div class="role-desc">Hướng dẫn &amp; chấm điểm</div>
+                        </label>
                     </div>
                 </div>
 
@@ -321,6 +368,44 @@ function togglePw(id, btn) {
         input.type = 'password';
         icon.className = 'fa-regular fa-eye';
     }
+}
+
+function updateRoleFields(role) {
+    const studentFields  = document.getElementById('field-student');
+    const lecturerFields = document.getElementById('field-lecturer');
+    const phoneStudent   = document.getElementById('phone_student');
+    const phoneLecturer  = document.getElementById('phone_lecturer');
+
+    if (role === 'student') {
+        studentFields.style.display  = '';
+        lecturerFields.style.display = 'none';
+        // disable input lecturer để không submit trùng name="phone"
+        phoneLecturer.disabled = true;
+        phoneStudent.disabled  = false;
+    } else if (role === 'lecturer') {
+        studentFields.style.display  = 'none';
+        lecturerFields.style.display = '';
+        phoneStudent.disabled  = true;
+        phoneLecturer.disabled = false;
+    }
+}
+
+// Role card highlight + toggle fields
+document.querySelectorAll('.role-card input[type="radio"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+        document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+        if (radio.checked) {
+            radio.closest('.role-card').classList.add('selected');
+            updateRoleFields(radio.value);
+        }
+    });
+});
+
+// Khởi tạo khi page load (trường hợp POST lại có giá trị sẵn)
+const checkedRole = document.querySelector('.role-card input[type="radio"]:checked');
+if (checkedRole) {
+    checkedRole.closest('.role-card').classList.add('selected');
+    updateRoleFields(checkedRole.value);
 }
 </script>
 </body>
