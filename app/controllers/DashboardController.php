@@ -22,6 +22,7 @@ class DashboardController {
         $studentModel    = new Student();
         $lecturerModel   = new Lecturer();
         $submissionModel = new Submission();
+        $db = Database::getInstance()->getConnection();
 
         $allTopics        = $topicModel->getAll();
         $allSubmissions   = $submissionModel->getAll();
@@ -44,8 +45,26 @@ class DashboardController {
             }
         }
 
-        $recentTopics = array_slice($allTopics, 0, 5);
+        $recentTopics      = array_slice($allTopics, 0, 5);
         $recentSubmissions = array_slice($allSubmissions, 0, 5);
+
+        // Submissions by month (last 6 months)
+        $stmt = $db->query("
+            SELECT DATE_FORMAT(submitted_at,'%Y-%m') AS ym, COUNT(*) AS cnt
+            FROM submissions
+            WHERE submitted_at >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
+            GROUP BY ym ORDER BY ym ASC
+        ");
+        $submissionsByMonth = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
+
+        // Topics created by month (last 6 months)
+        $stmt2 = $db->query("
+            SELECT DATE_FORMAT(created_at,'%Y-%m') AS ym, COUNT(*) AS cnt
+            FROM topics
+            WHERE created_at >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
+            GROUP BY ym ORDER BY ym ASC
+        ");
+        $topicsByMonth = $stmt2 ? $stmt2->fetchAll(PDO::FETCH_ASSOC) : [];
 
         require '../app/views/dashboard/admin_dashboard.php';
     }
@@ -90,6 +109,23 @@ class DashboardController {
         $pendingReviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $totalPendingReviews = count($pendingReviews);
 
+        // Scores given by this lecturer by month (last 6 months)
+        $db2 = Database::getInstance()->getConnection();
+        $stmtSc = $db2->prepare("
+            SELECT DATE_FORMAT(es.created_at,'%Y-%m') AS ym,
+                   ROUND(AVG(es.score),1) AS avg_score,
+                   COUNT(*) AS cnt
+            FROM evaluation_scores es
+            JOIN submissions s ON es.submission_id = s.id
+            JOIN topics t ON s.topic_id = t.id
+            JOIN topic_assignments ta ON t.id = ta.topic_id
+            WHERE ta.lecturer_id = ?
+              AND es.created_at >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
+            GROUP BY ym ORDER BY ym ASC
+        ");
+        $stmtSc->execute([$lecturerId]);
+        $scoresByMonth = $stmtSc->fetchAll(PDO::FETCH_ASSOC);
+
         require '../app/views/dashboard/lecturer_dashboard.php';
     }
 
@@ -126,6 +162,37 @@ class DashboardController {
         ");
         $stmt->execute();
         $upcomingMilestones = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Submissions by month for this student (last 6 months)
+        $stmt = $db->prepare("
+            SELECT DATE_FORMAT(submitted_at,'%Y-%m') AS ym, COUNT(*) AS cnt
+            FROM submissions
+            WHERE student_id = ? AND submitted_at >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
+            GROUP BY ym ORDER BY ym ASC
+        ");
+        $stmt->execute([$studentId]);
+        $submissionsByMonth = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Topic status counts for donut chart
+        $topicStatusData = [
+            'draft'    => 0,
+            'pending'  => 0,
+            'approved' => 0,
+            'rejected' => 0,
+        ];
+        $stmtTs = $db->prepare("
+            SELECT t.status, COUNT(*) as cnt
+            FROM topics t
+            JOIN topic_registrations tr ON t.id = tr.topic_id
+            WHERE tr.student_id = ?
+            GROUP BY t.status
+        ");
+        $stmtTs->execute([$studentId]);
+        foreach ($stmtTs->fetchAll(PDO::FETCH_ASSOC) as $row) {
+            if (isset($topicStatusData[$row['status']])) {
+                $topicStatusData[$row['status']] = (int)$row['cnt'];
+            }
+        }
 
         $this->sendDeadlineReminders($userId, $upcomingMilestones);
 

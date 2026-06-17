@@ -6,13 +6,13 @@
 <div class="main-content" style="padding: 40px; background-color: #f4f7fe; min-height: 100vh;">
     <div class="mb-4">
         <a href="index.php?page=topics" class="text-decoration-none text-muted small">
-            <i class="fa-solid fa-arrow-left me-1"></i> Trá»Ÿ vá» danh sÃ¡ch
+            <i class="fa-solid fa-arrow-left me-1"></i> Trở về danh sách
         </a>
         <h2 class="fw-bold mt-2">
-            <?= $role === 'admin' ? 'ThÃªm Äá» TÃ i Má»›i' : 'Táº¡o & ÄÄƒng KÃ½ Äá» TÃ i' ?>
+            <?= $role === 'admin' ? 'Thêm Đề Tài Mới' : 'Tạo & Đăng Ký Đề Tài' ?>
         </h2>
         <?php if ($role === 'student'): ?>
-            <p class="text-muted small">MÃ´ táº£ Ä‘á» tÃ i báº¡n muá»‘n thá»±c hiá»‡n vÃ  chá»n giáº£ng viÃªn hÆ°á»›ng dáº«n mong muá»‘n.</p>
+            <p class="text-muted small">Mô tả đề tài bạn muốn thực hiện và chọn giảng viên hướng dẫn mong muốn.</p>
         <?php endif; ?>
     </div>
 
@@ -27,19 +27,19 @@
     <div class="card border-0 shadow-sm p-4" style="border-radius: 20px; max-width: 800px;">
         <form action="index.php?page=topic-store" method="POST"> <?= csrfField() ?>
 
-            <!-- TiÃªu Ä‘á» -->
+            <!-- Tiêu đề -->
             <div class="mb-3">
-                <label class="fw-bold small text-muted">TIÃŠU Äá»€ Äá»€ TÃ€I <span class="text-danger">*</span></label>
+                <label class="fw-bold small text-muted">TIÊU ĐỀ ĐỀ TÀI <span class="text-danger">*</span></label>
                 <input type="text" name="title" class="form-control rounded-pill px-3"
-                       placeholder="Nháº­p tÃªn Ä‘á» tÃ i..." required>
+                       placeholder="Nhập tên đề tài..." required>
             </div>
 
             <div class="row mb-3">
-                <!-- Há»c ká»³ -->
+                <!-- Học kỳ -->
                 <div class="col-md-<?= $role === 'admin' ? '6' : '12' ?>">
-                    <label class="fw-bold small text-muted">Há»ŒC Ká»² <span class="text-danger">*</span></label>
+                    <label class="fw-bold small text-muted">HỌC KỲ <span class="text-danger">*</span></label>
                     <select name="semester_id" class="form-select rounded-pill px-3" required>
-                        <option value="">-- Chá»n há»c ká»³ --</option>
+                        <option value="">-- Chọn học kỳ --</option>
                         <?php foreach ($semesters as $s): ?>
                             <option value="<?= $s['id'] ?>"><?= htmlspecialchars($s['name']) ?></option>
                         <?php endforeach; ?>
@@ -47,23 +47,23 @@
                 </div>
 
                 <?php if ($role === 'admin'): ?>
-                <!-- Tráº¡ng thÃ¡i (admin only) -->
+                <!-- Trạng thái (admin only) -->
                 <div class="col-md-6">
-                    <label class="fw-bold small text-muted">TRáº NG THÃI</label>
+                    <label class="fw-bold small text-muted">TRẠNG THÁI</label>
                     <select name="status" class="form-select rounded-pill px-3">
-                        <option value="pending">Chá» duyá»‡t</option>
-                        <option value="approved">ÄÃ£ duyá»‡t</option>
+                        <option value="pending">Chờ duyệt</option>
+                        <option value="approved">Đã duyệt</option>
                     </select>
                 </div>
                 <?php endif; ?>
             </div>
 
             <?php if ($role === 'student'): ?>
-            <!-- Giáº£ng viÃªn mong muá»‘n (student only) -->
+            <!-- Giảng viên mong muốn (student only) -->
             <div class="mb-3">
-                <label class="fw-bold small text-muted">GIáº¢NG VIÃŠN HÆ¯á»šNG DáºªN MONG MUá»N</label>
+                <label class="fw-bold small text-muted">GIẢNG VIÊN HƯỚNG DẪN MONG MUỐN</label>
                 <select name="desired_lecturer_id" class="form-select rounded-pill px-3">
-                    <option value="">-- KhÃ´ng chá»‰ Ä‘á»‹nh --</option>
+                    <option value="">-- Không chỉ định --</option>
                     <?php foreach ($lecturers as $l): ?>
                         <option value="<?= $l['id'] ?>"><?= htmlspecialchars($l['full_name']) ?></option>
                     <?php endforeach; ?>
@@ -73,24 +73,24 @@
 
             <!-- Keywords -->
             <div class="mb-3">
-                <label class="fw-bold small text-muted">Tá»ª KHÃ“A</label>
+                <label class="fw-bold small text-muted">TỪ KHÓA</label>
                 <input type="text" name="keywords" class="form-control rounded-pill px-3"
                        placeholder="AI, Machine Learning, Web...">
             </div>
 
-            <!-- MÃ´ táº£ -->
+            <!-- Mô tả -->
             <div class="mb-4">
-                <label class="fw-bold small text-muted">MÃ” Táº¢</label>
+                <label class="fw-bold small text-muted">MÔ TẢ</label>
                 <textarea name="description" class="form-control" rows="4"
                           style="border-radius: 15px;"
-                          placeholder="MÃ´ táº£ chi tiáº¿t vá» Ä‘á» tÃ i..."></textarea>
+                          placeholder="Mô tả chi tiết về đề tài..."></textarea>
             </div>
 
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-primary rounded-pill px-5 fw-bold shadow-sm">
-                    <?= $role === 'admin' ? 'LÆ°u Äá» TÃ i' : 'Gá»­i ÄÄƒng KÃ½' ?>
+                    <?= $role === 'admin' ? 'Lưu Đề Tài' : 'Gửi Đăng Ký' ?>
                 </button>
-                <a href="index.php?page=topics" class="btn btn-light rounded-pill px-4">Há»§y</a>
+                <a href="index.php?page=topics" class="btn btn-light rounded-pill px-4">Hủy</a>
             </div>
         </form>
     </div>

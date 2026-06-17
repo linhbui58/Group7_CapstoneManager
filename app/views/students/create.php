@@ -4,10 +4,10 @@
 <div class="main-content" style="padding:32px; background:#f4f7fe; min-height:100vh;">
     <div class="mb-4">
         <a href="index.php?page=students" class="text-decoration-none text-muted small fw-bold">
-            <i class="fa-solid fa-arrow-left me-1"></i> QUAY Láº I
+            <i class="fa-solid fa-arrow-left me-1"></i> QUAY LẠI
         </a>
-        <h2 class="fw-bold mt-2" style="color:#0f172a">ThÃªm sinh viÃªn má»›i</h2>
-        <p class="text-muted small mt-1">Táº¡o tÃ i khoáº£n vÃ  há»“ sÆ¡ sinh viÃªn cÃ¹ng lÃºc</p>
+        <h2 class="fw-bold mt-2" style="color:#0f172a">Thêm sinh viên mới</h2>
+        <p class="text-muted small mt-1">Tạo tài khoản và hồ sơ sinh viên cùng lúc</p>
     </div>
 
     <?php if (isset($_SESSION['error'])): ?>
@@ -22,13 +22,13 @@
         <form method="POST" action="index.php?page=student-store"> <?= csrfField() ?>
 
             <div class="mb-3">
-                <label class="fw-bold small text-muted">Há»Œ VÃ€ TÃŠN <span class="text-danger">*</span></label>
+                <label class="fw-bold small text-muted">HỌ VÀ TÊN <span class="text-danger">*</span></label>
                 <input type="text" name="full_name" class="form-control rounded-pill px-3"
-                       placeholder="Nguyá»…n VÄƒn A" required>
+                       placeholder="Nguyễn Văn A" required>
             </div>
 
             <div class="mb-3">
-                <label class="fw-bold small text-muted">MÃƒ SINH VIÃŠN <span class="text-danger">*</span></label>
+                <label class="fw-bold small text-muted">MÃ SINH VIÊN <span class="text-danger">*</span></label>
                 <input type="text" name="student_code" class="form-control rounded-pill px-3"
                        placeholder="SV001" required>
             </div>
@@ -40,13 +40,13 @@
             </div>
 
             <div class="mb-3">
-                <label class="fw-bold small text-muted">Máº¬T KHáº¨U <span class="text-danger">*</span></label>
+                <label class="fw-bold small text-muted">MẬT KHẨU <span class="text-danger">*</span></label>
                 <input type="password" name="password" class="form-control rounded-pill px-3"
-                       placeholder="Tá»‘i thiá»ƒu 6 kÃ½ tá»±" required>
+                       placeholder="Tối thiểu 6 ký tự" required>
             </div>
 
             <div class="mb-4">
-                <label class="fw-bold small text-muted">Sá» ÄIá»†N THOáº I</label>
+                <label class="fw-bold small text-muted">SỐ ĐIỆN THOẠI</label>
                 <input type="text" name="phone" class="form-control rounded-pill px-3"
                        placeholder="0901234567">
             </div>
@@ -54,9 +54,9 @@
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-primary rounded-pill px-5 fw-bold shadow-sm"
                         style="background:linear-gradient(135deg,#6366f1,#4f46e5);border:none">
-                    <i class="fa-solid fa-user-plus me-2"></i>Táº¡o sinh viÃªn
+                    <i class="fa-solid fa-user-plus me-2"></i>Tạo sinh viên
                 </button>
-                <a href="index.php?page=students" class="btn btn-light rounded-pill px-4">Há»§y</a>
+                <a href="index.php?page=students" class="btn btn-light rounded-pill px-4">Hủy</a>
             </div>
         </form>
     </div>

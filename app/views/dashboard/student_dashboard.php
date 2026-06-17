@@ -2,96 +2,137 @@
 <?php require '../app/views/layouts/sidebar.php'; ?>
 
 <div class="main-content">
-    <div class="page-header">
-        <div>
-            <h2>Student Dashboard</h2>
-            <p class="text-muted small mb-0 mt-1">Welcome back, <?= htmlspecialchars($student['full_name'] ?? 'Student') ?></p>
+
+    <!-- ══ HERO BANNER ══ -->
+    <div class="dash-hero">
+        <div class="dash-hero-left">
+            <?php
+                $hour   = (int)date('H');
+                $greet  = $hour < 12 ? 'Chào buổi sáng' : ($hour < 18 ? 'Chào buổi chiều' : 'Chào buổi tối');
+                $uname  = htmlspecialchars($student['full_name'] ?? explode('@', ($_SESSION['user']['email'] ?? ''))[0]);
+            ?>
+            <div class="dash-greeting"><?= $greet ?> 👋</div>
+            <div class="dash-username"><?= $uname ?></div>
+            <div class="dash-meta">
+                <?= date('l, d/m/Y') ?> &nbsp;·&nbsp;
+                <span>Sinh viên</span>
+            </div>
         </div>
-        <div class="quick-actions d-flex gap-2">
-            <a href="index.php?page=submission-create" class="btn btn-primary">
-                <i class="fa-solid fa-paper-plane"></i> Submit Work
+        <div class="dash-hero-right">
+            <a href="index.php?page=topic-create" class="btn-hero btn-hero-primary">
+                <i class="fa-solid fa-book-open"></i> Đề tài
+            </a>
+            <a href="index.php?page=submission-create" class="btn-hero btn-hero-accent">
+                <i class="fa-solid fa-upload"></i> Bài nộp
             </a>
         </div>
     </div>
 
-    <div class="stats-grid-dashboard mb-4" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
-        <div class="stat-card">
-            <div class="stat-icon" style="background: var(--info-light); color: var(--info);">
-                <i class="fa-solid fa-book-open"></i>
-            </div>
-            <div class="stat-info">
-                <h5 class="text-muted small fw-bold mb-1" style="text-transform: uppercase; letter-spacing: 0.5px;">Registered Topic</h5>
-                <h2 class="fw-bold mb-0 text-truncate" style="font-size: 20px; max-width: 200px;" title="<?= htmlspecialchars($registeredTopic['title'] ?? 'None') ?>">
-                    <?= $registeredTopic ? htmlspecialchars($registeredTopic['title']) : 'None' ?>
-                </h2>
-            </div>
-        </div>
+    <!-- ══ KPI GRID ══ -->
+    <?php
+        $pct      = $progress['progress_percentage'] ?? 0;
+        $avgScore = number_format($progress['average_score'] ?? 0, 1);
+        $totalMs  = $progress['total_milestones']    ?? 0;
+        $doneMs   = $progress['total_submissions']   ?? 0;
+    ?>
+    <div class="kpi-grid" style="grid-template-columns: repeat(3,1fr)">
 
-        <div class="stat-card">
-            <div class="stat-icon" style="background: var(--success-light); color: var(--success);">
-                <i class="fa-solid fa-bars-progress"></i>
-            </div>
-            <div class="stat-info">
-                <h5 class="text-muted small fw-bold mb-1" style="text-transform: uppercase; letter-spacing: 0.5px;">Progress</h5>
-                <div class="d-flex align-items-center gap-2">
-                    <div class="progress flex-grow-1" style="height: 10px;">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: <?= $progress['progress_percentage'] ?>%;" aria-valuenow="<?= $progress['progress_percentage'] ?>" aria-valuemin="0" aria-valuemax="100"></div>
+        <!-- Đề tài đã đăng ký -->
+        <div class="kpi-card blue" style="grid-column: span 1; flex-direction: column; gap: 12px; align-items: flex-start;">
+            <div style="display:flex; align-items:center; gap:14px; width:100%">
+                <div class="kpi-icon"><i class="fa-solid fa-book-open"></i></div>
+                <div class="kpi-body">
+                    <div class="kpi-label">Đề tài đăng ký</div>
+                    <div style="font-size:15px; font-weight:700; color:#0f172a; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:180px;"
+                         title="<?= htmlspecialchars($registeredTopic['title'] ?? 'Chưa đăng ký') ?>">
+                        <?= $registeredTopic ? htmlspecialchars($registeredTopic['title']) : '<span style="color:#94a3b8">Chưa đăng ký</span>' ?>
                     </div>
-                    <span class="fw-bold"><?= $progress['progress_percentage'] ?>%</span>
                 </div>
-                <small class="text-muted"><?= $progress['total_submissions'] ?> / <?= $progress['total_milestones'] ?> Milestones</small>
             </div>
         </div>
 
-        <div class="stat-card">
-            <div class="stat-icon" style="background: var(--warning-light); color: var(--warning);">
-                <i class="fa-solid fa-star"></i>
+        <!-- Tiến độ -->
+        <div class="kpi-card green">
+            <div class="kpi-icon"><i class="fa-solid fa-bars-progress"></i></div>
+            <div class="kpi-body">
+                <div class="kpi-label">Tiến độ</div>
+                <div class="kpi-value"><?= $pct ?>%</div>
+                <div style="margin-top:8px">
+                    <div class="workload-bar">
+                        <div class="workload-bar-fill <?= $pct >= 80 ? 'workload-ok' : ($pct >= 40 ? 'workload-warn' : 'workload-full') ?>"
+                             style="width:<?= $pct ?>%"></div>
+                    </div>
+                    <div class="kpi-sub"><?= $doneMs ?> / <?= $totalMs ?> Milestones</div>
+                </div>
             </div>
-            <div class="stat-info">
-                <h5 class="text-muted small fw-bold mb-1" style="text-transform: uppercase; letter-spacing: 0.5px;">Average Score</h5>
-                <h2 class="fw-bold mb-0" style="font-size: 28px;"><?= number_format($progress['average_score'], 1) ?></h2>
+        </div>
+
+        <!-- Điểm trung bình -->
+        <div class="kpi-card amber">
+            <div class="kpi-icon"><i class="fa-solid fa-star"></i></div>
+            <div class="kpi-body">
+                <div class="kpi-label">Điểm trung bình</div>
+                <div class="kpi-value"><?= $avgScore ?></div>
+                <div class="kpi-sub">
+                    <span class="kpi-badge <?= (float)$avgScore >= 7 ? 'up' : ((float)$avgScore >= 5 ? 'neu' : 'down') ?>">
+                        <i class="fa-solid fa-<?= (float)$avgScore >= 7 ? 'arrow-up' : ((float)$avgScore >= 5 ? 'minus' : 'arrow-down') ?>"></i>
+                        <?= (float)$avgScore >= 7 ? 'Tốt' : ((float)$avgScore >= 5 ? 'Trung bình' : 'Cần cải thiện') ?>
+                    </span>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="dashboard-box">
-        <div class="box-header mb-4 d-flex align-items-center justify-content-between">
-            <h4 class="fw-bold m-0" style="font-size: 18px;"><i class="fa-solid fa-clock me-2 text-danger"></i>Upcoming Milestones</h4>
-            <a href="index.php?page=milestones" class="btn btn-light btn-sm px-3 fw-bold">View All</a>
+    <!-- ══ MILESTONES TABLE ══ -->
+    <div class="dash-box">
+        <div class="dash-box-header">
+            <div class="dash-box-title">
+                <span class="title-dot" style="background:#f43f5e"></span>
+                <i class="fa-solid fa-clock" style="color:#f43f5e;font-size:14px"></i>
+                Milestone sắp đến hạn
+            </div>
+            <a href="index.php?page=milestones" class="btn btn-light btn-sm">Xem tất cả</a>
         </div>
         <div class="table-responsive">
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Title</th>
+                        <th>Milestone</th>
                         <th>Deadline</th>
-                        <th>Status</th>
+                        <th>Còn lại</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if(!empty($upcomingMilestones)): ?>
                         <?php foreach($upcomingMilestones as $ms): ?>
+                            <?php
+                                $diff = strtotime($ms['deadline']) - time();
+                                $days = max(0, floor($diff / 86400));
+                                $cls  = $days < 3 ? 'urgent' : ($days < 7 ? 'warning' : 'ok');
+                                $ico  = $days < 3 ? 'circle-exclamation' : ($days < 7 ? 'triangle-exclamation' : 'circle-check');
+                            ?>
                             <tr>
                                 <td class="fw-semibold text-uppercase"><?= htmlspecialchars($ms['title']) ?></td>
-                                <td><?= date('Y-m-d H:i', strtotime($ms['deadline'])) ?></td>
+                                <td><?= date('d/m/Y H:i', strtotime($ms['deadline'])) ?></td>
                                 <td>
-                                    <?php
-                                        $diff = strtotime($ms['deadline']) - time();
-                                        $days = floor($diff / (60 * 60 * 24));
-                                    ?>
-                                    <span class="badge badge-<?= $days < 3 ? 'danger' : 'warning' ?>">
-                                        In <?= $days ?> days
+                                    <span class="deadline-badge <?= $cls ?>">
+                                        <i class="fa-solid fa-<?= $ico ?>"></i>
+                                        <?= $days ?> ngày
                                     </span>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <tr><td colspan="3" class="text-center text-muted">No upcoming milestones.</td></tr>
+                        <tr><td colspan="3" class="text-center text-muted py-4">
+                            <i class="fa-regular fa-calendar-check fa-lg mb-2 d-block text-success"></i>
+                            Không có milestone sắp đến hạn
+                        </td></tr>
                     <?php endif; ?>
                 </tbody>
             </table>
         </div>
     </div>
+
 </div>
 
 <?php require '../app/views/layouts/footer.php'; ?>

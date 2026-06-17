@@ -14,10 +14,10 @@
 <div class="main-content" style="padding:32px; background:#f4f7fe; min-height:100vh;">
     <div class="mb-4">
         <a href="index.php?page=submissions" class="text-decoration-none text-muted small fw-bold">
-            <i class="fa-solid fa-arrow-left me-1"></i> QUAY Láº I DANH SÃCH
+            <i class="fa-solid fa-arrow-left me-1"></i> QUAY LẠI DANH SÁCH
         </a>
-        <h2 class="fw-bold mt-2 mb-0" style="color:#0f172a">Ná»™p BÃ i Milestone</h2>
-        <p class="text-muted small mt-1">Táº£i lÃªn bÃ¡o cÃ¡o / tÃ i liá»‡u cho cá»™t má»‘c Ä‘á»“ Ã¡n cá»§a báº¡n</p>
+        <h2 class="fw-bold mt-2 mb-0" style="color:#0f172a">Nộp Bài Milestone</h2>
+        <p class="text-muted small mt-1">Tải lên báo cáo / tài liệu cho cột mốc đề án của bạn</p>
     </div>
 
     <?php if (isset($_SESSION['error'])): ?>
@@ -33,35 +33,35 @@
             <div class="glass-card p-5">
                 <form method="POST" action="index.php?page=submission-store" enctype="multipart/form-data"> <?= csrfField() ?>
 
-                    <!-- STEP 1: Chá»n Ä‘á» tÃ i -->
+                    <!-- STEP 1: Chọn đề tài -->
                     <div class="mb-4">
                         <div class="d-flex align-items-center gap-2 mb-3">
                             <span class="step-badge">1</span>
-                            <span class="fw-bold" style="color:#1e293b">Chá»n Ä‘á» tÃ i</span>
+                            <span class="fw-bold" style="color:#1e293b">Chọn đề tài</span>
                         </div>
-                        <label class="form-label-custom">Äá» tÃ i cá»§a báº¡n</label>
+                        <label class="form-label-custom">Đề tài của bạn</label>
                         <select name="topic_id" class="form-select" style="height:50px;border-radius:14px;border:1.5px solid #e2e8f0" required>
-                            <option value="">â€” Chá»n Ä‘á» tÃ i â€”</option>
+                            <option value="">— Chọn đề tài —</option>
                             <?php foreach ($topics as $tp): ?>
                                 <option value="<?= $tp['id'] ?>"><?= htmlspecialchars($tp['title']) ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
 
-                    <!-- STEP 2: Chá»n milestone -->
+                    <!-- STEP 2: Chọn milestone -->
                     <div class="mb-4">
                         <div class="d-flex align-items-center gap-2 mb-3">
                             <span class="step-badge">2</span>
-                            <span class="fw-bold" style="color:#1e293b">Chá»n cá»™t má»‘c Ä‘Ã¡nh giÃ¡</span>
+                            <span class="fw-bold" style="color:#1e293b">Chọn cột mốc đánh giá</span>
                         </div>
                         <label class="form-label-custom">Milestone</label>
                         <select name="milestone_id" class="form-select" style="height:50px;border-radius:14px;border:1.5px solid #e2e8f0" required>
-                            <option value="">â€” Chá»n cá»™t má»‘c â€”</option>
+                            <option value="">— Chọn cột mốc —</option>
                             <?php foreach ($milestones as $m): ?>
                                 <option value="<?= $m['id'] ?>">
                                     <?= htmlspecialchars(ucfirst($m['title'])) ?>
-                                    <?php if (!empty($m['semester_name'])): ?>â€” <?= htmlspecialchars($m['semester_name']) ?><?php endif; ?>
-                                    <?php if (!empty($m['deadline'])): ?>(Háº¡n: <?= date('d/m/Y', strtotime($m['deadline'])) ?>)<?php endif; ?>
+                                    <?php if (!empty($m['semester_name'])): ?>— <?= htmlspecialchars($m['semester_name']) ?><?php endif; ?>
+                                    <?php if (!empty($m['deadline'])): ?>(Hạn: <?= date('d/m/Y', strtotime($m['deadline'])) ?>)<?php endif; ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
@@ -73,21 +73,21 @@
                     <div class="mb-5">
                         <div class="d-flex align-items-center gap-2 mb-3">
                             <span class="step-badge">3</span>
-                            <span class="fw-bold" style="color:#1e293b">Táº£i lÃªn tÃ i liá»‡u</span>
+                            <span class="fw-bold" style="color:#1e293b">Tải lên tài liệu</span>
                         </div>
-                        <label class="form-label-custom">File bÃ¡o cÃ¡o (PDF, DOC, DOCX)</label>
+                        <label class="form-label-custom">File báo cáo (PDF, DOC, DOCX)</label>
                         <div class="file-drop-zone" id="dropZone">
                             <input type="file" name="report_file" id="fileInput" accept=".pdf,.doc,.docx" required>
                             <i class="fa-solid fa-cloud-arrow-up fa-2x mb-3 d-block" style="color:#a5b4fc"></i>
-                            <p class="fw-bold mb-1" style="color:#4f46e5">KÃ©o tháº£ file vÃ o Ä‘Ã¢y</p>
-                            <p class="text-muted small mb-0">hoáº·c <span style="color:#6366f1;text-decoration:underline">báº¥m Ä‘á»ƒ chá»n file</span></p>
-                            <p class="text-muted" style="font-size:11px;margin-top:8px">PDF, DOC, DOCX â€” tá»‘i Ä‘a 10MB</p>
+                            <p class="fw-bold mb-1" style="color:#4f46e5">Kéo thả file vào đây</p>
+                            <p class="text-muted small mb-0">hoặc <span style="color:#6366f1;text-decoration:underline">bấm để chọn file</span></p>
+                            <p class="text-muted" style="font-size:11px;margin-top:8px">PDF, DOC, DOCX — tối đa 10MB</p>
                         </div>
                         <div class="file-preview" id="filePreview">
                             <i class="fa-solid fa-file-circle-check fa-lg text-success"></i>
                             <div>
-                                <div class="fw-bold small text-success" id="fileName">â€”</div>
-                                <div class="text-muted" style="font-size:11px" id="fileSize">â€”</div>
+                                <div class="fw-bold small text-success" id="fileName">—</div>
+                                <div class="text-muted" style="font-size:11px" id="fileSize">—</div>
                             </div>
                             <button type="button" class="btn btn-sm ms-auto text-danger p-0" id="clearFile">
                                 <i class="fa-solid fa-xmark"></i>
@@ -98,9 +98,9 @@
                     <div class="d-flex gap-3">
                         <button type="submit" class="btn rounded-pill px-5 py-2 fw-bold flex-grow-1 text-white shadow-sm"
                                 style="background:linear-gradient(135deg,#6366f1,#4f46e5);border:none;font-size:15px">
-                            <i class="fa-solid fa-paper-plane me-2"></i>Ná»™p bÃ i
+                            <i class="fa-solid fa-paper-plane me-2"></i>Nộp bài
                         </button>
-                        <a href="index.php?page=submissions" class="btn btn-light rounded-pill px-4 py-2 fw-bold">Há»§y</a>
+                        <a href="index.php?page=submissions" class="btn btn-light rounded-pill px-4 py-2 fw-bold">Hủy</a>
                     </div>
                 </form>
             </div>
@@ -109,11 +109,11 @@
                 <div class="d-flex gap-3">
                     <i class="fa-solid fa-lightbulb text-warning mt-1"></i>
                     <div>
-                        <p class="fw-bold small mb-1" style="color:#92400e">LÆ°u Ã½ khi ná»™p bÃ i</p>
+                        <p class="fw-bold small mb-1" style="color:#92400e">Lưu ý khi nộp bài</p>
                         <ul class="text-muted small mb-0 ps-3">
-                            <li>File pháº£i Ä‘Ãºng Ä‘á»‹nh dáº¡ng PDF, DOC hoáº·c DOCX, tá»‘i Ä‘a 10MB.</li>
-                            <li>Äáº£m báº£o ná»™p trÆ°á»›c thá»i háº¡n cá»§a cá»™t má»‘c.</li>
-                            <li>Náº¿u cáº§n ná»™p láº¡i, liÃªn há»‡ giáº£ng viÃªn hÆ°á»›ng dáº«n.</li>
+                            <li>File phải đúng định dạng PDF, DOC hoặc DOCX, tối đa 10MB.</li>
+                            <li>Đảm bảo nộp trước thời hạn của cột mốc.</li>
+                            <li>Nếu cần nộp lại, liên hệ giảng viên hướng dẫn.</li>
                         </ul>
                     </div>
                 </div>
@@ -123,12 +123,12 @@
 </div>
 
 <script>
-const fileInput = document.getElementById('fileInput');
-const dropZone  = document.getElementById('dropZone');
+const fileInput  = document.getElementById('fileInput');
+const dropZone   = document.getElementById('dropZone');
 const filePreview = document.getElementById('filePreview');
-const fileName  = document.getElementById('fileName');
-const fileSize  = document.getElementById('fileSize');
-const clearFile = document.getElementById('clearFile');
+const fileName   = document.getElementById('fileName');
+const fileSize   = document.getElementById('fileSize');
+const clearFile  = document.getElementById('clearFile');
 
 function showPreview(file) {
     fileName.textContent = file.name;
