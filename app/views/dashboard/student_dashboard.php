@@ -13,7 +13,14 @@
             ?>
             <div class="dash-greeting"><?= $greet ?> 👋</div>
             <div class="dash-username"><?= $uname ?></div>
-            <div class="dash-meta">
+            <div class="dash-meta" style="margin-top: 4px; font-size: 15px; color: #cbd5e1; font-weight: 500; letter-spacing: 0.5px;">
+                <i class="fa-solid fa-id-card me-1"></i> <?= htmlspecialchars($student['student_code'] ?? 'Chưa cập nhật') ?>
+            </div>
+            <div class="dash-meta" style="margin-top: 8px;">
+                <i class="fa-solid fa-graduation-cap me-1"></i> Khoa/Viện: <?= htmlspecialchars($student['faculty'] ?: 'Chưa cập nhật') ?> &nbsp;·&nbsp;
+                <i class="fa-solid fa-phone me-1"></i> <?= htmlspecialchars($student['phone'] ?: 'Chưa cập nhật') ?>
+            </div>
+            <div class="dash-meta" style="margin-top: 8px;">
                 <?= date('l, d/m/Y') ?> &nbsp;·&nbsp;
                 <span>Sinh viên</span>
             </div>

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 class AssignmentController {
     private $assignmentModel;
     private $topicModel;
@@ -17,7 +17,7 @@ class AssignmentController {
     }
 
     public function create() {
-        $topics = $this->topicModel->getAll();
+        $topics = $this->topicModel->getTopicsWithStudentFaculty();
         $lecturers = $this->lecturerModel->getAll();
         require '../app/views/assignments/create.php';
     }
@@ -46,7 +46,7 @@ class AssignmentController {
         if (!$id) abort(404);
         $assignment = $this->assignmentModel->find($id);
         if (!$assignment) abort(404);
-        $topics = $this->topicModel->getAll();
+        $topics = $this->topicModel->getTopicsWithStudentFaculty();
         $lecturers = $this->lecturerModel->getAll();
         require '../app/views/assignments/edit.php';
     }

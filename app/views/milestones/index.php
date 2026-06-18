@@ -8,15 +8,18 @@
     .badge-status { padding: 8px 16px; border-radius: 50px; font-size: 11px; font-weight: 700; }
 </style>
 
+<?php $isAdmin = ($_SESSION['user']['role'] ?? '') === 'admin'; ?>
 <div class="milestone-container main-content">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h2 class="fw-bold m-0" style="color: #1e293b; letter-spacing: -1px;">Quản Lý Lộ Trình</h2>
             <p class="text-muted small mb-0">Thiết lập các giai đoạn nộp bài và thời hạn khóa hệ thống.</p>
         </div>
+        <?php if($isAdmin): ?>
         <a href="index.php?page=milestone-create" class="btn btn-primary rounded-pill px-4 shadow-sm fw-bold">
             <i class="fa-solid fa-calendar-plus me-2"></i> Thiết lập Cột mốc
         </a>
+        <?php endif; ?>
     </div>
 
     <div class="card card-custom">
@@ -28,7 +31,9 @@
                         <th>HỌC KỲ</th>
                         <th>HẠN CHÓT (DEADLINE)</th>
                         <th>TRẠNG THÁI</th>
+                        <?php if($isAdmin): ?>
                         <th class="text-end pe-3">THAO TÁC</th>
+                        <?php endif; ?>
                     </tr>
                 </thead>
                 <tbody>
@@ -58,14 +63,16 @@
                                     <span class="badge-status bg-success bg-opacity-10 text-success border">ĐANG MỞ</span>
                                 <?php endif; ?>
                             </td>
+                            <?php if($isAdmin): ?>
                             <td class="text-end pe-3">
                                 <a href="index.php?page=milestone-edit&id=<?= $m['id'] ?>" class="btn btn-sm btn-outline-dark rounded-pill px-3">Sửa</a>
                                 <a href="index.php?page=milestone-delete&id=<?= $m['id'] ?>" class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="return confirm('Xóa?')">Xóa</a>
                             </td>
+                            <?php endif; ?>
                         </tr>
                     <?php endforeach; else: ?>
                         <tr>
-                            <td colspan="5" class="text-center py-5 text-muted">
+                            <td colspan="<?= $isAdmin ? '5' : '4' ?>" class="text-center py-5 text-muted">
                                 <i class="fa-solid fa-inbox d-block mb-2 fs-3"></i>
                                 Chưa có cột mốc nào được thiết lập.
                             </td>

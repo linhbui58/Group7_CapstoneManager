@@ -44,3 +44,50 @@
 </div>
 
 <?php require '../app/views/layouts/footer.php'; ?>
+
+<script>
+const topicFaculties = {
+    <?php foreach($topics as $t): ?>
+    "<?= $t['id'] ?>": "<?= htmlspecialchars($t['student_faculty'] ?? '') ?>",
+    <?php endforeach; ?>
+};
+
+const lecturers = [
+    <?php foreach($lecturers as $l): ?>
+    { id: "<?= $l['id'] ?>", name: "<?= htmlspecialchars($l['full_name']) ?>", faculty: "<?= htmlspecialchars($l['faculty'] ?? '') ?>" },
+    <?php endforeach; ?>
+];
+
+const topicSelect = document.querySelector('select[name="topic_id"]');
+const lecturerSelect = document.querySelector('select[name="lecturer_id"]');
+const currentLecturerId = "<?= $assignment['lecturer_id'] ?>";
+
+function filterLecturers() {
+    const topicId = topicSelect.value;
+    // Save currently selected lecturer to restore if possible
+    const selectedLecturer = lecturerSelect.value || currentLecturerId;
+    
+    lecturerSelect.innerHTML = '<option value="">-- Chọn giảng viên --</option>';
+    
+    if (!topicId) {
+        lecturers.forEach(l => {
+            const isSelected = (l.id == selectedLecturer) ? 'selected' : '';
+            lecturerSelect.innerHTML += `<option value="${l.id}" ${isSelected}>${l.name}</option>`;
+        });
+        return;
+    }
+    
+    const requiredFaculty = topicFaculties[topicId];
+    
+    lecturers.forEach(l => {
+        if (!requiredFaculty || l.faculty === requiredFaculty) {
+            const isSelected = (l.id == selectedLecturer) ? 'selected' : '';
+            lecturerSelect.innerHTML += `<option value="${l.id}" ${isSelected}>${l.name}</option>`;
+        }
+    });
+}
+
+topicSelect.addEventListener('change', filterLecturers);
+// Run once on load to filter based on initial topic
+filterLecturers();
+</script>

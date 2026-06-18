@@ -127,13 +127,13 @@
                 <li class="menu-group <?= in_array($currentPage, ['topic-management', 'topics', 'registrations']) ? 'open' : '' ?>">
                     <div class="menu-group-toggle">
                         <i class="fa fa-book"></i>
-                        <span>Đề tài của tôi</span>
+                        <span>Đề tài & Đăng ký</span>
                         <i class="fa fa-chevron-right toggle-icon"></i>
                     </div>
                     <ul class="submenu">
                         <li>
                             <a href="index.php?page=topic-management" class="<?= in_array($currentPage, ['topic-management', 'topics']) ? 'active' : '' ?>">
-                                <i class="fa fa-book-open"></i> <span>Danh sách đề tài</span>
+                                <i class="fa fa-book-open"></i> <span>Tất cả đề tài</span>
                             </a>
                         </li>
                         <li>

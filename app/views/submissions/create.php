@@ -1,4 +1,4 @@
-﻿<?php require '../app/views/layouts/header.php'; ?>
+<?php require '../app/views/layouts/header.php'; ?>
 <?php require '../app/views/layouts/sidebar.php'; ?>
 
 <style>
@@ -67,10 +67,8 @@
                         </select>
                     </div>
 
-                    <hr style="border-color:#f1f5f9; margin:28px 0">
-
                     <!-- STEP 3: Upload file -->
-                    <div class="mb-5">
+                    <div class="mb-4">
                         <div class="d-flex align-items-center gap-2 mb-3">
                             <span class="step-badge">3</span>
                             <span class="fw-bold" style="color:#1e293b">Tải lên tài liệu</span>

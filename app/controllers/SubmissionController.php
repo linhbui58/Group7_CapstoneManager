@@ -94,11 +94,7 @@ class SubmissionController {
             $topics = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
-        // Fallback: náº¿u chÆ°a cÃ³ approved registration, hiá»‡n táº¥t cáº£ topic approved
-        if (empty($topics)) {
-            $topicModel = new Topic();
-            $topics     = $topicModel->getAvailable();
-        }
+        // Xóa đoạn Fallback tải toàn bộ đề tài. Sinh viên chỉ được nộp bài cho đề tài đã duyệt của mình.
 
         require '../app/views/submissions/create.php';
     }

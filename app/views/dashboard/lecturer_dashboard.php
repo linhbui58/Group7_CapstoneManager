@@ -14,6 +14,10 @@
             <div class="dash-greeting"><?= $greet ?> 👋</div>
             <div class="dash-username"><?= $uname ?></div>
             <div class="dash-meta">
+                <i class="fa-solid fa-graduation-cap me-1"></i> Khoa/Viện: <?= htmlspecialchars($lecturer['faculty'] ?: 'Chưa cập nhật') ?> &nbsp;·&nbsp;
+                <i class="fa-solid fa-phone me-1"></i> <?= htmlspecialchars($lecturer['phone'] ?: 'Chưa cập nhật') ?>
+            </div>
+            <div class="dash-meta" style="margin-top: 8px;">
                 <?= date('l, d/m/Y') ?> &nbsp;·&nbsp;
                 <span>Giảng viên</span>
             </div>

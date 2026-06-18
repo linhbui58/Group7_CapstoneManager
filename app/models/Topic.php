@@ -147,4 +147,14 @@ class Topic {
         $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    // Lấy danh sách topic kèm theo khoa của sinh viên đăng ký (nếu có)
+    public function getTopicsWithStudentFaculty() {
+        $sql = "SELECT t.*, s.faculty as student_faculty
+                FROM topics t
+                LEFT JOIN topic_registrations tr ON t.id = tr.topic_id AND tr.status = 'approved'
+                LEFT JOIN students s ON tr.student_id = s.id
+                ORDER BY t.id DESC";
+        return $this->conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

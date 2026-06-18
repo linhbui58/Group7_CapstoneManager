@@ -11,6 +11,7 @@
 
     <div class="card border-0 shadow-sm p-5 mx-auto" style="border-radius: 25px; max-width: 600px;">
         <form action="index.php?page=milestone-update&id=<?= $milestone['id'] ?>" method="POST">
+            <?= csrfField() ?>
             <div class="mb-4">
                 <label class="form-label fw-bold small text-muted">TÊN GIAI ĐOẠN</label>
                 <select name="title" class="form-select rounded-pill px-3" style="height: 50px;" required>

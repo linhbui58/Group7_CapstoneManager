@@ -1,323 +1,333 @@
-﻿<?php header('Content-Type: text/html; charset=UTF-8'); ?>
+<?php header('Content-Type: text/html; charset=UTF-8'); ?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng nhập - Capstone Manager</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        * { font-family: 'Plus Jakarta Sans', sans-serif; }
+        /* ── RESET & BASE ── */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: #0f172a; overflow: hidden; height: 100vh; }
+        
+        /* ── BACKGROUND ── */
+        .auth-page {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+        }
+        
+        .auth-background {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background: url('assets/images/bg-lab.png') center/cover no-repeat;
+            z-index: 1;
+        }
+        .auth-background::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(90deg, rgba(2,6,23,0.92) 0%, rgba(2,6,23,0.85) 35%, rgba(2,6,23,0.4) 65%, transparent 100%);
+            z-index: 2; pointer-events: none;
+        }
 
-        /* ── LAYOUT ── */
-        body.auth-body { background: #f1f5f9; margin: 0; padding: 0; min-height: 100vh; display: flex; align-items: stretch; }
-        .auth-wrapper  { display: flex; width: 100%; min-height: 100vh; }
+        /* ── GRID LAYOUT ── */
+        .auth-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            height: 100vh;
+            display: grid;
+            grid-template-columns: 58% 42%;
+        }
 
-        /* ── LEFT PANEL ── */
-        .auth-panel {
-            flex: 1;
-            background: linear-gradient(145deg, #0f172a 0%, #1e3a5f 60%, #0f172a 100%);
-            padding: 56px 64px;
+        .auth-left {
+            position: relative;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: center;
+            height: 100vh;
+            padding-left: 60px;
+            padding-bottom: 45px;
+        }
+
+        .auth-right {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             position: relative;
+        }
+
+        /* ── HERO CONTENT ── */
+        .hero-content {
+            position: absolute;
+            left: 60px;
+            top: 20px;
+            width: 620px;
+            z-index: 5;
+            display: flex; flex-direction: column;
+        }
+
+        @media (max-height: 700px) {
+            .hero-content { transform: scale(0.85); transform-origin: top left; }
+        }
+        @media (max-height: 600px) {
+            .hero-content { transform: scale(0.75); transform-origin: top left; }
+        }
+
+        .ap-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+        .ap-brand img { height: 50px; object-fit: contain; display: block; background: #ffffff; padding: 4px 8px; border-radius: 8px; }
+        .ap-brand-text { display: flex; flex-direction: column; }
+        .ap-brand-text h1 { font-size: 22px; font-weight: 800; color: #ffffff; letter-spacing: -0.5px; line-height: 1.2; }
+        .ap-brand-text span { font-size: 11px; font-weight: 600; color: #38bdf8; text-transform: uppercase; letter-spacing: 1.5px; }
+
+        .hero-title { font-size: 42px; font-weight: 800; color: #ffffff; line-height: 1.15; letter-spacing: -1px; margin-bottom: 16px; }
+        .hero-title .highlight { background: linear-gradient(135deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-desc { font-size: 15px; color: rgba(255, 255, 255, 0.7); line-height: 1.6; max-width: 520px; margin-bottom: 24px; }
+
+        /* ── FEATURES ── */
+        .ap-features { display: flex; flex-direction: column; gap: 10px; max-width: 520px; margin-bottom: 20px; }
+        .ap-feature-card { display: flex; align-items: flex-start; gap: 14px; padding: 14px 20px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 14px; transition: all 0.3s ease; animation: fadeIn 0.8s ease-out forwards; opacity: 0; }
+        .ap-feature-card:nth-child(1) { animation-delay: 0.1s; }
+        .ap-feature-card:nth-child(2) { animation-delay: 0.15s; }
+        .ap-feature-card:nth-child(3) { animation-delay: 0.2s; }
+        .ap-feature-card:nth-child(4) { animation-delay: 0.25s; }
+        .ap-feature-card:hover { background: rgba(255, 255, 255, 0.08); transform: translateX(5px); border-color: rgba(255, 255, 255, 0.1); }
+        .ap-feature-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+        .ap-feature-card:nth-child(1) .ap-feature-icon { background: rgba(56, 189, 248, 0.15); color: #38bdf8; }
+        .ap-feature-card:nth-child(2) .ap-feature-icon { background: rgba(129, 140, 248, 0.15); color: #818cf8; }
+        .ap-feature-card:nth-child(3) .ap-feature-icon { background: rgba(52, 211, 153, 0.15); color: #34d399; }
+        .ap-feature-card:nth-child(4) .ap-feature-icon { background: rgba(250, 204, 21, 0.15); color: #facc15; }
+        .ap-feature-text h4 { font-size: 14px; font-weight: 700; color: #ffffff; margin-bottom: 2px; }
+        .ap-feature-text p { font-size: 12px; color: rgba(255, 255, 255, 0.5); line-height: 1.4; }
+
+        /* ── STATS SECTION ── */
+        .stats-section {
+            width: 100%; max-width: 520px;
+            margin-top: 20px;
+            position: relative;
+            z-index: 5;
+            display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; background: rgba(0, 0, 0, 0.35); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; animation: fadeIn 0.8s ease-out 0.3s forwards; opacity: 0;
+        }
+        .ap-stat { display: flex; flex-direction: column; align-items: center; gap: 4px; position: relative; flex: 1; }
+        .ap-stat:not(:last-child)::after { content: ''; position: absolute; right: 0; top: 10%; height: 80%; width: 1px; background: rgba(255, 255, 255, 0.15); }
+        .ap-stat-num { font-size: 22px; font-weight: 800; color: #ffffff; line-height: 1; }
+        .ap-stat-label { font-size: 10px; font-weight: 600; color: rgba(255, 255, 255, 0.65); letter-spacing: 1px; text-transform: uppercase; }
+
+        /* ── LOGIN CARD ── */
+        .auth-card {
+            position: absolute;
+            right: 80px;
+            top: calc(50% - 22.5px);
+            transform: translateY(-50%);
+            width: 100%;
+            max-width: 480px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+            z-index: 10;
+        }
+
+        .auth-tabs { display: flex; background: #f1f5f9; padding: 6px; border-radius: 16px; margin-bottom: 32px; }
+        .tab-link { flex: 1; text-align: center; padding: 12px; font-size: 14px; font-weight: 600; color: #64748b; text-decoration: none; border-radius: 12px; transition: all 0.3s ease; }
+        .tab-link:hover { color: #0f172a; }
+        .tab-link.active { background: linear-gradient(135deg, #0ea5e9, #4f46e5); color: #ffffff; box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3); }
+
+        .card-heading { margin-bottom: 24px; }
+        .card-heading h3 { font-size: 28px; font-weight: 800; color: #0f172a; margin-bottom: 6px; letter-spacing: -0.5px; }
+        .card-heading p { font-size: 14px; color: #64748b; }
+
+        .field-group { margin-bottom: 20px; }
+        .field-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .field-header label { font-size: 13px; font-weight: 600; color: #334155; }
+        .forgot-link { font-size: 13px; font-weight: 600; color: #0ea5e9; text-decoration: none; transition: color 0.2s; }
+        .forgot-link:hover { color: #0284c7; }
+
+        .input-wrapper { position: relative; }
+        .input-wrapper i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #64748b; font-size: 16px; pointer-events: none; transition: color 0.3s; }
+        .input-wrapper input { width: 100%; padding: 14px 16px 14px 44px; background: #ffffff; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #0f172a; font-weight: 500; transition: all 0.3s ease; }
+        .input-wrapper input:focus { outline: none; border-color: #0ea5e9; box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1); }
+        .input-wrapper input:focus + i { color: #0ea5e9; }
+
+        .btn-submit { width: 100%; padding: 14px; background: linear-gradient(135deg, #0ea5e9, #4f46e5); color: #ffffff; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 10px; }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 25px -8px rgba(79, 70, 229, 0.6); opacity: 0.95; }
+
+        .auth-footer { margin-top: 24px; text-align: center; font-size: 14px; color: #64748b; }
+        .auth-footer a { color: #0ea5e9; font-weight: 600; text-decoration: none; }
+        .auth-footer a:hover { text-decoration: underline; }
+
+        .auth-alert { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 10px; font-size: 13px; font-weight: 500; margin-bottom: 24px; }
+        .auth-alert.danger { background: #fef2f2; border: 1px solid #fecaca; color: #ef4444; }
+        .auth-alert.success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #22c55e; }
+
+        /* ── BOTTOM WAVE ── */
+        .auth-wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 45px;
+            z-index: 1;
+            pointer-events: none;
             overflow: hidden;
         }
-        .auth-panel::before {
-            content: '';
-            position: absolute; inset: 0;
-            background: radial-gradient(ellipse at 20% 50%, rgba(56,189,248,.12) 0%, transparent 60%),
-                        radial-gradient(ellipse at 80% 20%, rgba(99,102,241,.10) 0%, transparent 50%);
-            pointer-events: none;
-        }
-        .auth-panel-inner { position: relative; z-index: 1; display: flex; flex-direction: column; height: 100%; }
-
-        /* brand */
-        .ap-brand { display: flex; align-items: center; gap: 14px; margin-bottom: 64px; }
-        .ap-brand-icon {
-            width: 48px; height: 48px; border-radius: 14px;
-            background: linear-gradient(135deg, #38bdf8, #6366f1);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 20px; color: #fff; flex-shrink: 0;
-            box-shadow: 0 8px 20px rgba(99,102,241,.35);
-        }
-        .ap-brand-name { font-size: 20px; font-weight: 700; color: #f8fafc; letter-spacing: -.3px; }
-        .ap-brand-sub  { font-size: 11px; color: rgba(248,250,252,.45); letter-spacing: .8px; text-transform: uppercase; }
-
-        /* headline */
-        .ap-headline { font-size: 38px; font-weight: 800; color: #f8fafc; line-height: 1.2; letter-spacing: -1px; margin-bottom: 16px; }
-        .ap-headline span { background: linear-gradient(90deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .ap-sub { font-size: 15px; color: rgba(248,250,252,.55); line-height: 1.65; max-width: 380px; margin-bottom: 48px; }
-
-        /* feature cards */
-        .ap-features { display: flex; flex-direction: column; gap: 20px; margin-bottom: 48px; }
-        .ap-feature {
-            display: flex; align-items: center; gap: 16px;
-            background: rgba(255,255,255,.04);
-            border: 1px solid rgba(255,255,255,.07);
-            border-radius: 14px; padding: 16px 20px;
-            transition: background .2s;
-        }
-        .ap-feature:hover { background: rgba(255,255,255,.07); }
-        .ap-feat-icon {
-            width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 16px; color: #fff;
-        }
-        .ap-feat-icon.blue   { background: rgba(56,189,248,.2);  color: #38bdf8; }
-        .ap-feat-icon.indigo { background: rgba(99,102,241,.2);  color: #818cf8; }
-        .ap-feat-icon.green  { background: rgba(16,185,129,.2);  color: #34d399; }
-        .ap-feat-title { font-size: 14px; font-weight: 600; color: #f1f5f9; margin-bottom: 2px; }
-        .ap-feat-desc  { font-size: 12px; color: rgba(241,245,249,.45); line-height: 1.4; }
-
-        /* stats */
-        .ap-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-        .ap-stat {
-            background: rgba(255,255,255,.04);
-            border: 1px solid rgba(255,255,255,.07);
-            border-radius: 12px; padding: 16px 12px; text-align: center;
-        }
-        .ap-stat-num  { font-size: 22px; font-weight: 800; color: #f8fafc; }
-        .ap-stat-label{ font-size: 10px; color: rgba(248,250,252,.4); text-transform: uppercase; letter-spacing: .8px; margin-top: 2px; }
-
-        /* footer */
-        .ap-footer { font-size: 12px; color: rgba(248,250,252,.3); margin-top: auto; padding-top: 32px; }
-
-        /* ── RIGHT PANEL ── */
-        .auth-main {
-            flex: 1;
-            background: #f8fafc;
-            display: flex; align-items: center; justify-content: center;
-            padding: 40px 32px;
-        }
-        .auth-card {
-            width: 100%; max-width: 440px;
-            background: #ffffff;
-            border-radius: 24px;
-            padding: 48px 44px;
-            box-shadow: 0 8px 32px rgba(15,23,42,.07), 0 1px 0 rgba(255,255,255,.9) inset;
-            border: 1px solid #e8edf3;
+        .auth-wave svg {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
         }
 
-        /* tabs */
-        .auth-tabs {
-            display: flex; background: #f1f5f9; padding: 4px; border-radius: 12px; margin-bottom: 36px;
-        }
-        .tab-link {
-            flex: 1; text-align: center; padding: 10px 8px;
-            font-size: 13.5px; font-weight: 600; color: #64748b;
-            border-radius: 9px; transition: all .25s; text-decoration: none;
-        }
-        .tab-link.active {
-            background: #ffffff; color: #0f172a;
-            box-shadow: 0 1px 6px rgba(15,23,42,.1);
-        }
-        .tab-link:hover:not(.active) { color: #0f172a; }
-
-        /* heading */
-        .card-heading h3 { font-size: 24px; font-weight: 700; color: #0f172a; letter-spacing: -.4px; margin-bottom: 6px; }
-        .card-heading p  { font-size: 14px; color: #64748b; }
-
-        /* inputs */
-        .field-group { margin-bottom: 20px; }
-        .field-label { font-size: 12.5px; font-weight: 600; color: #374151; margin-bottom: 8px; display: block; }
-        .input-wrap {
-            display: flex; align-items: center;
-            border: 1.5px solid #e2e8f0; border-radius: 12px;
-            background: #f8fafc; overflow: hidden;
-            transition: border-color .2s, box-shadow .2s;
-        }
-        .input-wrap:focus-within {
-            border-color: #6366f1; background: #fff;
-            box-shadow: 0 0 0 4px rgba(99,102,241,.1);
-        }
-        .input-wrap .ic {
-            width: 46px; display: flex; align-items: center; justify-content: center;
-            color: #94a3b8; font-size: 14px; flex-shrink: 0;
-        }
-        .input-wrap input, .input-wrap select {
-            flex: 1; border: none; background: transparent;
-            height: 46px; font-size: 14px; color: #0f172a;
-            outline: none; padding-right: 14px;
-        }
-        .input-wrap input::placeholder { color: #c4cdd8; }
-        .input-wrap .toggle-pw {
-            width: 40px; height: 46px; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; color: #94a3b8; font-size: 13px; flex-shrink: 0;
-            transition: color .2s; background: transparent; border: none;
-        }
-        .input-wrap .toggle-pw:hover { color: #6366f1; }
-
-        /* submit btn */
-        .btn-auth {
-            width: 100%; height: 48px; font-size: 15px; font-weight: 600;
-            border-radius: 12px; border: none; color: #fff;
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            box-shadow: 0 4px 14px rgba(15,23,42,.25);
-            transition: all .25s; cursor: pointer; margin-top: 8px;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-        }
-        .btn-auth:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(15,23,42,.35); background: #1e3a5f; }
-        .btn-auth:active { transform: translateY(0); }
-
-        /* divider text */
-        .auth-footer-text { text-align: center; margin-top: 24px; font-size: 13px; color: #94a3b8; }
-        .auth-footer-text a { color: #6366f1; font-weight: 600; text-decoration: none; }
-        .auth-footer-text a:hover { text-decoration: underline; }
-
-        /* alerts */
-        .auth-alert {
-            border-radius: 10px; padding: 11px 16px; font-size: 13px;
-            display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
-            border: none;
-        }
-        .auth-alert.success { background: #f0fdf4; color: #166534; }
-        .auth-alert.danger  { background: #fef2f2; color: #991b1b; }
-
-        /* responsive */
-        @media (max-width: 991px) { .auth-panel { display: none; } .auth-main { padding: 24px 16px; } }
-        @media (max-width: 480px) { .auth-card { padding: 32px 24px; border-radius: 16px; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="auth-body">
-<div class="auth-wrapper">
+<body>
 
-    <!-- ═══ LEFT PANEL ═══ -->
-    <div class="auth-panel d-none d-lg-flex">
-        <div class="auth-panel-inner">
+<div class="auth-page">
+    <div class="auth-background"></div>
 
-            <div class="ap-brand">
-                <div class="ap-brand-icon"><i class="fa-solid fa-layer-group"></i></div>
-                <div>
-                    <div class="ap-brand-name">Capstone Manager</div>
-                    <div class="ap-brand-sub">IS-VNU Platform</div>
+    <div class="auth-container">
+        <!-- ═══ LEFT PANEL ═══ -->
+        <div class="auth-left">
+            <div class="hero-content">
+                <!-- BRAND -->
+                <div class="ap-brand">
+                    <img src="assets/images/logo-vnuis.png" alt="VNU-IS Logo">
+                    <div class="ap-brand-text">
+                        <h1>Capstone Manager</h1>
+                        <span>IS-VNU Platform</span>
+                    </div>
                 </div>
-            </div>
 
-            <div>
-                <h1 class="ap-headline">Quản lý đề án<br><span>thông minh hơn.</span></h1>
-                <p class="ap-sub">Hệ thống hỗ trợ sinh viên IS-VNU tối ưu hóa quy trình thực hiện Capstone Project từ đăng ký đến nghiệm thu.</p>
+                <!-- TEXT -->
+                <h2 class="hero-title">Quản lý đề án<br><span class="highlight">thông minh hơn.</span></h2>
+                <p class="hero-desc">Hệ thống hỗ trợ sinh viên IS-VNU tối ưu hóa quy trình thực hiện Capstone Project từ đăng ký đến nghiệm thu.</p>
 
+                <!-- FEATURE CARDS -->
                 <div class="ap-features">
-                    <div class="ap-feature">
-                        <div class="ap-feat-icon blue"><i class="fa-solid fa-magnifying-glass"></i></div>
-                        <div>
-                            <div class="ap-feat-title">Đề xuất đề tài thông minh</div>
-                            <div class="ap-feat-desc">Hệ thống matching giảng viên dựa trên chuyên môn và sở thích.</div>
+                    <div class="ap-feature-card">
+                        <div class="ap-feature-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+                        <div class="ap-feature-text">
+                            <h4>Đề xuất đề tài thông minh</h4>
+                            <p>Hệ thống matching giảng viên dựa trên chuyên môn và sở thích.</p>
                         </div>
                     </div>
-                    <div class="ap-feature">
-                        <div class="ap-feat-icon indigo"><i class="fa-solid fa-list-check"></i></div>
-                        <div>
-                            <div class="ap-feat-title">Quản lý Milestones</div>
-                            <div class="ap-feat-desc">Nộp báo cáo giai đoạn và theo dõi tiến độ thực tế.</div>
+                    <div class="ap-feature-card">
+                        <div class="ap-feature-icon"><i class="fa-solid fa-list-check"></i></div>
+                        <div class="ap-feature-text">
+                            <h4>Quản lý Milestones</h4>
+                            <p>Nộp báo cáo giai đoạn và theo dõi tiến độ thực tế.</p>
                         </div>
                     </div>
-                    <div class="ap-feature">
-                        <div class="ap-feat-icon green"><i class="fa-solid fa-star"></i></div>
-                        <div>
-                            <div class="ap-feat-title">Đánh giá &amp; Kết quả</div>
-                            <div class="ap-feat-desc">Nhận phản hồi trực tiếp và điểm số từ hội đồng.</div>
+                    <div class="ap-feature-card">
+                        <div class="ap-feature-icon"><i class="fa-solid fa-star"></i></div>
+                        <div class="ap-feature-text">
+                            <h4>Đánh giá & Kết quả</h4>
+                            <p>Nhận phản hồi trực tiếp và điểm số từ hội đồng.</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="ap-stats">
-                    <div class="ap-stat"><div class="ap-stat-num">1500+</div><div class="ap-stat-label">Sinh viên</div></div>
-                    <div class="ap-stat"><div class="ap-stat-num">85+</div><div class="ap-stat-label">Giảng viên</div></div>
-                    <div class="ap-stat"><div class="ap-stat-num">500+</div><div class="ap-stat-label">Đề tài</div></div>
+                <!-- STATS SECTION -->
+                <div class="stats-section">
+                    <div class="ap-stat">
+                        <div class="ap-stat-num">1500+</div>
+                        <div class="ap-stat-label">SINH VIÊN</div>
+                    </div>
+                    <div class="ap-stat">
+                        <div class="ap-stat-num">85+</div>
+                        <div class="ap-stat-label">GIẢNG VIÊN</div>
+                    </div>
+                    <div class="ap-stat">
+                        <div class="ap-stat-num">500+</div>
+                        <div class="ap-stat-label">ĐỀ TÀI</div>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <div class="ap-footer">© 2026 Trường Quốc tế — ĐHQGHN (IS-VNU)</div>
+        <!-- ═══ RIGHT PANEL (LOGIN CARD) ═══ -->
+        <div class="auth-right">
+            <div class="auth-card">
+                <div class="auth-tabs">
+                    <a href="index.php?page=login" class="tab-link active">Đăng nhập</a>
+                    <a href="index.php?page=register" class="tab-link">Đăng ký</a>
+                </div>
+
+                <div class="card-heading mb-4">
+                    <h3>Chào mừng trở lại!</h3>
+                    <p>Vui lòng đăng nhập để tiếp tục quản lý dự án.</p>
+                </div>
+
+                <?php if(isset($error)): ?>
+                    <div class="auth-alert danger">
+                        <i class="fa-solid fa-circle-exclamation"></i><?= htmlspecialchars($error) ?>
+                    </div>
+                <?php endif; ?>
+                <?php if(isset($_GET['registered'])): ?>
+                    <div class="auth-alert success">
+                        <i class="fa-solid fa-circle-check"></i>Đăng ký thành công! Vui lòng đăng nhập.
+                    </div>
+                <?php endif; ?>
+
+                <form method="POST" action="index.php?page=login"> <?= csrfField() ?>
+                    <div class="field-group">
+                        <div class="field-header">
+                            <label for="email">Địa chỉ Email</label>
+                        </div>
+                        <div class="input-wrapper">
+                            <input type="email" id="email" name="email" 
+                                   value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" 
+                                   placeholder="name@vnu.edu.vn" required autofocus>
+                            <i class="fa-regular fa-envelope"></i>
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <div class="field-header">
+                            <label for="password">Mật khẩu</label>
+                            <a href="#" class="forgot-link">Quên mật khẩu?</a>
+                        </div>
+                        <div class="input-wrapper">
+                            <input type="password" id="password" name="password" placeholder="••••••••" required>
+                            <i class="fa-solid fa-lock"></i>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit">
+                        Đăng nhập hệ thống <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </form>
+
+                <div class="auth-footer">
+                    Bạn mới sử dụng hệ thống? <a href="index.php?page=register">Đăng ký ngay</a>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- ═══ RIGHT PANEL ═══ -->
-    <div class="auth-main">
-        <div class="auth-card">
-
-            <div class="auth-tabs">
-                <a href="index.php?page=login"    class="tab-link active">Đăng nhập</a>
-                <a href="index.php?page=register" class="tab-link">Đăng ký</a>
-            </div>
-
-            <div class="card-heading mb-4">
-                <h3>Chào mừng trở lại!</h3>
-                <p>Vui lòng đăng nhập để tiếp tục quản lý dự án.</p>
-            </div>
-
-            <?php if(isset($_SESSION['success'])): ?>
-                <div class="auth-alert success">
-                    <i class="fa-solid fa-circle-check"></i><?= htmlspecialchars($_SESSION['success']) ?>
-                </div>
-                <?php unset($_SESSION['success']); ?>
-            <?php endif; ?>
-
-            <?php if(isset($error)): ?>
-                <div class="auth-alert danger">
-                    <i class="fa-solid fa-circle-exclamation"></i><?= htmlspecialchars($error) ?>
-                </div>
-            <?php endif; ?>
-
-            <form method="POST" action="index.php?page=login"> <?= csrfField() ?>
-
-                <div class="field-group">
-                    <label class="field-label" for="login-email">Địa chỉ Email</label>
-                    <div class="input-wrap">
-                        <span class="ic"><i class="fa-regular fa-envelope"></i></span>
-                        <input type="email" id="login-email" name="email"
-                               placeholder="name@vnu.edu.vn"
-                               value="<?= htmlspecialchars($_POST['email'] ?? '') ?>"
-                               autocomplete="email" required>
-                    </div>
-                </div>
-
-                <div class="field-group">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <label class="field-label mb-0" for="login-pw">Mật khẩu</label>
-                        <a href="index.php?page=forgot-password" style="font-size:12px;color:#6366f1;text-decoration:none;font-weight:600;">Quên mật khẩu?</a>
-                    </div>
-                    <div class="input-wrap">
-                        <span class="ic"><i class="fa-solid fa-lock"></i></span>
-                        <input type="password" id="login-pw" name="password"
-                               placeholder="••••••••"
-                               autocomplete="current-password" required>
-                        <button type="button" class="toggle-pw" onclick="togglePw('login-pw', this)" aria-label="Hiện/ẩn mật khẩu">
-                            <i class="fa-regular fa-eye"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <button type="submit" class="btn-auth">
-                    Đăng nhập hệ thống <i class="fa-solid fa-arrow-right"></i>
-                </button>
-            </form>
-
-            <div class="auth-footer-text">
-                Bạn mới sử dụng hệ thống? <a href="index.php?page=register">Đăng ký ngay</a>
-            </div>
-        </div>
+    <!-- WAVE -->
+    <div class="auth-wave">
+        <svg viewBox="0 0 1440 45" preserveAspectRatio="none">
+            <path d="M0,45 L1440,45 L1440,0 C1140,45 840,45 720,22.5 C600,0 300,0 0,0 L0,45 Z" fill="#ffffff"></path>
+        </svg>
     </div>
-
 </div>
 
-<script>
-function togglePw(id, btn) {
-    const input = document.getElementById(id);
-    const icon  = btn.querySelector('i');
-    if (input.type === 'password') {
-        input.type = 'text';
-        icon.className = 'fa-regular fa-eye-slash';
-    } else {
-        input.type = 'password';
-        icon.className = 'fa-regular fa-eye';
-    }
-}
-</script>
 </body>
 </html>

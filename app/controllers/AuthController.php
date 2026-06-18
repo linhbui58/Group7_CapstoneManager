@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 class AuthController {
 
@@ -116,6 +116,7 @@ class AuthController {
                 $student = $studentModel->findByUserId($user['id']);
                 if ($student) {
                     $_SESSION['user']['student_id'] = $student['id'];
+                    $_SESSION['user']['full_name'] = $student['full_name'];
                 }
             }
             if ($user['role'] === 'lecturer') {
@@ -123,7 +124,11 @@ class AuthController {
                 $lecturer = $lecturerModel->findByUserId($user['id']);
                 if ($lecturer) {
                     $_SESSION['user']['lecturer_id'] = $lecturer['id'];
+                    $_SESSION['user']['full_name'] = $lecturer['full_name'];
                 }
+            }
+            if ($user['role'] === 'admin') {
+                $_SESSION['user']['full_name'] = 'Administrator';
             }
 
             /*
@@ -160,12 +165,13 @@ class AuthController {
             |--------------------------------------------------------------------------
             */
 
-            $full_name = trim($_POST['full_name']);
-            $student_code = trim($_POST['student_code']);
-            $phone = trim($_POST['phone']);
+            $full_name = trim($_POST['full_name'] ?? $_POST['name'] ?? '');
+            $student_code = trim($_POST['student_code'] ?? '');
+            $phone = trim($_POST['phone'] ?? '');
+            $faculty = trim($_POST['department'] ?? '');
 
-            $email = trim($_POST['email']);
-            $password = trim($_POST['password']);
+            $email = trim($_POST['email'] ?? '');
+            $password = trim($_POST['password'] ?? '');
 
             $role = $_POST['role'] ?? '';
 
@@ -180,26 +186,26 @@ class AuthController {
                 empty($email) ||
                 empty($password)
             ){
-                $error = "Vui lÃ²ng Ä‘iá»n Ä‘áº§y Ä‘á»§ thÃ´ng tin báº¯t buá»™c.";
+                $error = "Vui lòng điền đầy đủ thông tin bắt buộc.";
                 require '../app/views/auth/register.php';
                 return;
             }
 
-            // Báº¯t buá»™c chá»n role há»£p lá»‡
+            // Bắt buộc chọn role hợp lệ
             if(!in_array($role, ['student', 'lecturer'])){
-                $error = "Vui lÃ²ng chá»n vai trÃ²: Sinh viÃªn hoáº·c Giáº£ng viÃªn.";
+                $error = "Vui lòng chọn vai trò: Sinh viên hoặc Giảng viên.";
                 require '../app/views/auth/register.php';
                 return;
             }
 
             if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-                $error = "Email khÃ´ng há»£p lá»‡.";
+                $error = "Email không hợp lệ.";
                 require '../app/views/auth/register.php';
                 return;
             }
 
             if(strlen($password) < 6){
-                $error = "Máº­t kháº©u pháº£i cÃ³ Ã­t nháº¥t 6 kÃ½ tá»±.";
+                $error = "Mật khẩu phải có ít nhất 6 ký tự.";
                 require '../app/views/auth/register.php';
                 return;
             }
@@ -242,7 +248,8 @@ class AuthController {
                         'user_id' => $userId,
                         'student_code' => $student_code,
                         'full_name' => $full_name,
-                        'phone' => $phone
+                        'phone' => $phone,
+                        'faculty' => $faculty
                     ]);
                 }
 
@@ -251,6 +258,8 @@ class AuthController {
                     $lecturerModel->create([
                         'user_id'   => $userId,
                         'full_name' => $full_name,
+                        'phone' => $phone,
+                        'faculty' => $faculty,
                         'expertise' => ''
                     ]);
                 }

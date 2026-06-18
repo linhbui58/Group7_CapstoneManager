@@ -8,13 +8,6 @@
         <p class="text-muted">Tải lên file báo cáo mới thay thế cho bản hiện tại.</p>
     </div>
 
-    <?php if (isset($_SESSION['error'])): ?>
-        <div class="alert alert-danger" style="max-width: 600px; margin-bottom: 20px;">
-            <i class="fa-solid fa-circle-xmark me-2"></i><?= htmlspecialchars($_SESSION['error']) ?>
-        </div>
-        <?php unset($_SESSION['error']); ?>
-    <?php endif; ?>
-
     <div class="card border-0 shadow-sm p-4" style="border-radius: 20px; max-width: 600px;">
         <form action="index.php?page=submission-update&id=<?= $submission['id'] ?>" method="POST" enctype="multipart/form-data"> <?= csrfField() ?>
             <div class="mb-3">

@@ -45,8 +45,11 @@ class Lecturer {
      * → tạo user mới với email + mật khẩu mặc định 123456, rồi INSERT lecturers.
      */
     public function create($data) {
+        $inTransaction = $this->conn->inTransaction();
         try {
-            $this->conn->beginTransaction();
+            if (!$inTransaction) {
+                $this->conn->beginTransaction();
+            }
 
             if (!empty($data['user_id'])) {
                 // Gọi từ AuthController — user đã tồn tại
@@ -64,27 +67,39 @@ class Lecturer {
             }
 
             $stmtLec = $this->conn->prepare(
-                "INSERT INTO lecturers (user_id, full_name, expertise) VALUES (?, ?, ?)"
+                "INSERT INTO lecturers (user_id, full_name, expertise, phone, faculty) VALUES (?, ?, ?, ?, ?)"
             );
             $stmtLec->execute([
                 $userId,
                 $data['full_name'],
                 $data['expertise'] ?? '',
+                $data['phone'] ?? '',
+                $data['faculty'] ?? ''
             ]);
 
-            $this->conn->commit();
+            if (!$inTransaction) {
+                $this->conn->commit();
+            }
             return $this->conn->lastInsertId();
         } catch (Exception $e) {
-            $this->conn->rollBack();
+            if (!$inTransaction) {
+                $this->conn->rollBack();
+            }
             return false;
         }
     }
 
     public function update($id, $data) {
         $stmt = $this->conn->prepare(
-            "UPDATE lecturers SET full_name = ?, expertise = ? WHERE id = ?"
+            "UPDATE lecturers SET full_name = ?, expertise = ?, phone = ?, faculty = ? WHERE id = ?"
         );
-        return $stmt->execute([$data['full_name'], $data['expertise'] ?? '', $id]);
+        return $stmt->execute([
+            $data['full_name'], 
+            $data['expertise'] ?? '', 
+            $data['phone'] ?? '', 
+            $data['faculty'] ?? '', 
+            $id
+        ]);
     }
 
     public function delete($id) {
@@ -93,5 +108,15 @@ class Lecturer {
         // ON DELETE CASCADE sẽ xóa lecturers khi xóa users
         $stmt = $this->conn->prepare("DELETE FROM users WHERE id = ?");
         return $stmt->execute([$lec['user_id']]);
+    }
+    public function getByFaculty($faculty) {
+        $stmt = $this->conn->prepare("
+            SELECT lecturers.*, users.email 
+            FROM lecturers 
+            JOIN users ON users.id = lecturers.user_id 
+            WHERE lecturers.faculty = ?
+            ORDER BY lecturers.id DESC");
+        $stmt->execute([$faculty]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

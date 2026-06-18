@@ -73,7 +73,16 @@ class RegistrationController {
 
         $topics    = $topicModel->getAvailable();   // chá»‰ topic Ä‘ang má»Ÿ
         $semesters = $semesterModel->getAll();
-        $lecturers = $lecturerModel->getAll();
+
+        // Láº¥y thÃ´ng tin student hiá»‡n táº¡i
+        $studentModel = new Student();
+        $student = $studentModel->findByUserId($_SESSION['user']['id']);
+
+        if ($student && !empty($student['faculty'])) {
+            $lecturers = $lecturerModel->getByFaculty($student['faculty']);
+        } else {
+            $lecturers = $lecturerModel->getAll();
+        }
 
         require '../app/views/registrations/create.php';
     }

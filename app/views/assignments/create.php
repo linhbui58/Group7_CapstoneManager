@@ -1,4 +1,4 @@
-﻿<?php require '../app/views/layouts/header.php'; ?>
+<?php require '../app/views/layouts/header.php'; ?>
 <?php require '../app/views/layouts/sidebar.php'; ?>
 
 <div class="main-content" style="padding: 40px; background-color: #f8fafc;">
@@ -35,3 +35,40 @@
 </div>
 
 <?php require '../app/views/layouts/footer.php'; ?>
+
+<script>
+const topicFaculties = {
+    <?php foreach($topics as $t): ?>
+    "<?= $t['id'] ?>": "<?= htmlspecialchars($t['student_faculty'] ?? '') ?>",
+    <?php endforeach; ?>
+};
+
+const lecturers = [
+    <?php foreach($lecturers as $l): ?>
+    { id: "<?= $l['id'] ?>", name: "<?= htmlspecialchars($l['full_name']) ?>", faculty: "<?= htmlspecialchars($l['faculty'] ?? '') ?>" },
+    <?php endforeach; ?>
+];
+
+document.querySelector('select[name="topic_id"]').addEventListener('change', function() {
+    const topicId = this.value;
+    const lecturerSelect = document.querySelector('select[name="lecturer_id"]');
+    lecturerSelect.innerHTML = '<option value="">-- Chọn giảng viên --</option>';
+    
+    if (!topicId) {
+        // Show all if no topic selected
+        lecturers.forEach(l => {
+            lecturerSelect.innerHTML += `<option value="${l.id}">${l.name}</option>`;
+        });
+        return;
+    }
+    
+    const requiredFaculty = topicFaculties[topicId];
+    
+    lecturers.forEach(l => {
+        if (!requiredFaculty || l.faculty === requiredFaculty) {
+            lecturerSelect.innerHTML += `<option value="${l.id}">${l.name}</option>`;
+        }
+    });
+});
+</script>
+

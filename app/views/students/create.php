@@ -1,4 +1,4 @@
-﻿<?php require '../app/views/layouts/header.php'; ?>
+<?php require '../app/views/layouts/header.php'; ?>
 <?php require '../app/views/layouts/sidebar.php'; ?>
 
 <div class="main-content" style="padding:32px; background:#f4f7fe; min-height:100vh;">

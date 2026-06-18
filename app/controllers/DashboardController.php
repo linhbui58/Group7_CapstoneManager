@@ -112,7 +112,7 @@ class DashboardController {
         // Scores given by this lecturer by month (last 6 months)
         $db2 = Database::getInstance()->getConnection();
         $stmtSc = $db2->prepare("
-            SELECT DATE_FORMAT(es.created_at,'%Y-%m') AS ym,
+            SELECT DATE_FORMAT(es.graded_at,'%Y-%m') AS ym,
                    ROUND(AVG(es.score),1) AS avg_score,
                    COUNT(*) AS cnt
             FROM evaluation_scores es
@@ -120,7 +120,7 @@ class DashboardController {
             JOIN topics t ON s.topic_id = t.id
             JOIN topic_assignments ta ON t.id = ta.topic_id
             WHERE ta.lecturer_id = ?
-              AND es.created_at >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
+              AND es.graded_at >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
             GROUP BY ym ORDER BY ym ASC
         ");
         $stmtSc->execute([$lecturerId]);
