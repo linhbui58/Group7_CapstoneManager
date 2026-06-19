@@ -328,10 +328,10 @@
                     </div>
 
                     <div class="field-group">
-                        <div class="field-header"><label for="reg-email">Email VNU</label></div>
+                        <div class="field-header"><label for="reg-email">Email</label></div>
                         <div class="input-wrapper">
                             <input type="email" id="reg-email" name="email"
-                                   placeholder="name@vnu.edu.vn"
+                                   placeholder="name@example.com"
                                    value="<?= htmlspecialchars($old['email'] ?? '') ?>" required>
                             <i class="fa-regular fa-envelope"></i>
                         </div>
