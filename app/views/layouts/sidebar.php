@@ -1,4 +1,12 @@
-<?php $currentPage = $_GET['page'] ?? ''; ?>
+<?php 
+$currentPage = $_GET['page'] ?? ''; 
+$unreadNotifCount = 0;
+if (isset($_SESSION['user']['id'])) {
+    require_once '../app/models/Notification.php';
+    $notifModel = new Notification();
+    $unreadNotifCount = $notifModel->countUnread($_SESSION['user']['id']);
+}
+?>
 
 <div class="sidebar">
     <div class="sidebar-top">
@@ -109,6 +117,9 @@
                         <li>
                             <a href="index.php?page=notifications" class="<?= $currentPage === 'notifications' ? 'active' : '' ?>">
                                 <i class="fa fa-bell"></i> <span>Thông báo</span>
+                        <?php if ($unreadNotifCount > 0): ?>
+                            <span class="badge bg-danger ms-auto rounded-pill" style="font-size: 10px; padding: 4px 8px;"><?= $unreadNotifCount ?></span>
+                        <?php endif; ?>
                             </a>
                         </li>
                         <li>
@@ -124,24 +135,10 @@
             <!-- ── STUDENT ── -->
             <?php if ($_SESSION['user']['role'] === 'student'): ?>
 
-                <li class="menu-group <?= in_array($currentPage, ['topic-management', 'topics', 'registrations']) ? 'open' : '' ?>">
-                    <div class="menu-group-toggle">
-                        <i class="fa fa-book"></i>
-                        <span>Đề tài & Đăng ký</span>
-                        <i class="fa fa-chevron-right toggle-icon"></i>
-                    </div>
-                    <ul class="submenu">
-                        <li>
-                            <a href="index.php?page=topic-management" class="<?= in_array($currentPage, ['topic-management', 'topics']) ? 'active' : '' ?>">
-                                <i class="fa fa-book-open"></i> <span>Tất cả đề tài</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="index.php?page=registrations" class="<?= $currentPage === 'registrations' ? 'active' : '' ?>">
-                                <i class="fa fa-pen-to-square"></i> <span>Đăng ký của tôi</span>
-                            </a>
-                        </li>
-                    </ul>
+                <li>
+                    <a href="index.php?page=topic-management" class="<?= in_array($currentPage, ['topic-management', 'topics', 'registrations']) ? 'active' : '' ?>">
+                        <i class="fa fa-book-open"></i> <span>Đề tài & Đăng ký</span>
+                    </a>
                 </li>
 
                 <li class="menu-group <?= in_array($currentPage, ['submissions', 'milestones']) ? 'open' : '' ?>">
@@ -167,6 +164,9 @@
                 <li>
                     <a href="index.php?page=notifications" class="<?= $currentPage === 'notifications' ? 'active' : '' ?>">
                         <i class="fa fa-bell"></i> <span>Thông báo</span>
+                        <?php if ($unreadNotifCount > 0): ?>
+                            <span class="badge bg-danger ms-auto rounded-pill" style="font-size: 10px; padding: 4px 8px;"><?= $unreadNotifCount ?></span>
+                        <?php endif; ?>
                     </a>
                 </li>
 
@@ -175,24 +175,10 @@
             <!-- ── LECTURER ── -->
             <?php if ($_SESSION['user']['role'] === 'lecturer'): ?>
 
-                <li class="menu-group <?= in_array($currentPage, ['topic-management', 'topics', 'registrations']) ? 'open' : '' ?>">
-                    <div class="menu-group-toggle">
-                        <i class="fa fa-book"></i>
-                        <span>Quản lý đề tài</span>
-                        <i class="fa fa-chevron-right toggle-icon"></i>
-                    </div>
-                    <ul class="submenu">
-                        <li>
-                            <a href="index.php?page=topic-management" class="<?= in_array($currentPage, ['topic-management', 'topics']) ? 'active' : '' ?>">
-                                <i class="fa fa-book-open"></i> <span>Danh sách đề tài</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="index.php?page=registrations" class="<?= $currentPage === 'registrations' ? 'active' : '' ?>">
-                                <i class="fa fa-users"></i> <span>Sinh viên đăng ký</span>
-                            </a>
-                        </li>
-                    </ul>
+                <li>
+                    <a href="index.php?page=topic-management" class="<?= in_array($currentPage, ['topic-management', 'topics', 'registrations']) ? 'active' : '' ?>">
+                        <i class="fa fa-book-open"></i> <span>Đề tài & Đăng ký</span>
+                    </a>
                 </li>
 
                 <li class="menu-group <?= in_array($currentPage, ['submissions', 'scores', 'milestones']) ? 'open' : '' ?>">
@@ -223,6 +209,9 @@
                 <li>
                     <a href="index.php?page=notifications" class="<?= $currentPage === 'notifications' ? 'active' : '' ?>">
                         <i class="fa fa-bell"></i> <span>Thông báo</span>
+                        <?php if ($unreadNotifCount > 0): ?>
+                            <span class="badge bg-danger ms-auto rounded-pill" style="font-size: 10px; padding: 4px 8px;"><?= $unreadNotifCount ?></span>
+                        <?php endif; ?>
                     </a>
                 </li>
 

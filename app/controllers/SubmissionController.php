@@ -41,7 +41,7 @@ class SubmissionController {
         $id         = (int)($_GET['id'] ?? 0);
         $submission = $this->submissionModel->find($id);
         if (!$submission) {
-            $_SESSION['error'] = "KhÃ´ng tÃ¬m tháº¥y bÃ i ná»™p.";
+            $_SESSION['error'] = "Không tìm thấy bài nộp.";
             redirect('submissions');
         }
 
@@ -49,13 +49,13 @@ class SubmissionController {
         if ($role === 'student') {
             $studentId = $_SESSION['user']['student_id'] ?? null;
             if ($submission['student_id'] != $studentId) {
-                $_SESSION['error'] = "Báº¡n khÃ´ng cÃ³ quyá»n xem bÃ i ná»™p nÃ y.";
+                $_SESSION['error'] = "Bạn không có quyền xem bài nộp này.";
                 redirect('submissions');
             }
         } elseif ($role === 'lecturer') {
             $lecturerId = $_SESSION['user']['lecturer_id'] ?? null;
             if (!$this->submissionModel->belongsToLecturer($id, $lecturerId)) {
-                $_SESSION['error'] = "Báº¡n khÃ´ng cÃ³ quyá»n xem bÃ i ná»™p nÃ y.";
+                $_SESSION['error'] = "Bạn không có quyền xem bài nộp này.";
                 redirect('submissions');
             }
         }
@@ -70,7 +70,7 @@ class SubmissionController {
         $milestoneModel = new Milestone();
         $milestones     = $milestoneModel->getAll();
 
-        // Láº¥y topic cá»§a sinh viÃªn (Ä‘Ã£ approved hoáº·c táº¥t cáº£)
+        // Lấy topic của sinh viên (đã approved hoặc tất cả)
         $db        = Database::getInstance()->getConnection();
         $studentId = $_SESSION['user']['student_id'] ?? null;
         if (!$studentId) {
@@ -82,7 +82,7 @@ class SubmissionController {
             }
         }
 
-        // Láº¥y topic sinh viÃªn Ä‘Ã£ Ä‘Äƒng kÃ½ (approved) hoáº·c táº¥t cáº£ topic available
+        // Lấy topic sinh viên đã đăng ký (approved) hoặc tất cả topic available
         if ($studentId) {
             $stmt = $db->prepare(
                 "SELECT t.id, t.title FROM topics t
@@ -117,7 +117,7 @@ class SubmissionController {
         }
 
         if (!$studentId) {
-            $_SESSION['error'] = "KhÃ´ng xÃ¡c Ä‘á»‹nh Ä‘Æ°á»£c sinh viÃªn.";
+            $_SESSION['error'] = "Không xác định được sinh viên.";
             redirect('submission-create');
         }
 
@@ -149,7 +149,7 @@ class SubmissionController {
             }
             $filename = basename($uploadResult['path']);
         } else {
-            $_SESSION['error'] = "Vui lÃ²ng chá»n file ná»™p bÃ i.";
+            $_SESSION['error'] = "Vui lòng chọn file nộp bài.";
             redirect('submission-create');
             return;
         }
@@ -170,27 +170,27 @@ class SubmissionController {
 
         LogService::log('create_submission', "Student ID: $studentId submitted for Milestone ID: $milestoneId");
 
-        // Gá»­i notification cho admin vÃ  lecturer phá»¥ trÃ¡ch
+        // Gửi notification cho admin và lecturer phụ trách
         $notifModel = new Notification();
         $db = Database::getInstance()->getConnection();
 
         $stmtS = $db->prepare("SELECT full_name FROM students WHERE id = ?");
         $stmtS->execute([$studentId]);
-        $studentName = $stmtS->fetchColumn() ?: 'Sinh viÃªn';
+        $studentName = $stmtS->fetchColumn() ?: 'Sinh viên';
 
         $stmtM = $db->prepare("SELECT title FROM milestones WHERE id = ?");
         $stmtM->execute([$milestoneId]);
         $milestoneTitle = $stmtM->fetchColumn() ?: 'milestone';
 
-        $content = "$studentName Ä‘Ã£ ná»™p bÃ i cho cá»™t má»‘c: $milestoneTitle";
+        $content = "$studentName đã nộp bài cho cột mốc: $milestoneTitle";
 
-        // Gá»­i cho admin
+        // Gửi cho admin
         $admins = $db->query("SELECT id FROM users WHERE role = 'admin'")->fetchAll(PDO::FETCH_ASSOC);
         foreach ($admins as $admin) {
             $notifModel->create(['user_id' => $admin['id'], 'content' => $content, 'type' => 'submission']);
         }
 
-        // Gá»­i cho lecturer phá»¥ trÃ¡ch (qua topic_assignments hoáº·c desired_lecturer_id)
+        // Gửi cho lecturer phụ trách (qua topic_assignments hoặc desired_lecturer_id)
         if ($topicId) {
             $stmtL = $db->prepare(
                 "SELECT u.id FROM topic_assignments ta
@@ -214,7 +214,7 @@ class SubmissionController {
             $notifModel->create(['user_id' => $lu['id'], 'content' => $content, 'type' => 'submission']);
         }
 
-        $_SESSION['success'] = "Ná»™p bÃ i thÃ nh cÃ´ng.";
+        $_SESSION['success'] = "Nộp bài thành công.";
         redirect('submissions');
     }
 
@@ -222,14 +222,14 @@ class SubmissionController {
         $role = $_SESSION['user']['role'];
         if (!in_array($role, ['admin', 'lecturer'])) {
             http_response_code(403);
-            $_SESSION['error'] = "Báº¡n khÃ´ng cÃ³ quyá»n thá»±c hiá»‡n thao tÃ¡c nÃ y.";
+            $_SESSION['error'] = "Bạn không có quyền thực hiện thao tác này.";
             redirect('submissions');
         }
 
         $id     = (int)($_GET['id']     ?? 0);
         $status = $_GET['status'] ?? '';
 
-        // Map UI status â†’ DB enum
+        // Map UI status → DB enum
         $validStatuses = ['submitted', 'late', 'revision_required'];
         $statusMap = [
             'reviewed'           => 'submitted',
@@ -248,7 +248,7 @@ class SubmissionController {
             if ($role === 'lecturer') {
                 $lecturerId = $_SESSION['user']['lecturer_id'] ?? null;
                 if (!$lecturerId || !$this->submissionModel->belongsToLecturer($id, $lecturerId)) {
-                    $_SESSION['error'] = "Báº¡n khÃ´ng cÃ³ quyá»n duyá»‡t bÃ i ná»™p nÃ y.";
+                    $_SESSION['error'] = "Bạn không có quyền duyệt bài nộp này.";
                     redirect('submissions');
                 }
             }
@@ -256,7 +256,7 @@ class SubmissionController {
             $this->submissionModel->updateStatus($id, $dbStatus);
             LogService::log('update_submission_status', "Updated submission ID: $id status to $dbStatus");
 
-            // Notification cho sinh viÃªn
+            // Notification cho sinh viên
             $db   = Database::getInstance()->getConnection();
             $stmt = $db->prepare(
                 "SELECT sub.student_id, s.user_id, m.title AS milestone_title
@@ -270,20 +270,20 @@ class SubmissionController {
 
             if ($row) {
                 $label = match($dbStatus) {
-                    'submitted'         => 'Ä‘Ã£ Ä‘Æ°á»£c xÃ¡c nháº­n âœ“',
-                    'revision_required' => 'cáº§n chá»‰nh sá»­a láº¡i âœï¸',
-                    'late'              => 'bá»‹ Ä‘Ã¡nh dáº¥u ná»™p trá»… âš ï¸',
-                    default             => 'Ä‘Ã£ Ä‘Æ°á»£c cáº­p nháº­t',
+                    'submitted'         => 'đã được xác nhận ✓',
+                    'revision_required' => 'cần chỉnh sửa lại ✏️',
+                    'late'              => 'bị đánh dấu nộp trễ ⚠️',
+                    default             => 'đã được cập nhật',
                 };
                 $notifModel = new Notification();
                 $notifModel->create([
                     'user_id' => $row['user_id'],
-                    'content' => "BÃ i ná»™p cá»™t má»‘c \"{$row['milestone_title']}\" cá»§a báº¡n $label.",
+                    'content' => "Bài nộp cột mốc \"{$row['milestone_title']}\" của bạn $label.",
                     'type'    => 'submission',
                 ]);
             }
 
-            $_SESSION['success'] = "Cáº­p nháº­t tráº¡ng thÃ¡i thÃ nh cÃ´ng.";
+            $_SESSION['success'] = "Cập nhật trạng thái thành công.";
         }
 
         redirect('submissions');
@@ -300,13 +300,13 @@ class SubmissionController {
             if ($role === 'lecturer') {
                 $lecturerId = $_SESSION['user']['lecturer_id'] ?? null;
                 if (!$lecturerId || !$this->submissionModel->belongsToLecturer($id, $lecturerId)) {
-                    $_SESSION['error'] = "Báº¡n khÃ´ng cÃ³ quyá»n xÃ³a bÃ i ná»™p nÃ y.";
+                    $_SESSION['error'] = "Bạn không có quyền xóa bài nộp này.";
                     redirect('submissions');
                 }
             }
             $this->submissionModel->delete($id);
             LogService::log('delete_submission', "Deleted submission ID: $id");
-            $_SESSION['success'] = "ÄÃ£ xÃ³a bÃ i ná»™p.";
+            $_SESSION['success'] = "Đã xóa bài nộp.";
         }
         redirect('submissions');
     }

@@ -142,9 +142,8 @@ $activeTab  = $_GET['tab'] ?? 'topics';
                         <thead>
                             <tr class="text-muted small text-uppercase">
                                 <th class="ps-2">Tiêu Đề</th>
-                                <th>Keyword</th>
                                 <th>Học Kỳ</th>
-                                <th>Trạng Thái</th>
+                                <th class="text-center">Trạng Thái</th>
                                 <?php if (in_array($role, ['admin', 'lecturer'])): ?>
                                     <th class="text-center">Thao Tác</th>
                                 <?php endif; ?>
@@ -167,17 +166,7 @@ $activeTab  = $_GET['tab'] ?? 'topics';
                                             </div>
                                         <?php endif; ?>
                                     </td>
-                                    <td>
-                                        <?php if (!empty($t['keywords'])): ?>
-                                            <?php foreach (explode(',', $t['keywords']) as $kw): ?>
-                                                <span class="badge bg-light text-secondary border me-1" style="font-size:10px;">
-                                                    <?= htmlspecialchars(trim($kw)) ?>
-                                                </span>
-                                            <?php endforeach; ?>
-                                        <?php else: ?>
-                                            <span class="text-muted small">—</span>
-                                        <?php endif; ?>
-                                    </td>
+
                                     <td>
                                         <span class="badge bg-light text-dark border" style="font-size:11px;">
                                             <i class="fa fa-calendar-alt me-1 text-muted"></i>
@@ -195,48 +184,48 @@ $activeTab  = $_GET['tab'] ?? 'topics';
                                             <?php if ($role === 'admin'): ?>
                                                 <?php if ($ts === 'pending'): ?>
                                                     <a href="index.php?page=topic-status&id=<?= $t['id'] ?>&status=approved"
-                                                       class="btn btn-sm btn-success rounded-pill px-3"
+                                                       class="btn btn-sm btn-success rounded-circle shadow-sm" data-bs-toggle="tooltip" title="Duyệt" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;"
                                                        onclick="return confirm('Duyệt đề tài này?')">
-                                                        <i class="fa fa-check me-1"></i>Duyệt
+                                                        <i class="fa fa-check"></i>
                                                     </a>
                                                     <a href="index.php?page=topic-status&id=<?= $t['id'] ?>&status=rejected"
-                                                       class="btn btn-sm btn-outline-danger rounded-pill px-3"
+                                                       class="btn btn-sm btn-outline-danger rounded-circle" data-bs-toggle="tooltip" title="Từ chối" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;"
                                                        onclick="return confirm('Từ chối đề tài này?')">
-                                                        <i class="fa fa-xmark me-1"></i>Từ chối
+                                                        <i class="fa fa-xmark"></i>
                                                     </a>
                                                 <?php elseif ($ts === 'approved'): ?>
                                                     <a href="index.php?page=topic-status&id=<?= $t['id'] ?>&status=rejected"
-                                                       class="btn btn-sm btn-outline-danger rounded-pill px-3"
+                                                       class="btn btn-sm btn-outline-danger rounded-circle" data-bs-toggle="tooltip" title="Thu hồi" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;"
                                                        onclick="return confirm('Thu hồi duyệt đề tài này?')">
-                                                        <i class="fa fa-rotate-left me-1"></i>Thu hồi
+                                                        <i class="fa fa-rotate-left"></i>
                                                     </a>
                                                 <?php else: ?>
                                                     <a href="index.php?page=topic-status&id=<?= $t['id'] ?>&status=approved"
-                                                       class="btn btn-sm btn-outline-success rounded-pill px-3"
+                                                       class="btn btn-sm btn-outline-success rounded-circle" data-bs-toggle="tooltip" title="Duyệt lại" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;"
                                                        onclick="return confirm('Duyệt lại đề tài này?')">
-                                                        <i class="fa fa-rotate-left me-1"></i>Duyệt lại
+                                                        <i class="fa fa-rotate-left"></i>
                                                     </a>
                                                 <?php endif; ?>
                                                 <a href="index.php?page=topic-edit&id=<?= $t['id'] ?>"
-                                                   class="btn btn-sm btn-outline-warning rounded-pill px-3">
+                                                   class="btn btn-sm btn-outline-warning rounded-circle" data-bs-toggle="tooltip" title="Sửa" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;">
                                                     <i class="fa fa-pen"></i>
                                                 </a>
                                                 <a href="index.php?page=topic-delete&id=<?= $t['id'] ?>"
-                                                   class="btn btn-sm btn-outline-danger rounded-pill px-3"
+                                                   class="btn btn-sm btn-outline-danger rounded-circle" data-bs-toggle="tooltip" title="Xóa" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;"
                                                    onclick="return confirm('Xác nhận xóa đề tài này?')">
                                                     <i class="fa fa-trash"></i>
                                                 </a>
                                             <?php elseif ($role === 'lecturer'): ?>
                                                 <?php if ($ts === 'pending'): ?>
                                                     <a href="index.php?page=topic-status&id=<?= $t['id'] ?>&status=approved"
-                                                       class="btn btn-sm btn-success rounded-pill px-3"
+                                                       class="btn btn-sm btn-success rounded-circle shadow-sm" data-bs-toggle="tooltip" title="Duyệt" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;"
                                                        onclick="return confirm('Duyệt đề tài này?')">
-                                                        <i class="fa fa-check me-1"></i>Duyệt
+                                                        <i class="fa fa-check"></i>
                                                     </a>
                                                     <a href="index.php?page=topic-status&id=<?= $t['id'] ?>&status=rejected"
-                                                       class="btn btn-sm btn-outline-danger rounded-pill px-3"
+                                                       class="btn btn-sm btn-outline-danger rounded-circle" data-bs-toggle="tooltip" title="Từ chối" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;"
                                                        onclick="return confirm('Từ chối đề tài này?')">
-                                                        <i class="fa fa-xmark me-1"></i>Từ chối
+                                                        <i class="fa fa-xmark"></i>
                                                     </a>
                                                 <?php else: ?>
                                                     <span class="text-muted small">Đã xử lý</span>
@@ -364,25 +353,25 @@ $activeTab  = $_GET['tab'] ?? 'topics';
                                         <?php if ($s === 'pending'): ?>
                                             <div class="d-flex justify-content-center gap-2">
                                                 <a href="index.php?page=registration-status&id=<?= $r['id'] ?>&status=approved"
-                                                   class="btn btn-sm btn-success rounded-pill px-3 shadow-sm"
+                                                   class="btn btn-sm btn-success rounded-pill px-2 shadow-sm"
                                                    onclick="return confirm('Duyệt đăng ký này?')">
                                                     <i class="fa fa-check me-1"></i>Duyệt
                                                 </a>
                                                 <a href="index.php?page=registration-status&id=<?= $r['id'] ?>&status=rejected"
-                                                   class="btn btn-sm btn-outline-danger rounded-pill px-3"
+                                                   class="btn btn-sm btn-outline-danger rounded-pill px-2"
                                                    onclick="return confirm('Từ chối đăng ký này?')">
                                                     <i class="fa fa-xmark me-1"></i>Từ chối
                                                 </a>
                                             </div>
                                         <?php elseif ($s === 'approved'): ?>
                                             <a href="index.php?page=registration-status&id=<?= $r['id'] ?>&status=rejected"
-                                               class="btn btn-sm btn-outline-danger rounded-pill px-3"
+                                               class="btn btn-sm btn-outline-danger rounded-pill px-2"
                                                onclick="return confirm('Thu hồi duyệt đăng ký này?')">
                                                 <i class="fa fa-rotate-left me-1"></i>Thu hồi
                                             </a>
                                         <?php else: ?>
                                             <a href="index.php?page=registration-status&id=<?= $r['id'] ?>&status=approved"
-                                               class="btn btn-sm btn-outline-success rounded-pill px-3"
+                                               class="btn btn-sm btn-outline-success rounded-pill px-2"
                                                onclick="return confirm('Duyệt lại đăng ký này?')">
                                                 <i class="fa fa-rotate-left me-1"></i>Duyệt lại
                                             </a>

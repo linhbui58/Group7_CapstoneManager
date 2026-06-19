@@ -148,34 +148,34 @@
                                     <?php if ($s === 'pending'): ?>
                                         <div class="d-flex justify-content-center gap-2">
                                             <a href="index.php?page=registration-status&id=<?= $r['id'] ?>&status=approved"
-                                               class="btn btn-sm btn-success rounded-pill px-3 shadow-sm"
+                                               class="btn btn-sm btn-success rounded-circle shadow-sm" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;"
                                                onclick="return confirm('Duyệt đăng ký này?')"
                                                data-bs-toggle="tooltip" title="Duyệt đăng ký">
-                                                <i class="fa fa-check me-1"></i>Duyệt
+                                                <i class="fa fa-check"></i>
                                             </a>
                                             <a href="index.php?page=registration-status&id=<?= $r['id'] ?>&status=rejected"
-                                               class="btn btn-sm btn-outline-danger rounded-pill px-3"
+                                               class="btn btn-sm btn-outline-danger rounded-circle" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;"
                                                onclick="return confirm('Từ chối đăng ký này?')"
                                                data-bs-toggle="tooltip" title="Từ chối đăng ký">
-                                                <i class="fa fa-xmark me-1"></i>Từ chối
+                                                <i class="fa fa-xmark"></i>
                                             </a>
                                         </div>
                                     <?php elseif ($s === 'approved'): ?>
                                         <div class="d-flex justify-content-center gap-2">
                                             <a href="index.php?page=registration-status&id=<?= $r['id'] ?>&status=rejected"
-                                               class="btn btn-sm btn-outline-danger rounded-pill px-3"
+                                               class="btn btn-sm btn-outline-danger rounded-circle" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;"
                                                onclick="return confirm('Thu hồi duyệt và từ chối đăng ký này?')"
                                                data-bs-toggle="tooltip" title="Thu hồi duyệt">
-                                                <i class="fa fa-rotate-left me-1"></i>Thu hồi
+                                                <i class="fa fa-rotate-left"></i>
                                             </a>
                                         </div>
                                     <?php else: ?>
                                         <div class="d-flex justify-content-center gap-2">
                                             <a href="index.php?page=registration-status&id=<?= $r['id'] ?>&status=approved"
-                                               class="btn btn-sm btn-outline-success rounded-pill px-3"
+                                               class="btn btn-sm btn-outline-success rounded-circle" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;"
                                                onclick="return confirm('Duyệt lại đăng ký này?')"
                                                data-bs-toggle="tooltip" title="Duyệt lại">
-                                                <i class="fa fa-rotate-left me-1"></i>Duyệt lại
+                                                <i class="fa fa-rotate-left"></i>
                                             </a>
                                         </div>
                                     <?php endif; ?>

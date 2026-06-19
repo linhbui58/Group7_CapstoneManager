@@ -1,10 +1,16 @@
 <?php require '../app/views/layouts/header.php'; ?>
 <?php require '../app/views/layouts/sidebar.php'; ?>
 
-<div class="main-content" style="padding: 40px; background-color: #f8fafc;">
-    <h2 class="fw-bold mb-4">Tạo Phân Công Mới</h2>
+<div class="main-content" style="padding: 40px; background-color: #f8fafc; min-height: 100vh;">
+    <div class="mx-auto" style="max-width: 800px;">
+        <div class="mb-4">
+            <a href="index.php?page=assignments" class="text-decoration-none text-muted small">
+                <i class="fa-solid fa-arrow-left me-1"></i> Trở về danh sách
+            </a>
+            <h2 class="fw-bold mt-2">Tạo Phân Công Mới</h2>
+        </div>
 
-    <div class="card border-0 shadow-sm p-4" style="border-radius: 20px; max-width: 700px;">
+        <div class="card border-0 shadow-sm p-4" style="border-radius: 20px; width: 100%;">
         <form action="index.php?page=assignment-store" method="POST"> <?= csrfField() ?>
             <div class="mb-4">
                 <label class="fw-bold small text-muted mb-2">CHỌN ĐỀ TÀI</label>
@@ -20,9 +26,7 @@
                 <label class="fw-bold small text-muted mb-2">GIẢNG VIÊN PHỤ TRÁCH</label>
                 <select name="lecturer_id" class="form-select rounded-pill px-3" required style="height: 50px;">
                     <option value="">-- Chọn giảng viên --</option>
-                    <?php foreach($lecturers as $l): ?>
-                        <option value="<?= $l['id'] ?>"><?= htmlspecialchars($l['full_name']) ?></option>
-                    <?php endforeach; ?>
+                    <!-- Sẽ được populate bằng JavaScript khi chọn đề tài -->
                 </select>
             </div>
 
@@ -31,6 +35,7 @@
                 <a href="index.php?page=assignments" class="btn btn-light rounded-pill px-4 ms-2">Hủy</a>
             </div>
         </form>
+        </div>
     </div>
 </div>
 
@@ -55,10 +60,7 @@ document.querySelector('select[name="topic_id"]').addEventListener('change', fun
     lecturerSelect.innerHTML = '<option value="">-- Chọn giảng viên --</option>';
     
     if (!topicId) {
-        // Show all if no topic selected
-        lecturers.forEach(l => {
-            lecturerSelect.innerHTML += `<option value="${l.id}">${l.name}</option>`;
-        });
+        // Không hiển thị giảng viên nào nếu chưa chọn đề tài
         return;
     }
     

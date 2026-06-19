@@ -28,12 +28,6 @@
             </div>
 
             <div class="mb-3">
-                <label class="fw-bold small text-muted">MÃ SINH VIÊN <span class="text-danger">*</span></label>
-                <input type="text" name="student_code" class="form-control rounded-pill px-3"
-                       placeholder="SV001" required>
-            </div>
-
-            <div class="mb-3">
                 <label class="fw-bold small text-muted">EMAIL <span class="text-danger">*</span></label>
                 <input type="email" name="email" class="form-control rounded-pill px-3"
                        placeholder="student@example.com" required>
@@ -43,12 +37,6 @@
                 <label class="fw-bold small text-muted">MẬT KHẨU <span class="text-danger">*</span></label>
                 <input type="password" name="password" class="form-control rounded-pill px-3"
                        placeholder="Tối thiểu 6 ký tự" required>
-            </div>
-
-            <div class="mb-4">
-                <label class="fw-bold small text-muted">SỐ ĐIỆN THOẠI</label>
-                <input type="text" name="phone" class="form-control rounded-pill px-3"
-                       placeholder="0901234567">
             </div>
 
             <div class="d-flex gap-2">

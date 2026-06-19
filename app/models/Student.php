@@ -51,15 +51,13 @@ class Student {
 
         $stmt = $this->conn->prepare(
             "INSERT INTO students
-            (user_id,student_code,full_name,phone,faculty)
-            VALUES(?,?,?,?,?)"
+            (user_id,full_name,faculty)
+            VALUES(?,?,?)"
         );
 
         $stmt->execute([
             $data['user_id'],
-            $data['student_code'],
             $data['full_name'],
-            $data['phone'] ?? '',
             $data['faculty'] ?? ''
         ]);
 
@@ -83,13 +81,11 @@ class Student {
             $userId = (int)$this->conn->lastInsertId();
 
             $stmtStu = $this->conn->prepare(
-                "INSERT INTO students (user_id, student_code, full_name, phone, faculty) VALUES (?, ?, ?, ?, ?)"
+                "INSERT INTO students (user_id, full_name, faculty) VALUES (?, ?, ?)"
             );
             $stmtStu->execute([
                 $userId,
-                $data['student_code'],
                 $data['full_name'],
-                $data['phone'] ?? '',
                 $data['faculty'] ?? ''
             ]);
 
@@ -101,22 +97,16 @@ class Student {
         }
     }
 
-    public function update($id,$data){
-
+    public function update($id, $data){
         $stmt = $this->conn->prepare(
             "UPDATE students
-            SET student_code=?,
-                full_name=?,
-                phone=?,
-                faculty=?
-            WHERE id=?"
+             SET full_name=?, faculty=?
+             WHERE id=?"
         );
 
         return $stmt->execute([
-            $data['student_code'],
             $data['full_name'],
-            $data['phone'],
-            $data['faculty'],
+            $data['faculty'] ?? '',
             $id
         ]);
     }

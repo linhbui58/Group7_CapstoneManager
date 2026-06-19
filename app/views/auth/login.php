@@ -73,7 +73,7 @@
             position: absolute;
             left: 60px;
             top: 20px;
-            width: 620px;
+            width: 750px;
             z-index: 5;
             display: flex; flex-direction: column;
         }
@@ -86,43 +86,43 @@
         }
 
         .ap-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
-        .ap-brand img { height: 50px; object-fit: contain; display: block; background: #ffffff; padding: 4px 8px; border-radius: 8px; }
+        .ap-brand img { height: 50px; object-fit: contain; display: block; }
         .ap-brand-text { display: flex; flex-direction: column; }
-        .ap-brand-text h1 { font-size: 22px; font-weight: 800; color: #ffffff; letter-spacing: -0.5px; line-height: 1.2; }
-        .ap-brand-text span { font-size: 11px; font-weight: 600; color: #38bdf8; text-transform: uppercase; letter-spacing: 1.5px; }
+        .ap-brand-text h1 { font-size: 28px; font-weight: 800; color: #ffffff; letter-spacing: -0.5px; line-height: 1.2; }
+        .ap-brand-text span { font-size: 13px; font-weight: 600; color: #38bdf8; text-transform: uppercase; letter-spacing: 1.5px; }
 
-        .hero-title { font-size: 42px; font-weight: 800; color: #ffffff; line-height: 1.15; letter-spacing: -1px; margin-bottom: 16px; }
+        .hero-title { font-size: 46px; font-weight: 800; color: #ffffff; line-height: 1.15; letter-spacing: -1px; margin-bottom: 24px; white-space: nowrap; }
         .hero-title .highlight { background: linear-gradient(135deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .hero-desc { font-size: 15px; color: rgba(255, 255, 255, 0.7); line-height: 1.6; max-width: 520px; margin-bottom: 24px; }
+        .hero-desc { font-size: 18px; color: rgba(255, 255, 255, 0.7); line-height: 1.6; max-width: 620px; margin-bottom: 32px; }
 
         /* ── FEATURES ── */
-        .ap-features { display: flex; flex-direction: column; gap: 10px; max-width: 520px; margin-bottom: 20px; }
-        .ap-feature-card { display: flex; align-items: flex-start; gap: 14px; padding: 14px 20px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 14px; transition: all 0.3s ease; animation: fadeIn 0.8s ease-out forwards; opacity: 0; }
+        .ap-features { display: flex; flex-direction: column; gap: 16px; max-width: 620px; margin-bottom: 30px; }
+        .ap-feature-card { display: flex; align-items: flex-start; gap: 18px; padding: 20px 24px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; transition: all 0.3s ease; animation: fadeIn 0.8s ease-out forwards; opacity: 0; }
         .ap-feature-card:nth-child(1) { animation-delay: 0.1s; }
         .ap-feature-card:nth-child(2) { animation-delay: 0.15s; }
         .ap-feature-card:nth-child(3) { animation-delay: 0.2s; }
         .ap-feature-card:nth-child(4) { animation-delay: 0.25s; }
         .ap-feature-card:hover { background: rgba(255, 255, 255, 0.08); transform: translateX(5px); border-color: rgba(255, 255, 255, 0.1); }
-        .ap-feature-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+        .ap-feature-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
         .ap-feature-card:nth-child(1) .ap-feature-icon { background: rgba(56, 189, 248, 0.15); color: #38bdf8; }
         .ap-feature-card:nth-child(2) .ap-feature-icon { background: rgba(129, 140, 248, 0.15); color: #818cf8; }
         .ap-feature-card:nth-child(3) .ap-feature-icon { background: rgba(52, 211, 153, 0.15); color: #34d399; }
         .ap-feature-card:nth-child(4) .ap-feature-icon { background: rgba(250, 204, 21, 0.15); color: #facc15; }
-        .ap-feature-text h4 { font-size: 14px; font-weight: 700; color: #ffffff; margin-bottom: 2px; }
-        .ap-feature-text p { font-size: 12px; color: rgba(255, 255, 255, 0.5); line-height: 1.4; }
+        .ap-feature-text h4 { font-size: 17px; font-weight: 700; color: #ffffff; margin-bottom: 4px; }
+        .ap-feature-text p { font-size: 14px; color: rgba(255, 255, 255, 0.5); line-height: 1.5; }
 
         /* ── STATS SECTION ── */
         .stats-section {
-            width: 100%; max-width: 520px;
-            margin-top: 20px;
+            width: 100%; max-width: 620px;
+            margin-top: -10px;
             position: relative;
             z-index: 5;
-            display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; background: rgba(0, 0, 0, 0.35); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; animation: fadeIn 0.8s ease-out 0.3s forwards; opacity: 0;
+            display: flex; align-items: center; justify-content: space-between; padding: 24px 32px; background: rgba(0, 0, 0, 0.35); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; animation: fadeIn 0.8s ease-out 0.3s forwards; opacity: 0;
         }
-        .ap-stat { display: flex; flex-direction: column; align-items: center; gap: 4px; position: relative; flex: 1; }
+        .ap-stat { display: flex; flex-direction: column; align-items: center; gap: 8px; position: relative; flex: 1; }
         .ap-stat:not(:last-child)::after { content: ''; position: absolute; right: 0; top: 10%; height: 80%; width: 1px; background: rgba(255, 255, 255, 0.15); }
-        .ap-stat-num { font-size: 22px; font-weight: 800; color: #ffffff; line-height: 1; }
-        .ap-stat-label { font-size: 10px; font-weight: 600; color: rgba(255, 255, 255, 0.65); letter-spacing: 1px; text-transform: uppercase; }
+        .ap-stat-num { font-size: 32px; font-weight: 800; color: #ffffff; line-height: 1; }
+        .ap-stat-label { font-size: 13px; font-weight: 600; color: rgba(255, 255, 255, 0.65); letter-spacing: 1px; text-transform: uppercase; }
 
         /* ── LOGIN CARD ── */
         .auth-card {
@@ -209,13 +209,13 @@
                 <div class="ap-brand">
                     <img src="assets/images/logo-vnuis.png" alt="VNU-IS Logo">
                     <div class="ap-brand-text">
-                        <h1>Capstone Manager</h1>
-                        <span>IS-VNU Platform</span>
+                        <h1>INTERNATIONAL SCHOOL</h1>
+                        <span>VIETNAM NATIONAL UNIVERSITY, HA NOI</span>
                     </div>
                 </div>
 
                 <!-- TEXT -->
-                <h2 class="hero-title">Quản lý đề án<br><span class="highlight">thông minh hơn.</span></h2>
+                <h2 class="hero-title">NỀN TẢNG<br><span class="highlight">QUẢN LÝ ĐỒ ÁN TỐT NGHIỆP</span></h2>
                 <p class="hero-desc">Hệ thống hỗ trợ sinh viên IS-VNU tối ưu hóa quy trình thực hiện Capstone Project từ đăng ký đến nghiệm thu.</p>
 
                 <!-- FEATURE CARDS -->
@@ -321,12 +321,7 @@
         </div>
     </div>
 
-    <!-- WAVE -->
-    <div class="auth-wave">
-        <svg viewBox="0 0 1440 45" preserveAspectRatio="none">
-            <path d="M0,45 L1440,45 L1440,0 C1140,45 840,45 720,22.5 C600,0 300,0 0,0 L0,45 Z" fill="#ffffff"></path>
-        </svg>
-    </div>
+
 </div>
 
 </body>

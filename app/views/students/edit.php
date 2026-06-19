@@ -6,7 +6,7 @@
         <a href="index.php?page=students" class="text-decoration-none text-muted small fw-bold">
             <i class="fa-solid fa-arrow-left me-1"></i> QUAY Láº I
         </a>
-        <h2 class="fw-bold mt-2" style="color:#0f172a">Chá»‰nh sá»­a sinh viÃªn</h2>
+        <h2 class="fw-bold mt-2" style="color:#0f172a">Chỉnh sửa sinh viên</h2>
     </div>
 
     <?php if (isset($_SESSION['error'])): ?>
@@ -18,21 +18,9 @@
         <form method="POST" action="index.php?page=student-update&id=<?= $student['id'] ?>"> <?= csrfField() ?>
 
             <div class="mb-3">
-                <label class="fw-bold small text-muted">MÃƒ SINH VIÃŠN</label>
-                <input type="text" name="student_code" class="form-control rounded-pill px-3"
-                       value="<?= htmlspecialchars($student['student_code'] ?? '') ?>" required>
-            </div>
-
-            <div class="mb-3">
-                <label class="fw-bold small text-muted">Há»Œ VÃ€ TÃŠN</label>
+                <label class="fw-bold small text-muted">HỌ VÀ TÊN</label>
                 <input type="text" name="full_name" class="form-control rounded-pill px-3"
                        value="<?= htmlspecialchars($student['full_name']) ?>" required>
-            </div>
-
-            <div class="mb-3">
-                <label class="fw-bold small text-muted">Sá» ÄIá»†N THOáº I</label>
-                <input type="text" name="phone" class="form-control rounded-pill px-3"
-                       value="<?= htmlspecialchars($student['phone'] ?? '') ?>">
             </div>
 
             <div class="mb-4">

@@ -20,9 +20,10 @@
                     <label class="form-label-custom">Chọn sinh viên &amp; bài nộp</label>
                     <select name="submission_id" class="form-select input-elegant" required>
                         <option value="">-- Chọn bài nộp --</option>
+                        <?php $selectedSubId = $_GET['submission_id'] ?? ''; ?>
                         <?php if(!empty($submissions)): ?>
                             <?php foreach($submissions as $sub): ?>
-                                <option value="<?= $sub['id'] ?>">
+                                <option value="<?= $sub['id'] ?>" <?= ($sub['id'] == $selectedSubId) ? 'selected' : '' ?>>
                                     <?= htmlspecialchars($sub['student_name']) ?> — Đề tài: <?= htmlspecialchars($sub['topic_title']) ?>
                                 </option>
                             <?php endforeach; ?>

@@ -220,6 +220,12 @@
                                         </a>
                                     <?php endif; ?>
                                     <?php if (in_array($_SESSION['user']['role'], ['admin','lecturer'])): ?>
+                                        <a href="index.php?page=score-create&submission_id=<?= $sub['id'] ?>"
+                                           class="action-btn text-white"
+                                           style="background:#6366f1"
+                                           title="Chấm điểm bài nộp">
+                                            <i class="fa-solid fa-star"></i>
+                                        </a>
                                         <?php if ($status !== 'submitted'): ?>
                                             <a href="index.php?page=submission-status&id=<?= $sub['id'] ?>&status=submitted"
                                                class="action-btn text-white"

@@ -67,13 +67,12 @@ class Lecturer {
             }
 
             $stmtLec = $this->conn->prepare(
-                "INSERT INTO lecturers (user_id, full_name, expertise, phone, faculty) VALUES (?, ?, ?, ?, ?)"
+                "INSERT INTO lecturers (user_id, full_name, expertise, faculty) VALUES (?, ?, ?, ?)"
             );
             $stmtLec->execute([
                 $userId,
                 $data['full_name'],
                 $data['expertise'] ?? '',
-                $data['phone'] ?? '',
                 $data['faculty'] ?? ''
             ]);
 
@@ -91,12 +90,11 @@ class Lecturer {
 
     public function update($id, $data) {
         $stmt = $this->conn->prepare(
-            "UPDATE lecturers SET full_name = ?, expertise = ?, phone = ?, faculty = ? WHERE id = ?"
+            "UPDATE lecturers SET full_name = ?, expertise = ?, faculty = ? WHERE id = ?"
         );
         return $stmt->execute([
             $data['full_name'], 
             $data['expertise'] ?? '', 
-            $data['phone'] ?? '', 
             $data['faculty'] ?? '', 
             $id
         ]);

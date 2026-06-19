@@ -1,15 +1,21 @@
 <?php require '../app/views/layouts/header.php'; ?>
 <?php require '../app/views/layouts/sidebar.php'; ?>
 
-<div class="main-content" style="padding: 40px; background-color: #f8fafc;">
-    <h2 class="fw-bold mb-4">Edit Assignment</h2>
+<div class="main-content" style="padding: 40px; background-color: #f8fafc; min-height: 100vh;">
+    <div class="mx-auto" style="max-width: 800px;">
+        <div class="mb-4">
+            <a href="index.php?page=assignments" class="text-decoration-none text-muted small">
+                <i class="fa-solid fa-arrow-left me-1"></i> Trở về danh sách
+            </a>
+            <h2 class="fw-bold mt-2">Cập Nhật Phân Công</h2>
+        </div>
     
     <?php if(isset($_SESSION['error'])): ?>
         <div class="alert alert-danger mb-4"><?= htmlspecialchars($_SESSION['error']) ?></div>
         <?php unset($_SESSION['error']); ?>
     <?php endif; ?>
 
-    <div class="card border-0 shadow-sm p-4" style="border-radius: 20px; max-width: 700px;">
+    <div class="card border-0 shadow-sm p-4" style="border-radius: 20px; width: 100%;">
         <form action="index.php?page=assignment-update&id=<?= $assignment['id'] ?>" method="POST">
             <div class="mb-4">
                 <label class="fw-bold small text-muted mb-2">CHỌN ĐỀ TÀI</label>
@@ -27,11 +33,7 @@
                 <label class="fw-bold small text-muted mb-2">GIẢNG VIÊN PHỤ TRÁCH</label>
                 <select name="lecturer_id" class="form-select rounded-pill px-3" required style="height: 50px;">
                     <option value="">-- Chọn giảng viên --</option>
-                    <?php foreach($lecturers as $l): ?>
-                        <option value="<?= $l['id'] ?>" <?= $l['id'] == $assignment['lecturer_id'] ? 'selected' : '' ?>>
-                            <?= htmlspecialchars($l['full_name']) ?>
-                        </option>
-                    <?php endforeach; ?>
+                    <!-- Sẽ được populate bằng JavaScript dựa trên đề tài đang chọn -->
                 </select>
             </div>
 
@@ -40,6 +42,7 @@
                 <a href="index.php?page=assignments" class="btn btn-light rounded-pill px-4 ms-2">Hủy</a>
             </div>
         </form>
+        </div>
     </div>
 </div>
 
@@ -58,36 +61,31 @@ const lecturers = [
     <?php endforeach; ?>
 ];
 
-const topicSelect = document.querySelector('select[name="topic_id"]');
-const lecturerSelect = document.querySelector('select[name="lecturer_id"]');
-const currentLecturerId = "<?= $assignment['lecturer_id'] ?>";
+const currentLecturerId = "<?= htmlspecialchars($assignment['lecturer_id'] ?? '') ?>";
 
-function filterLecturers() {
-    const topicId = topicSelect.value;
-    // Save currently selected lecturer to restore if possible
-    const selectedLecturer = lecturerSelect.value || currentLecturerId;
-    
+function populateLecturers(topicId, selectedLecturerId = '') {
+    const lecturerSelect = document.querySelector('select[name="lecturer_id"]');
     lecturerSelect.innerHTML = '<option value="">-- Chọn giảng viên --</option>';
     
     if (!topicId) {
-        lecturers.forEach(l => {
-            const isSelected = (l.id == selectedLecturer) ? 'selected' : '';
-            lecturerSelect.innerHTML += `<option value="${l.id}" ${isSelected}>${l.name}</option>`;
-        });
-        return;
+        return; // Không hiện giảng viên nếu chưa chọn đề tài
     }
     
     const requiredFaculty = topicFaculties[topicId];
     
     lecturers.forEach(l => {
         if (!requiredFaculty || l.faculty === requiredFaculty) {
-            const isSelected = (l.id == selectedLecturer) ? 'selected' : '';
-            lecturerSelect.innerHTML += `<option value="${l.id}" ${isSelected}>${l.name}</option>`;
+            let selectedAttr = (l.id === selectedLecturerId) ? 'selected' : '';
+            lecturerSelect.innerHTML += `<option value="${l.id}" ${selectedAttr}>${l.name}</option>`;
         }
     });
 }
 
-topicSelect.addEventListener('change', filterLecturers);
-// Run once on load to filter based on initial topic
-filterLecturers();
+document.querySelector('select[name="topic_id"]').addEventListener('change', function() {
+    populateLecturers(this.value);
+});
+
+// Chạy ngay khi load trang để hiển thị giảng viên hiện tại
+const initialTopicId = document.querySelector('select[name="topic_id"]').value;
+populateLecturers(initialTopicId, currentLecturerId);
 </script>

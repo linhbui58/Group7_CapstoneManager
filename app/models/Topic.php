@@ -15,13 +15,24 @@ class Topic {
     }
 
     // Chỉ lấy topic có status = 'approved' (dùng cho student đăng ký)
-    public function getAvailable(){
+    // Cập nhật: Sinh viên chỉ được thấy đề tài do chính mình tạo ra
+    public function getAvailable($userId = null){
         $sql = "SELECT topics.*, semesters.name AS semester
                 FROM topics
                 JOIN semesters ON semesters.id = topics.semester_id
-                WHERE topics.status = 'approved'
-                ORDER BY topics.id DESC";
-        return $this->conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+                WHERE topics.status = 'approved'";
+        $params = [];
+        
+        if ($userId) {
+            $sql .= " AND topics.created_by = ?";
+            $params[] = $userId;
+        }
+        
+        $sql .= " ORDER BY topics.id DESC";
+        
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function find($id){
@@ -154,6 +165,23 @@ class Topic {
                 FROM topics t
                 LEFT JOIN topic_registrations tr ON t.id = tr.topic_id AND tr.status = 'approved'
                 LEFT JOIN students s ON tr.student_id = s.id
+                ORDER BY t.id DESC";
+        return $this->conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getTopicsNeedingAssignment() {
+        // Chỉ lấy những đề tài chưa được gán giảng viên hướng dẫn bởi sinh viên
+        // Tức là bỏ qua các đề tài có registration (pending/approved) mà có desired_lecturer_id
+        $sql = "SELECT t.*, s.faculty as student_faculty
+                FROM topics t
+                LEFT JOIN topic_registrations tr ON t.id = tr.topic_id AND tr.status IN ('pending', 'approved')
+                LEFT JOIN students s ON tr.student_id = s.id
+                WHERE t.id NOT IN (
+                    SELECT topic_id 
+                    FROM topic_registrations 
+                    WHERE desired_lecturer_id IS NOT NULL 
+                      AND status IN ('pending', 'approved')
+                )
                 ORDER BY t.id DESC";
         return $this->conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }

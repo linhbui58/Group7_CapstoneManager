@@ -26,10 +26,6 @@
                     </select>
                 </div>
             </div>
-            <div class="mb-3">
-                <label class="fw-bold small text-muted">TỪ KHÓA</label>
-                <input type="text" name="keywords" class="form-control rounded-pill px-3" value="<?= htmlspecialchars($topic['keywords']) ?>">
-            </div>
             <div class="mb-4">
                 <label class="fw-bold small text-muted">MÔ TẢ</label>
                 <textarea name="description" class="form-control" rows="4" style="border-radius: 15px;"><?= htmlspecialchars($topic['description']) ?></textarea>

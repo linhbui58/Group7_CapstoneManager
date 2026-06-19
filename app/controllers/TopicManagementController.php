@@ -2,7 +2,7 @@
 /**
  * TopicManagementController
  * 
- * Gá»™p Topics + Registrations vÃ o 1 trang vá»›i tab switching
+ * Gộp Topics + Registrations vào 1 trang với tab switching
  */
 class TopicManagementController {
 
@@ -20,12 +20,12 @@ class TopicManagementController {
     }
 
     /**
-     * Trang chÃ­nh: hiá»ƒn thá»‹ cáº£ Topics vÃ  Registrations trong 1 view vá»›i tabs
+     * Trang chính: hiển thị cả Topics và Registrations trong 1 view với tabs
      */
     public function index() {
         $role = $_SESSION['user']['role'] ?? '';
 
-        // â”€â”€ TOPICS DATA â”€â”€
+        // —— TOPICS DATA ——
         $search     = trim($_GET['search']      ?? '');
         $filterSem  = (int)($_GET['semester_id'] ?? 0);
         $filterStat = trim($_GET['status']       ?? '');

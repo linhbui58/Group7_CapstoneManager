@@ -10,10 +10,10 @@
             <i class="fa-solid fa-arrow-left me-1"></i> Trở về danh sách
         </a>
         <h2 class="fw-bold mt-2">
-            <?= $role === 'admin' ? 'Thêm Đề Tài Mới' : 'Tạo & Đăng Ký Đề Tài' ?>
+            <?= $role === 'admin' ? 'Thêm Đề Tài Mới' : 'Đề Xuất Đề Tài Mới' ?>
         </h2>
         <?php if ($role === 'student'): ?>
-            <p class="text-muted small">Mô tả đề tài bạn muốn thực hiện và chọn giảng viên hướng dẫn mong muốn.</p>
+            <p class="text-muted small">Đóng góp ý tưởng đề tài mới của bạn. Sau khi được duyệt, đề tài sẽ xuất hiện trong Ngân hàng đề tài để bạn có thể đăng ký.</p>
         <?php endif; ?>
     </div>
 
@@ -57,26 +57,6 @@
                     </select>
                 </div>
                 <?php endif; ?>
-            </div>
-
-            <?php if ($role === 'student'): ?>
-            <!-- Giảng viên mong muốn (student only) -->
-            <div class="mb-3">
-                <label class="fw-bold small text-muted">GIẢNG VIÊN HƯỚNG DẪN MONG MUỐN</label>
-                <select name="desired_lecturer_id" class="form-select rounded-pill px-3">
-                    <option value="">-- Không chỉ định --</option>
-                    <?php foreach ($lecturers as $l): ?>
-                        <option value="<?= $l['id'] ?>"><?= htmlspecialchars($l['full_name']) ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            <?php endif; ?>
-
-            <!-- Keywords -->
-            <div class="mb-3">
-                <label class="fw-bold small text-muted">TỪ KHÓA</label>
-                <input type="text" name="keywords" class="form-control rounded-pill px-3"
-                       placeholder="AI, Machine Learning, Web...">
             </div>
 
             <!-- Mô tả -->

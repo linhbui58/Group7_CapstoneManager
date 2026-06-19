@@ -14,10 +14,9 @@
             <?php
                 $rows = [
                     ['ID',           '#' . $student['id']],
-                    ['Mã sinh viên', $student['student_code'] ?? '—'],
+                    ['Khoa', $student['faculty'] ?? '—'],
                     ['Họ và tên',    $student['full_name']],
                     ['Email',        $student['email'] ?? '—'],
-                    ['Số điện thoại',$student['phone'] ?? '—'],
                 ];
             ?>
             <?php foreach ($rows as [$label, $value]): ?>

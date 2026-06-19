@@ -5,7 +5,7 @@ class LogController {
 
     public function __construct() {
         AuthMiddleware::check();
-        // Chá»‰ Admin má»›i cÃ³ quyá»n xem Log
+        // Chỉ Admin mới có quyền xem Log
         if ($_SESSION['user']['role'] !== 'admin') {
             header("Location: index.php?page=dashboard");
             exit();

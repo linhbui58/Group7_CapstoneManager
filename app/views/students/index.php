@@ -55,8 +55,7 @@
                     <tr class="text-muted small" style="font-size:11px;text-transform:uppercase;letter-spacing:.5px">
                         <th class="ps-4">#</th>
                         <th>Sinh viên</th>
-                        <th>Mã SV</th>
-                        <th>Số điện thoại</th>
+
                         <?php if ($_SESSION['user']['role'] === 'admin'): ?>
                             <th class="text-end pe-4">Thao tác</th>
                         <?php endif; ?>
@@ -78,8 +77,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td class="fw-semibold small" style="color:#334155"><?= htmlspecialchars($s['student_code'] ?? '—') ?></td>
-                                <td class="text-muted small"><?= htmlspecialchars($s['phone'] ?? '—') ?></td>
+
                                 <?php if ($_SESSION['user']['role'] === 'admin'): ?>
                                     <td class="text-end pe-4">
                                         <div class="d-flex justify-content-end gap-1">
@@ -102,7 +100,7 @@
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="5" class="text-center py-5 text-muted">
+                            <td colspan="3" class="text-center py-5 text-muted">
                                 <i class="fa-solid fa-user-graduate fa-2x mb-2 d-block" style="opacity:.3"></i>
                                 Chưa có sinh viên nào.
                             </td>

@@ -1,0 +1,16 @@
+Array
+(
+    [user_id] => 12
+    [student] => Array
+        (
+            [id] => 7
+            [user_id] => 12
+            [student_code] => 
+            [full_name] => Linh Nguyễn
+            [phone] => 
+            [faculty] => Khoa Ngôn ngữ
+            [created_at] => 2026-06-18 10:50:42
+        )
+
+)
+Used getByFaculty: 1

@@ -105,9 +105,8 @@
                     <thead>
                         <tr class="text-muted small">
                             <th class="ps-3">TIÊU ĐỀ</th>
-                            <th>KEYWORD</th>
                             <th>HỌC KỲ</th>
-                            <th>TRẠNG THÁI</th>
+                            <th class="text-center">TRẠNG THÁI</th>
                             <?php if (in_array($role, ['admin', 'lecturer'])): ?>
                                 <th class="text-end pe-3">THAO TÁC</th>
                             <?php endif; ?>
@@ -124,17 +123,6 @@
                                              style="max-width:300px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
                                             <?= htmlspecialchars($t['description']) ?>
                                         </div>
-                                    <?php endif; ?>
-                                </td>
-
-                                <!-- Keywords -->
-                                <td>
-                                    <?php if (!empty($t['keywords'])): ?>
-                                        <span class="badge bg-light text-secondary border" style="font-size:11px;">
-                                            <?= htmlspecialchars($t['keywords']) ?>
-                                        </span>
-                                    <?php else: ?>
-                                        <span class="text-muted small">—</span>
                                     <?php endif; ?>
                                 </td>
 
