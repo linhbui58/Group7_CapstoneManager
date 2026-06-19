@@ -9,55 +9,6 @@ class RegistrationController {
     }
 
     /* ──────────────────────────────────────────────────────────
-     | LIST
-     | Admin / Lecturer : xem tất cả
-     | Student          : chỉ xem của mình
-     ────────────────────────────────────────────────────────── */
-    public function index() {
-        $role = $_SESSION['user']['role'] ?? '';
-
-        if ($role === 'admin') {
-            $registrations = $this->regModel->getAll();
-        } elseif ($role === 'lecturer') {
-            // Lecturer chỉ thấy đăng ký của sinh viên chọn mình
-            $lecturerId = $_SESSION['user']['lecturer_id'] ?? null;
-
-            // Nếu session chưa có lecturer_id, thử lấy lại từ DB
-            if (!$lecturerId) {
-                $lecturerModel = new Lecturer();
-                $lecturer = $lecturerModel->findByUserId($_SESSION['user']['id']);
-                if ($lecturer) {
-                    $_SESSION['user']['lecturer_id'] = $lecturer['id'];
-                    $lecturerId = $lecturer['id'];
-                }
-            }
-
-            $registrations = $lecturerId
-                ? $this->regModel->getByLecturer($lecturerId)
-                : [];
-        } elseif ($role === 'student') {
-            $studentId = $_SESSION['user']['student_id'] ?? null;
-
-            // Nếu session chưa có student_id, thử lấy lại từ DB
-            if (!$studentId) {
-                $studentModel = new Student();
-                $student = $studentModel->findByUserId($_SESSION['user']['id']);
-                if ($student) {
-                    $_SESSION['user']['student_id'] = $student['id'];
-                    $studentId = $student['id'];
-                }
-            }
-
-            $registrations = $studentId
-                ? $this->regModel->getByStudent($studentId)
-                : [];
-        } else {
-            $registrations = [];
-        }
-
-        require '../app/views/registrations/index.php';
-    }
-
     /* ──────────────────────────────────────────────────────────
      | CREATE FORM  (student only)
      ────────────────────────────────────────────────────────── */

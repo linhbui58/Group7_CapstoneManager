@@ -252,9 +252,7 @@ switch ($page) {
     | TOPICS
     |--------------------------------------------------------------------------
     */
-    case 'topics':
-        (new TopicController())->index();
-        break;
+
 
     case 'topic-create':
         (new TopicController())->create();
@@ -285,9 +283,7 @@ switch ($page) {
     | REGISTRATIONS
     |--------------------------------------------------------------------------
     */
-    case 'registrations':
-        (new RegistrationController())->index();
-        break;
+
 
     case 'registration-create':
         (new RegistrationController())->create();

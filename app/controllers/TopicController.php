@@ -13,35 +13,6 @@ class TopicController {
     }
 
     /* ──────────────────────────────────────────────────────────
-     | LIST
-     | Admin  : tất cả đề tài + filter + search
-     | Student: tất cả đề tài (chỉ xem, không sửa/xóa)
-     | Lecturer: đề tài sinh viên đăng ký chọn mình
-     ────────────────────────────────────────────────────────── */
-    public function index() {
-        $role = $_SESSION['user']['role'];
-
-        // Filters từ GET
-        $search     = trim($_GET['search']      ?? '');
-        $filterSem  = (int)($_GET['semester_id'] ?? 0);
-        $filterStat = trim($_GET['status']       ?? '');
-
-        if ($role === 'admin') {
-            $topics = $this->topicModel->search($search, $filterSem, $filterStat);
-        } elseif ($role === 'lecturer') {
-            $lecturerId = $_SESSION['user']['lecturer_id'] ?? null;
-            $topics = $this->topicModel->getByLecturer($lecturerId, $search, $filterSem, $filterStat);
-        } else {
-            // student: chỉ xem đề tài đã được duyệt (approved)
-            // Nếu student tự filter status thì vẫn giới hạn trong approved
-            $topics = $this->topicModel->search($search, $filterSem, 'approved');
-        }
-
-        $semesters = $this->semesterModel->getAll();
-        require '../app/views/topics/index.php';
-    }
-
-    /* ──────────────────────────────────────────────────────────
      | CREATE FORM
      | Admin  : tạo đề tài (có status field)
      | Student: tạo đề tài (status tự động = pending)
@@ -50,7 +21,7 @@ class TopicController {
     public function create() {
         $role = $_SESSION['user']['role'];
         if ($role === 'lecturer') {
-            header("Location: index.php?page=topics");
+            header("Location: index.php?page=topic-management");
             exit();
         }
         $semesters = $this->semesterModel->getAll();
