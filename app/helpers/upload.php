@@ -42,9 +42,8 @@ function uploadFile($file, $folder = 'general'){
 
     $uploadPath = "../public/assets/uploads/" . $folder . "/";
 
-    if(!file_exists($uploadPath)){
-
-        mkdir($uploadPath, 0777, true);
+    if (!is_dir($uploadPath)) {
+        mkdir($uploadPath, 0755, true);
     }
 
     $destination = $uploadPath . $newName;

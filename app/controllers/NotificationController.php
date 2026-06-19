@@ -32,6 +32,11 @@ class NotificationController {
     }
 
     public function read() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            exit("Method Not Allowed");
+        }
+        verifyCSRF();
         $id = (int)($_GET['id'] ?? 0);
         if ($id) {
             $this->notificationModel->markRead($id);
@@ -40,12 +45,22 @@ class NotificationController {
     }
 
     public function readAll() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            exit("Method Not Allowed");
+        }
+        verifyCSRF();
         $userId = $_SESSION['user']['id'];
         $this->notificationModel->markAllRead($userId);
         redirect('notifications');
     }
 
     public function delete() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            exit("Method Not Allowed");
+        }
+        verifyCSRF();
         $id = (int)($_GET['id'] ?? 0);
         if ($id) {
             $this->notificationModel->delete($id);

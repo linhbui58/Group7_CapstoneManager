@@ -89,10 +89,12 @@
                                                class="btn-action bg-warning bg-opacity-10 text-warning" title="Sửa">
                                                 <i class="fa-solid fa-pen-to-square"></i>
                                             </a>
-                                            <a href="index.php?page=student-delete&id=<?= $s['id'] ?>"
-                                               class="btn-action btn-delete bg-danger bg-opacity-10 text-danger" title="Xóa">
-                                                <i class="fa-solid fa-trash-can"></i>
-                                            </a>
+                                            <form action="index.php?page=student-delete&id=<?= $s['id'] ?>" method="POST" class="d-inline" onsubmit="return confirm('Bạn có chắc muốn xóa?');">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+    <button type="submit" class="btn-action btn-delete bg-danger bg-opacity-10 text-danger border-0" title="Xóa">
+        <i class="fa-solid fa-trash-can"></i>
+    </button>
+</form>
                                         </div>
                                     </td>
                                 <?php endif; ?>

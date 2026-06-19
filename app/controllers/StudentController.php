@@ -10,16 +10,18 @@ class StudentController {
     }
 
     public function index() {
+        RoleMiddleware::check(['admin']);
         $students = $this->studentModel->getAll();
         require '../app/views/students/index.php';
     }
 
     public function show() {
+        RoleMiddleware::check(['admin', 'student']);
         $id      = (int)($_GET['id'] ?? 0);
         $role    = $_SESSION['user']['role'] ?? '';
         $studentId = $_SESSION['user']['student_id'] ?? null;
         
-        if ($role === 'student' && $id !== $studentId) {
+        if ($role === 'student' && $id !== (int)$studentId) {
             abort(403, "Bạn không có quyền xem thông tin của sinh viên này.");
         }
 
@@ -28,10 +30,12 @@ class StudentController {
     }
 
     public function create() {
+        RoleMiddleware::check(['admin']);
         require '../app/views/students/create.php';
     }
 
     public function store() {
+        RoleMiddleware::check(['admin']);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             verifyCSRF();
             // Kiểm tra email trùng
@@ -52,11 +56,12 @@ class StudentController {
     }
 
     public function edit() {
+        RoleMiddleware::check(['admin', 'student']);
         $id      = (int)($_GET['id'] ?? 0);
         $role    = $_SESSION['user']['role'] ?? '';
         $studentId = $_SESSION['user']['student_id'] ?? null;
         
-        if ($role === 'student' && $id !== $studentId) {
+        if ($role === 'student' && $id !== (int)$studentId) {
             abort(403, "Bạn không có quyền chỉnh sửa thông tin của sinh viên này.");
         }
 
@@ -65,7 +70,15 @@ class StudentController {
     }
 
     public function update() {
+        RoleMiddleware::check(['admin', 'student']);
         $id = (int)($_GET['id'] ?? 0);
+        $role = $_SESSION['user']['role'] ?? '';
+        $studentId = $_SESSION['user']['student_id'] ?? null;
+        
+        if ($role === 'student' && $id !== (int)$studentId) {
+            abort(403, "Bạn không có quyền chỉnh sửa thông tin của sinh viên này.");
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $id) {
             verifyCSRF();
             $this->studentModel->update($id, $_POST);
@@ -75,6 +88,12 @@ class StudentController {
     }
 
     public function delete() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            exit("Method Not Allowed");
+        }
+        verifyCSRF();
+        RoleMiddleware::check(['admin']);
         $id = (int)($_GET['id'] ?? 0);
         if ($id) {
             // Xóa user -> cascade xóa student

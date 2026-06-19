@@ -83,6 +83,7 @@ class SubmissionController {
         }
 
         // Lấy topic sinh viên đã đăng ký (approved) hoặc tất cả topic available
+        $topics = [];
         if ($studentId) {
             $stmt = $db->prepare(
                 "SELECT t.id, t.title FROM topics t
@@ -101,7 +102,6 @@ class SubmissionController {
 
     public function store() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            verifyCSRF();
             redirect('submission-create');
         }
         verifyCSRF();
@@ -219,6 +219,11 @@ class SubmissionController {
     }
 
     public function updateStatus() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            exit("Method Not Allowed");
+        }
+        verifyCSRF();
         $role = $_SESSION['user']['role'];
         if (!in_array($role, ['admin', 'lecturer'])) {
             http_response_code(403);
@@ -230,9 +235,9 @@ class SubmissionController {
         $status = $_GET['status'] ?? '';
 
         // Map UI status → DB enum
-        $validStatuses = ['submitted', 'late', 'revision_required'];
+        $validStatuses = ['submitted', 'late', 'revision_required', 'reviewed'];
         $statusMap = [
-            'reviewed'           => 'submitted',
+            'reviewed'           => 'reviewed',
             'rejected'           => 'revision_required',
             'submitted'          => 'submitted',
             'late'               => 'late',
@@ -290,6 +295,11 @@ class SubmissionController {
     }
 
     public function delete() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            exit("Method Not Allowed");
+        }
+        verifyCSRF();
         $role = $_SESSION['user']['role'];
         if (!in_array($role, ['admin', 'lecturer'])) {
             redirect('submissions');

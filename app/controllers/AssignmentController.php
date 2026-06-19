@@ -6,6 +6,7 @@ class AssignmentController {
 
     public function __construct() {
         AuthMiddleware::check();
+        RoleMiddleware::check(['admin']);
         $this->assignmentModel = new TopicAssignment();
         $this->topicModel = new Topic();
         $this->lecturerModel = new Lecturer();
@@ -77,6 +78,11 @@ class AssignmentController {
     }
 
     public function delete() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            exit("Method Not Allowed");
+        }
+        verifyCSRF();
         $id = $_GET['id'] ?? null;
         if ($id) {
             $this->assignmentModel->delete($id);

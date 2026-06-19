@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th6 19, 2026 lúc 02:43 PM
+-- Thời gian đã tạo: Th6 19, 2026 lúc 04:56 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -210,7 +210,8 @@ INSERT INTO `students` (`id`, `user_id`, `full_name`, `faculty`, `created_at`) V
 (5, 9, 'Linh Nguyễn', 'Khoa Kinh tế', '2026-05-19 01:58:41'),
 (6, 11, 'Nguyen Thi E', 'Khoa CNTT', '2026-06-15 20:12:41'),
 (7, 12, 'Linh Nguyễn', 'Khoa Ngôn ngữ', '2026-06-18 03:50:42'),
-(8, 15, 'Ho Minh Hoang', 'Khoa Ngôn ngữ', '2026-06-18 18:24:15');
+(8, 15, 'Ho Minh Hoang', 'Khoa Ngôn ngữ', '2026-06-18 18:24:15'),
+(9, 19, 'Bi', 'Khoa Kinh tế', '2026-06-19 12:45:29');
 
 -- --------------------------------------------------------
 
@@ -237,7 +238,7 @@ CREATE TABLE `submissions` (
   `topic_id` int(11) DEFAULT NULL,
   `milestone_id` int(11) DEFAULT NULL,
   `file_path` varchar(255) DEFAULT NULL,
-  `status` enum('submitted','late','revision_required') DEFAULT 'submitted',
+  `status` enum('submitted','reviewed','late','revision_required') DEFAULT 'submitted',
   `attempt` int(11) DEFAULT 1,
   `submitted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -491,7 +492,10 @@ INSERT INTO `system_logs` (`id`, `user_id`, `action`, `description`, `created_at
 (172, 14, 'login', 'User logged in', '2026-06-19 11:08:06', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
 (173, 14, 'logout', 'User logged out', '2026-06-19 11:08:20', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
 (174, 2, 'login', 'User logged in', '2026-06-19 11:08:28', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
-(175, 2, 'logout', 'User logged out', '2026-06-19 11:08:55', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success');
+(175, 2, 'logout', 'User logged out', '2026-06-19 11:08:55', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(176, 19, 'login', 'User logged in', '2026-06-19 12:46:03', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(177, 19, 'create_topic', 'Created topic: ikgviwfe', '2026-06-19 12:48:13', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(178, 19, 'logout', 'User logged out', '2026-06-19 13:15:53', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success');
 
 -- --------------------------------------------------------
 
@@ -522,7 +526,8 @@ INSERT INTO `topics` (`id`, `title`, `description`, `keywords`, `semester_id`, `
 (19, 'Nghiên cứu hành vi  người dùng', 'aaaaaaaaaaaaaaaaa', 'AI', 1, 12, 'approved', '2026-06-18 03:52:13'),
 (21, 'ffhfvkc', 'khcgcg', 'KT', 1, 12, 'rejected', '2026-06-18 20:17:35'),
 (22, 'vdslvnlskdvs', 'dvsv', 'd', 1, 12, 'approved', '2026-06-18 20:19:44'),
-(23, 'ànhakfncikdbcsd', 'nvklsdnvkn', 'K', 1, 12, 'approved', '2026-06-19 06:31:01');
+(23, 'ànhakfncikdbcsd', 'nvklsdnvkn', 'K', 1, 12, 'approved', '2026-06-19 06:31:01'),
+(24, 'ikgviwfe', 'daiabfa', '', 1, 19, 'pending', '2026-06-19 12:48:13');
 
 -- --------------------------------------------------------
 
@@ -638,7 +643,8 @@ INSERT INTO `users` (`id`, `email`, `password`, `role`, `status`, `created_at`) 
 (14, 'cdoan1@gmail.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'lecturer', 'active', '2026-06-18 06:47:16'),
 (15, '2372817@vnu.edu.vn', '$2y$10$VLdXrY3w/L00.nRTeFeOrengDMgj9OP6bOkIi6NQNsGk49liMEYvy', 'student', 'active', '2026-06-18 18:24:15'),
 (17, 'kcjdn88@gmail.com', '$2y$10$qCnLPSbW15bOxERCCnLZ0ufM5sGxKiz4TSzBtWocUw74T5PwB6m/6', 'lecturer', 'active', '2026-06-18 19:22:50'),
-(18, '342341@gmail.com', '$2y$10$v88cF72KLz7rsEhcfiWMke.IOdQJW/Myyq6ASqyBqjn5jOLhSdZSy', 'lecturer', 'active', '2026-06-18 19:27:18');
+(18, '342341@gmail.com', '$2y$10$v88cF72KLz7rsEhcfiWMke.IOdQJW/Myyq6ASqyBqjn5jOLhSdZSy', 'lecturer', 'active', '2026-06-18 19:27:18'),
+(19, 'cdkns@gmail.com', '$2y$10$HKbUeBxAlgZbxbG3FwggSu0555gyENDI5wMU8KU7SqO0EDAjKD12e', 'student', 'active', '2026-06-19 12:45:29');
 
 --
 -- Bẫy `users`
@@ -839,7 +845,7 @@ ALTER TABLE `semesters`
 -- AUTO_INCREMENT cho bảng `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT cho bảng `submissions`
@@ -851,13 +857,13 @@ ALTER TABLE `submissions`
 -- AUTO_INCREMENT cho bảng `system_logs`
 --
 ALTER TABLE `system_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=176;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=179;
 
 --
 -- AUTO_INCREMENT cho bảng `topics`
 --
 ALTER TABLE `topics`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT cho bảng `topic_assignments`
@@ -875,7 +881,7 @@ ALTER TABLE `topic_registrations`
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- Các ràng buộc cho các bảng đã đổ

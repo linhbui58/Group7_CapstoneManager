@@ -183,50 +183,57 @@ $activeTab  = $_GET['tab'] ?? 'topics';
                                         <div class="d-flex justify-content-center gap-1 flex-wrap">
                                             <?php if ($role === 'admin'): ?>
                                                 <?php if ($ts === 'pending'): ?>
-                                                    <a href="index.php?page=topic-status&id=<?= $t['id'] ?>&status=approved"
-                                                       class="btn btn-sm btn-success rounded-circle shadow-sm" data-bs-toggle="tooltip" title="Duyệt" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;"
-                                                       onclick="return confirm('Duyệt đề tài này?')">
-                                                        <i class="fa fa-check"></i>
-                                                    </a>
-                                                    <a href="index.php?page=topic-status&id=<?= $t['id'] ?>&status=rejected"
-                                                       class="btn btn-sm btn-outline-danger rounded-circle" data-bs-toggle="tooltip" title="Từ chối" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;"
-                                                       onclick="return confirm('Từ chối đề tài này?')">
-                                                        <i class="fa fa-xmark"></i>
-                                                    </a>
+                                                    <form action="index.php?page=topic-status&id=<?= $t['id'] ?>&status=approved" method="POST" class="d-inline" onsubmit="return confirm('Duyệt đề tài này?');">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+    <button type="submit" class="btn btn-sm btn-success rounded-circle shadow-sm border-0" data-bs-toggle="tooltip" title="Duyệt" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;">
+        <i class="fa fa-check"></i>
+    </button>
+</form>
+                                                    <form action="index.php?page=topic-status&id=<?= $t['id'] ?>&status=rejected" method="POST" class="d-inline" onsubmit="return confirm('Từ chối đề tài này?');">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+    <button type="submit" class="btn btn-sm btn-outline-danger rounded-circle border-0" data-bs-toggle="tooltip" title="Từ chối" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;">
+        <i class="fa fa-xmark"></i>
+    </button>
+</form>
                                                 <?php elseif ($ts === 'approved'): ?>
-                                                    <a href="index.php?page=topic-status&id=<?= $t['id'] ?>&status=rejected"
-                                                       class="btn btn-sm btn-outline-danger rounded-circle" data-bs-toggle="tooltip" title="Thu hồi" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;"
-                                                       onclick="return confirm('Thu hồi duyệt đề tài này?')">
-                                                        <i class="fa fa-rotate-left"></i>
-                                                    </a>
+                                                    <form action="index.php?page=topic-status&id=<?= $t['id'] ?>&status=rejected" method="POST" class="d-inline" onsubmit="return confirm('Thu hồi duyệt đề tài này?');">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+    <button type="submit" class="btn btn-sm btn-outline-danger rounded-circle border-0" data-bs-toggle="tooltip" title="Thu hồi" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;">
+        <i class="fa fa-rotate-left"></i>
+    </button>
+</form>
                                                 <?php else: ?>
-                                                    <a href="index.php?page=topic-status&id=<?= $t['id'] ?>&status=approved"
-                                                       class="btn btn-sm btn-outline-success rounded-circle" data-bs-toggle="tooltip" title="Duyệt lại" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;"
-                                                       onclick="return confirm('Duyệt lại đề tài này?')">
-                                                        <i class="fa fa-rotate-left"></i>
-                                                    </a>
+                                                    <form action="index.php?page=topic-status&id=<?= $t['id'] ?>&status=approved" method="POST" class="d-inline" onsubmit="return confirm('Duyệt lại đề tài này?');">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+    <button type="submit" class="btn btn-sm btn-outline-success rounded-circle border-0" data-bs-toggle="tooltip" title="Duyệt lại" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;">
+        <i class="fa fa-rotate-left"></i>
+    </button>
+</form>
                                                 <?php endif; ?>
                                                 <a href="index.php?page=topic-edit&id=<?= $t['id'] ?>"
                                                    class="btn btn-sm btn-outline-warning rounded-circle" data-bs-toggle="tooltip" title="Sửa" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;">
                                                     <i class="fa fa-pen"></i>
                                                 </a>
-                                                <a href="index.php?page=topic-delete&id=<?= $t['id'] ?>"
-                                                   class="btn btn-sm btn-outline-danger rounded-circle" data-bs-toggle="tooltip" title="Xóa" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;"
-                                                   onclick="return confirm('Xác nhận xóa đề tài này?')">
-                                                    <i class="fa fa-trash"></i>
-                                                </a>
+                                                <form action="index.php?page=topic-delete&id=<?= $t['id'] ?>" method="POST" class="d-inline" onsubmit="return confirm('Xác nhận xóa đề tài này?');">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+    <button type="submit" class="btn btn-sm btn-outline-danger rounded-circle border-0" data-bs-toggle="tooltip" title="Xóa" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;">
+        <i class="fa fa-trash"></i>
+    </button>
+</form>
                                             <?php elseif ($role === 'lecturer'): ?>
                                                 <?php if ($ts === 'pending'): ?>
-                                                    <a href="index.php?page=topic-status&id=<?= $t['id'] ?>&status=approved"
-                                                       class="btn btn-sm btn-success rounded-circle shadow-sm" data-bs-toggle="tooltip" title="Duyệt" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;"
-                                                       onclick="return confirm('Duyệt đề tài này?')">
-                                                        <i class="fa fa-check"></i>
-                                                    </a>
-                                                    <a href="index.php?page=topic-status&id=<?= $t['id'] ?>&status=rejected"
-                                                       class="btn btn-sm btn-outline-danger rounded-circle" data-bs-toggle="tooltip" title="Từ chối" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;"
-                                                       onclick="return confirm('Từ chối đề tài này?')">
-                                                        <i class="fa fa-xmark"></i>
-                                                    </a>
+                                                    <form action="index.php?page=topic-status&id=<?= $t['id'] ?>&status=approved" method="POST" class="d-inline" onsubmit="return confirm('Duyệt đề tài này?');">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+    <button type="submit" class="btn btn-sm btn-success rounded-circle shadow-sm border-0" data-bs-toggle="tooltip" title="Duyệt" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;">
+        <i class="fa fa-check"></i>
+    </button>
+</form>
+                                                    <form action="index.php?page=topic-status&id=<?= $t['id'] ?>&status=rejected" method="POST" class="d-inline" onsubmit="return confirm('Từ chối đề tài này?');">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+    <button type="submit" class="btn btn-sm btn-outline-danger rounded-circle border-0" data-bs-toggle="tooltip" title="Từ chối" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;">
+        <i class="fa fa-xmark"></i>
+    </button>
+</form>
                                                 <?php else: ?>
                                                     <span class="text-muted small">Đã xử lý</span>
                                                 <?php endif; ?>
@@ -352,29 +359,33 @@ $activeTab  = $_GET['tab'] ?? 'topics';
                                     <td class="text-center">
                                         <?php if ($s === 'pending'): ?>
                                             <div class="d-flex justify-content-center gap-2">
-                                                <a href="index.php?page=registration-status&id=<?= $r['id'] ?>&status=approved"
-                                                   class="btn btn-sm btn-success rounded-pill px-2 shadow-sm"
-                                                   onclick="return confirm('Duyệt đăng ký này?')">
-                                                    <i class="fa fa-check me-1"></i>Duyệt
-                                                </a>
-                                                <a href="index.php?page=registration-status&id=<?= $r['id'] ?>&status=rejected"
-                                                   class="btn btn-sm btn-outline-danger rounded-pill px-2"
-                                                   onclick="return confirm('Từ chối đăng ký này?')">
-                                                    <i class="fa fa-xmark me-1"></i>Từ chối
-                                                </a>
+                                                <form action="index.php?page=registration-status&id=<?= $r['id'] ?>&status=approved" method="POST" class="d-inline" onsubmit="return confirm('Duyệt đăng ký này?');">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+    <button type="submit" class="btn btn-sm btn-success rounded-pill px-2 shadow-sm border-0" >
+        <i class="fa fa-check me-1"></i>Duyệt
+    </button>
+</form>
+                                                <form action="index.php?page=registration-status&id=<?= $r['id'] ?>&status=rejected" method="POST" class="d-inline" onsubmit="return confirm('Từ chối đăng ký này?');">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+    <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-2 border-0" >
+        <i class="fa fa-xmark me-1"></i>Từ chối
+    </button>
+</form>
                                             </div>
                                         <?php elseif ($s === 'approved'): ?>
-                                            <a href="index.php?page=registration-status&id=<?= $r['id'] ?>&status=rejected"
-                                               class="btn btn-sm btn-outline-danger rounded-pill px-2"
-                                               onclick="return confirm('Thu hồi duyệt đăng ký này?')">
-                                                <i class="fa fa-rotate-left me-1"></i>Thu hồi
-                                            </a>
+                                            <form action="index.php?page=registration-status&id=<?= $r['id'] ?>&status=rejected" method="POST" class="d-inline" onsubmit="return confirm('Thu hồi duyệt đăng ký này?');">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+    <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-2 border-0" >
+        <i class="fa fa-rotate-left me-1"></i>Thu hồi
+    </button>
+</form>
                                         <?php else: ?>
-                                            <a href="index.php?page=registration-status&id=<?= $r['id'] ?>&status=approved"
-                                               class="btn btn-sm btn-outline-success rounded-pill px-2"
-                                               onclick="return confirm('Duyệt lại đăng ký này?')">
-                                                <i class="fa fa-rotate-left me-1"></i>Duyệt lại
-                                            </a>
+                                            <form action="index.php?page=registration-status&id=<?= $r['id'] ?>&status=approved" method="POST" class="d-inline" onsubmit="return confirm('Duyệt lại đăng ký này?');">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+    <button type="submit" class="btn btn-sm btn-outline-success rounded-pill px-2 border-0" >
+        <i class="fa fa-rotate-left me-1"></i>Duyệt lại
+    </button>
+</form>
                                         <?php endif; ?>
                                     </td>
                                     <?php endif; ?>

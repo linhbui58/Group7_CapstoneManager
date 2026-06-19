@@ -6,6 +6,7 @@ class SemesterController {
 
     public function __construct() {
         AuthMiddleware::check();
+        RoleMiddleware::check(['admin']);
         $this->semesterModel = new Semester();
     }
 
@@ -47,6 +48,11 @@ class SemesterController {
     }
 
     public function delete() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            exit("Method Not Allowed");
+        }
+        verifyCSRF();
         $id = (int)($_GET['id'] ?? 0);
         if ($id) {
             $this->semesterModel->delete($id);

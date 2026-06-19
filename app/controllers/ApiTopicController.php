@@ -14,6 +14,7 @@ class ApiTopicController {
     }
 
     public function store() {
+        RoleMiddleware::check(['admin', 'lecturer']);
         $data = json_decode(file_get_contents("php://input"), true);
 
         if (empty($data['title'])) {
@@ -32,6 +33,12 @@ class ApiTopicController {
     }
 
     public function delete() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            exit("Method Not Allowed");
+        }
+        verifyCSRF();
+        RoleMiddleware::check(['admin', 'lecturer']);
         $id      = (int)($_GET['id'] ?? 0);
         $deleted = $id ? $this->model->delete($id) : false;
         jsonResponse(

@@ -1,3 +1,4 @@
+<?php generateCSRF(); ?>
 <!DOCTYPE html>
 <html lang="vi">
 

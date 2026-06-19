@@ -142,11 +142,12 @@
                     <i class="fa-solid fa-arrow-left me-2"></i>Quay lại
                 </a>
                 <?php if (in_array($_SESSION['user']['role'], ['admin','lecturer'])): ?>
-                    <a href="index.php?page=submission-delete&id=<?= $submission['id'] ?>"
-                       class="btn rounded-pill px-4 fw-bold text-white btn-delete"
-                       style="background:#ef4444;border:none">
-                        <i class="fa-solid fa-trash me-2"></i>Xóa bài nộp
-                    </a>
+                    <form action="index.php?page=submission-delete&id=<?= $submission['id'] ?>" method="POST" class="d-inline" onsubmit="return confirm('Bạn có chắc muốn xóa?');">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+    <button type="submit" class="btn rounded-pill px-4 fw-bold text-white btn-delete border-0" style="background:#ef4444;border:none">
+        <i class="fa-solid fa-trash me-2"></i>Xóa bài nộp
+    </button>
+</form>
                 <?php endif; ?>
             </div>
         </div>

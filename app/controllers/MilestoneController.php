@@ -90,6 +90,11 @@ class MilestoneController {
     }
 
     public function delete() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            exit("Method Not Allowed");
+        }
+        verifyCSRF();
         RoleMiddleware::check(['admin']);
         $id = (int)($_GET['id'] ?? 0);
         if ($id) {

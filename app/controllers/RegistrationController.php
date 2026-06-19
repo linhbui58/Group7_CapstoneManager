@@ -57,11 +57,10 @@ class RegistrationController {
         }
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            verifyCSRF();
             header("Location: index.php?page=registration-create");
             exit();
-        verifyCSRF();
         }
+        verifyCSRF();
 
         $studentId  = $_SESSION['user']['student_id'] ?? null;
 
@@ -121,6 +120,11 @@ class RegistrationController {
      | UPDATE STATUS  (admin / lecturer only)
      ────────────────────────────────────────────────────────── */
     public function updateStatus() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            exit("Method Not Allowed");
+        }
+        verifyCSRF();
         $role = $_SESSION['user']['role'];
 
         if (!in_array($role, ['admin', 'lecturer'])) {

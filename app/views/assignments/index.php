@@ -29,9 +29,12 @@
                             <td class="text-end">
                                 <a href="index.php?page=assignment-edit&id=<?= $a['id'] ?>" 
                                    class="btn btn-sm btn-outline-primary rounded-pill px-3 me-1">Sửa</a>
-                                <a href="index.php?page=assignment-delete&id=<?= $a['id'] ?>" 
-                                   class="btn btn-sm btn-outline-danger rounded-pill px-3" 
-                                   onclick="return confirm('Xóa phân công này?')">Xóa</a>
+                                <form action="index.php?page=assignment-delete&id=<?= $a['id'] ?>" method="POST" class="d-inline" onsubmit="return confirm('Xóa phân công này?');">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+    <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3 border-0" >
+        Xóa
+    </button>
+</form>
                             </td>
                         </tr>
                     <?php endforeach; ?>

@@ -39,11 +39,10 @@ class TopicController {
         }
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            verifyCSRF();
             header("Location: index.php?page=topic-create");
             exit();
-        verifyCSRF();
         }
+        verifyCSRF();
 
         $title      = trim($_POST['title']       ?? '');
         $semesterId = (int)($_POST['semester_id'] ?? 0);
@@ -141,6 +140,11 @@ class TopicController {
      | DELETE  (admin only)
      ────────────────────────────────────────────────────────── */
     public function delete() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            exit("Method Not Allowed");
+        }
+        verifyCSRF();
         if ($_SESSION['user']['role'] !== 'admin') {
             header("Location: index.php?page=topics");
             exit();
@@ -159,6 +163,11 @@ class TopicController {
      | UPDATE STATUS  (admin / lecturer only)
      ────────────────────────────────────────────────────────── */
     public function updateStatus() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            exit("Method Not Allowed");
+        }
+        verifyCSRF();
         $role = $_SESSION['user']['role'];
         if (!in_array($role, ['admin', 'lecturer'])) {
             http_response_code(403);

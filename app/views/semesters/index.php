@@ -48,7 +48,12 @@
                                         <td class="text-end pe-4">
                                             <div class="d-flex justify-content-end gap-2">
                                                 <a href="index.php?page=semester-edit&id=<?= $s['id'] ?>" class="btn-action bg-warning bg-opacity-10 text-warning"><i class="fa-solid fa-pen-to-square"></i></a>
-                                                <a href="index.php?page=semester-delete&id=<?= $s['id'] ?>" class="btn-action bg-danger bg-opacity-10 text-danger" onclick="return confirm('Xóa học kỳ này?')"><i class="fa-solid fa-trash-can"></i></a>
+                                                <form action="index.php?page=semester-delete&id=<?= $s['id'] ?>" method="POST" class="d-inline" onsubmit="return confirm('Xóa học kỳ này?');">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+    <button type="submit" class="btn-action bg-danger bg-opacity-10 text-danger border-0" >
+        <i class="fa-solid fa-trash-can"></i>
+    </button>
+</form>
                                             </div>
                                         </td>
                                     <?php endif; ?>

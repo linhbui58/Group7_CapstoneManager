@@ -227,26 +227,28 @@
                                             <i class="fa-solid fa-star"></i>
                                         </a>
                                         <?php if ($status !== 'submitted'): ?>
-                                            <a href="index.php?page=submission-status&id=<?= $sub['id'] ?>&status=submitted"
-                                               class="action-btn text-white"
-                                               style="background:#10b981"
+                                            <form action="index.php?page=submission-status&id=<?= $sub['id'] ?>&status=submitted" method="POST" class="d-inline" onsubmit="return confirm('Bạn có chắc muốn thay đổi trạng thái?');">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+    <button type="submit" class="action-btn text-white border-0 bg-transparent" style="background:#10b981"
                                                title="Xác nhận đã nộp">
-                                                <i class="fa-solid fa-check"></i>
-                                            </a>
+        <i class="fa-solid fa-check"></i>
+    </button>
+</form>
                                         <?php endif; ?>
-                                        <a href="index.php?page=submission-status&id=<?= $sub['id'] ?>&status=revision_required"
-                                           class="action-btn text-white"
-                                           style="background:#f59e0b"
-                                           title="Yêu cầu sửa lại"
-                                           onclick="return confirm('Yêu cầu sinh viên sửa lại bài này?')">
-                                            <i class="fa-solid fa-rotate-left"></i>
-                                        </a>
-                                        <a href="index.php?page=submission-delete&id=<?= $sub['id'] ?>"
-                                           class="action-btn btn-delete text-white"
-                                           style="background:#ef4444"
+                                        <form action="index.php?page=submission-status&id=<?= $sub['id'] ?>&status=revision_required" method="POST" class="d-inline" onsubmit="return confirm('Yêu cầu sinh viên sửa lại bài này?');">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+    <button type="submit" class="action-btn text-white border-0 bg-transparent" style="background:#f59e0b"
+                                           title="Yêu cầu sửa lại">
+        <i class="fa-solid fa-rotate-left"></i>
+    </button>
+</form>
+                                        <form action="index.php?page=submission-delete&id=<?= $sub['id'] ?>" method="POST" class="d-inline" onsubmit="return confirm('Bạn có chắc muốn xóa?');">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+    <button type="submit" class="action-btn btn-delete text-white border-0" style="background:#ef4444"
                                            title="Xóa">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </a>
+        <i class="fa-solid fa-trash"></i>
+    </button>
+</form>
                                     <?php endif; ?>
                                 </div>
                             </td>

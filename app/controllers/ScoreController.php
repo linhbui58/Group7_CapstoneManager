@@ -86,7 +86,6 @@ class ScoreController {
 
     public function store() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            verifyCSRF();
             redirect('scores');
         }
         verifyCSRF();
@@ -111,6 +110,12 @@ class ScoreController {
                 $_SESSION['error'] = "Bạn không có quyền chấm điểm bài nộp này.";
                 redirect('score-create');
             }
+        }
+
+        $scoreValue = $_POST['score'] ?? '';
+        if (!is_numeric($scoreValue) || $scoreValue < 0 || $scoreValue > 10) {
+            $_SESSION['error'] = "Điểm phải là số từ 0 đến 10.";
+            redirect('score-create');
         }
 
         $this->scoreModel->create([
@@ -189,6 +194,12 @@ class ScoreController {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $id) {
             verifyCSRF();
+            $scoreValue = $_POST['score'] ?? '';
+            if (!is_numeric($scoreValue) || $scoreValue < 0 || $scoreValue > 10) {
+                $_SESSION['error'] = "Điểm phải là số từ 0 đến 10.";
+                redirect('score-edit&id=' . $id);
+                return;
+            }
             $this->scoreModel->update($id, [
                 'score'    => $_POST['score']    ?? 0,
                 'feedback' => trim($_POST['feedback'] ?? ''),
@@ -200,6 +211,11 @@ class ScoreController {
     }
 
     public function delete() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            exit("Method Not Allowed");
+        }
+        verifyCSRF();
         $id = (int)($_GET['id'] ?? 0);
 
         // Lecturer chỉ được xóa điểm do mình chấm
