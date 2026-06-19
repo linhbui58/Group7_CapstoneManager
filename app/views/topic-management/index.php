@@ -29,7 +29,7 @@ $activeTab  = $_GET['tab'] ?? 'topics';
             <?php endif; ?>
             <?php if ($role === 'student'): ?>
                 <a href="index.php?page=registration-create"
-                   class="btn btn-primary rounded-pill px-4 shadow-sm fw-bold">
+                   class="btn btn-dark rounded-pill px-4 shadow-sm fw-bold">
                     <i class="fa fa-file-signature me-1"></i> Đăng ký mới
                 </a>
             <?php endif; ?>

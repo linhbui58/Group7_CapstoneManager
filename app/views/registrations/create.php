@@ -6,8 +6,8 @@
         <a href="index.php?page=topic-management&tab=registrations" class="text-decoration-none text-muted small">
             <i class="fa-solid fa-arrow-left me-1"></i> Trở về danh sách
         </a>
-        <h2 class="fw-bold mt-2">Đăng Ký Nhận Đề Tài</h2>
-        <p class="text-muted small">Chọn một đề tài đã được duyệt trong hệ thống để chính thức đăng ký.</p>
+        <h2 class="fw-bold mt-2">Đề Xuất Đăng Ký Đề Tài</h2>
+        <p class="text-muted small">Chọn một đề tài đã được duyệt trong hệ thống để đề xuất đăng ký. Bạn có thể nộp nhiều đề xuất trước khi chốt 1 đề tài duy nhất.</p>
     </div>
 
     <?php if (!empty($_SESSION['error'])): ?>
@@ -61,9 +61,8 @@
                     </div>
 
                     <div class="d-flex gap-2">
-                        <button type="submit" class="btn btn-primary rounded-pill px-5 shadow-sm fw-bold"
-                                <?= empty($topics) ? 'disabled' : '' ?>>
-                            Xác Nhận Đăng Ký
+                        <button type="submit" class="btn btn-primary rounded-pill px-5 shadow-sm fw-bold">
+                            Gửi Đề Xuất
                         </button>
                         <a href="index.php?page=topic-management&tab=registrations" class="btn btn-light rounded-pill px-4">Hủy</a>
                     </div>

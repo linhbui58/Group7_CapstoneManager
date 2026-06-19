@@ -98,12 +98,12 @@ class RegistrationController {
             'semester_id'         => $semesterId,
             'desired_lecturer_id' => $desiredLec,
             'keywords'            => $keywords,
-            'status'              => 'registered',
+            'status'              => 'pending',
         ]);
 
-        LogService::log('propose_topic', "Student ID: $studentId registered Topic ID: $topicId");
+        LogService::log('propose_topic', "Student ID: $studentId proposed Topic ID: $topicId");
 
-        $_SESSION['success'] = "Đăng ký đề tài thành công. Bạn đã chính thức nhận đề tài này.";
+        $_SESSION['success'] = "Đề xuất đề tài thành công. Vui lòng chờ duyệt.";
         header("Location: index.php?page=topic-management&tab=registrations");
         exit();
     }
