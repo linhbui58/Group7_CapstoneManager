@@ -337,7 +337,26 @@
                         </div>
                     </div>
 
-
+                    <div class="grid-2">
+                        <div class="field-group">
+                            <div class="field-header"><label for="student_code">Mã SV/CB</label></div>
+                            <div class="input-wrapper">
+                                <input type="text" id="student_code" name="student_code"
+                                       placeholder="VD: 2005XXXX"
+                                       value="<?= htmlspecialchars($old['student_code'] ?? '') ?>" required>
+                                <i class="fa-solid fa-id-badge"></i>
+                            </div>
+                        </div>
+                        <div class="field-group">
+                            <div class="field-header"><label for="phone">Điện thoại</label></div>
+                            <div class="input-wrapper">
+                                <input type="text" id="phone" name="phone"
+                                       placeholder="09xx..."
+                                       value="<?= htmlspecialchars($old['phone'] ?? '') ?>">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="grid-2">
                         <div class="field-group">
@@ -353,12 +372,13 @@
                                 <i class="fa-solid fa-chevron-down select-arrow"></i>
                             </div>
                         </div>
-                        <div class="field-group">
-                            <div class="field-header"><label for="reg-password">Mật khẩu</label></div>
-                            <div class="input-wrapper">
-                                <input type="password" id="reg-password" name="password" placeholder="••••••••" required>
-                                <i class="fa-solid fa-lock"></i>
-                            </div>
+                    </div>
+
+                    <div class="field-group">
+                        <div class="field-header"><label for="reg-password">Mật khẩu</label></div>
+                        <div class="input-wrapper">
+                            <input type="password" id="reg-password" name="password" placeholder="••••••••" required>
+                            <i class="fa-solid fa-lock"></i>
                         </div>
                     </div>
 
@@ -379,3 +399,28 @@
 
 </body>
 </html>
+
+<script>
+    (function () {
+        const radios = document.querySelectorAll('input[name="role"]');
+        const studentCodeField = document.getElementById('student-code-field');
+        const studentCodeInput = document.getElementById('student_code');
+
+        function toggleFields() {
+            const selected = document.querySelector('input[name="role"]:checked');
+            if (!selected) return;
+
+            if (selected.value === 'student') {
+                studentCodeField.style.display = 'block';
+                studentCodeInput.setAttribute('required', 'required');
+            } else {
+                studentCodeField.style.display = 'none';
+                studentCodeInput.removeAttribute('required');
+                studentCodeInput.value = '';
+            }
+        }
+
+        radios.forEach(r => r.addEventListener('change', toggleFields));
+        toggleFields();
+    })();
+</script>
