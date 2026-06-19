@@ -136,8 +136,17 @@ class Topic {
                     topics.id IN (
                         SELECT topic_id FROM topic_registrations WHERE desired_lecturer_id = ?
                     )
+                    OR
+                    -- Đề tài do sinh viên được lecturer này hướng dẫn tạo ra
+                    topics.created_by IN (
+                        SELECT u.id 
+                        FROM supervision_assignments sa
+                        JOIN students s ON sa.student_id = s.id
+                        JOIN users u ON s.user_id = u.id
+                        WHERE sa.lecturer_id = ?
+                    )
                 )";
-        $params = [$lecturerId, $lecturerId];
+        $params = [$lecturerId, $lecturerId, $lecturerId];
 
         if ($keyword !== '') {
             $sql .= " AND (topics.title LIKE ? OR topics.keywords LIKE ?)";
@@ -184,5 +193,29 @@ class Topic {
                 )
                 ORDER BY t.id DESC";
         return $this->conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Student: xem đề tài approved và đề tài do chính mình tạo
+    public function getForStudent($userId, $keyword = '', $semesterId = 0) {
+        $sql = "SELECT topics.*, semesters.name AS semester
+                FROM topics
+                JOIN semesters ON semesters.id = topics.semester_id
+                WHERE (topics.status = 'approved' OR topics.created_by = ?)";
+        $params = [$userId];
+
+        if ($keyword !== '') {
+            $sql .= " AND (topics.title LIKE ? OR topics.keywords LIKE ?)";
+            $params[] = "%$keyword%";
+            $params[] = "%$keyword%";
+        }
+        if ($semesterId > 0) {
+            $sql .= " AND topics.semester_id = ?";
+            $params[] = $semesterId;
+        }
+        $sql .= " ORDER BY topics.id DESC";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

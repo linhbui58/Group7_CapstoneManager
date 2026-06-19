@@ -6,8 +6,8 @@
         <a href="index.php?page=topic-management&tab=registrations" class="text-decoration-none text-muted small">
             <i class="fa-solid fa-arrow-left me-1"></i> Trở về danh sách
         </a>
-        <h2 class="fw-bold mt-2">Đăng Ký Nhận Đề Tài</h2>
-        <p class="text-muted small">Chọn một đề tài đã được duyệt trong hệ thống để chính thức đăng ký.</p>
+        <h2 class="fw-bold mt-2">Sửa Đề Xuất Đề Tài</h2>
+        <p class="text-muted small">Cập nhật đề tài và ghi chú cho đề xuất đang chờ duyệt.</p>
     </div>
 
     <?php if (!empty($_SESSION['error'])): ?>
@@ -21,9 +21,9 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card border-0 shadow-sm p-4" style="border-radius: 20px;">
-                <form action="index.php?page=registration-store" method="POST"> <?= csrfField() ?>
+                <form action="index.php?page=registration-update" method="POST"> <?= csrfField() ?>
+                    <input type="hidden" name="id" value="<?= $reg['id'] ?>">
 
-                    <!-- Chọn đề tài -->
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-muted">CHỌN ĐỀ TÀI <span class="text-danger">*</span></label>
                         <?php if (empty($topics)): ?>
@@ -34,7 +34,7 @@
                             <select name="topic_id" class="form-select rounded-pill" required>
                                 <option value="">-- Chọn đề tài --</option>
                                 <?php foreach ($topics as $t): ?>
-                                    <option value="<?= $t['id'] ?>">
+                                    <option value="<?= $t['id'] ?>" <?= $t['id'] == $reg['topic_id'] ? 'selected' : '' ?>>
                                         <?= htmlspecialchars($t['title']) ?>
                                     </option>
                                 <?php endforeach; ?>
@@ -42,28 +42,17 @@
                         <?php endif; ?>
                     </div>
 
-                    <!-- Học kỳ -->
-                    <div class="mb-4">
-                        <label class="form-label fw-bold small text-muted">HỌC KỲ <span class="text-danger">*</span></label>
-                        <select name="semester_id" class="form-select rounded-pill" required>
-                            <option value="">-- Chọn học kỳ --</option>
-                            <?php foreach ($semesters as $sem): ?>
-                                <option value="<?= $sem['id'] ?>"><?= htmlspecialchars($sem['name']) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-
                     <!-- Ghi chú / keywords -->
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-muted">GHI CHÚ / KEYWORDS</label>
                         <textarea name="keywords" class="form-control" style="border-radius: 15px;" rows="3"
-                                  placeholder="Nhập các từ khóa hoặc ghi chú liên quan..."></textarea>
+                                  placeholder="Nhập các từ khóa hoặc ghi chú liên quan..."><?= htmlspecialchars($reg['keywords']) ?></textarea>
                     </div>
 
                     <div class="d-flex gap-2">
-                        <button type="submit" class="btn btn-primary rounded-pill px-5 shadow-sm fw-bold"
+                        <button type="submit" class="btn btn-primary rounded-pill px-5 fw-bold shadow-sm"
                                 <?= empty($topics) ? 'disabled' : '' ?>>
-                            Xác Nhận Đăng Ký
+                            Cập Nhật Đề Xuất
                         </button>
                         <a href="index.php?page=topic-management&tab=registrations" class="btn btn-light rounded-pill px-4">Hủy</a>
                     </div>

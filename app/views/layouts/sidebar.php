@@ -55,7 +55,7 @@ if (isset($_SESSION['user']['id'])) {
                 </li>
 
                 <!-- Nhóm: Quản lý đề tài -->
-                <li class="menu-group <?= in_array($currentPage, ['semesters', 'topic-management', 'topics', 'registrations', 'assignments']) ? 'open' : '' ?>">
+                <li class="menu-group <?= in_array($currentPage, ['semesters', 'topic-management', 'topics', 'registrations', 'assignments', 'supervisions', 'supervision-create']) ? 'open' : '' ?>">
                     <div class="menu-group-toggle">
                         <i class="fa fa-book"></i>
                         <span>Quản lý đề tài</span>
@@ -74,7 +74,12 @@ if (isset($_SESSION['user']['id'])) {
                         </li>
                         <li>
                             <a href="index.php?page=assignments" class="<?= $currentPage === 'assignments' ? 'active' : '' ?>">
-                                <i class="fa fa-user-check"></i> <span>Phân công</span>
+                                <i class="fa fa-user-check"></i> <span>Duyệt đề tài - GV</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="index.php?page=supervisions" class="<?= in_array($currentPage, ['supervisions', 'supervision-create']) ? 'active' : '' ?>">
+                                <i class="fa fa-user-tie"></i> <span>Phân công GVHD</span>
                             </a>
                         </li>
                     </ul>
