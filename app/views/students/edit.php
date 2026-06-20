@@ -4,7 +4,7 @@
 <div class="main-content" style="padding: 32px; background: #f4f7fe; min-height: 100vh;">
     <div class="mb-4">
         <a href="index.php?page=students" class="text-decoration-none text-muted small fw-bold">
-            <i class="fa-solid fa-arrow-left me-1"></i> QUAY Láº I
+            <i class="fa-solid fa-arrow-left me-1"></i> QUAY LẠI
         </a>
         <h2 class="fw-bold mt-2" style="color:#0f172a">Chỉnh sửa sinh viên</h2>
     </div>
@@ -14,7 +14,7 @@
         <?php unset($_SESSION['error']); ?>
     <?php endif; ?>
 
-    <div class="card border-0 shadow-sm p-4" style="border-radius:20px; max-width:600px">
+    <div class="card border-0 shadow-sm p-4 mx-auto" style="border-radius:20px; max-width:600px">
         <form method="POST" action="index.php?page=student-update&id=<?= $student['id'] ?>"> <?= csrfField() ?>
 
             <div class="mb-3">
@@ -24,16 +24,16 @@
             </div>
 
             <div class="mb-4">
-                <label class="fw-bold small text-muted">EMAIL (chá»‰ xem)</label>
+                <label class="fw-bold small text-muted">EMAIL (chỉ xem)</label>
                 <input type="text" class="form-control rounded-pill px-3 bg-light"
                        value="<?= htmlspecialchars($student['email'] ?? '') ?>" readonly>
             </div>
 
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-warning rounded-pill px-5 fw-bold text-white shadow-sm">
-                    Cáº­p nháº­t
+                    Cập nhật
                 </button>
-                <a href="index.php?page=students" class="btn btn-light rounded-pill px-4">Há»§y</a>
+                <a href="index.php?page=students" class="btn btn-light rounded-pill px-4">Hủy</a>
             </div>
         </form>
     </div>
