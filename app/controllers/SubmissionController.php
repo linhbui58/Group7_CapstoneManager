@@ -138,8 +138,8 @@ class SubmissionController {
 
         // Upload file
         $filename  = null;
-        $fileField = !empty($_FILES['report_file']['name']) ? 'report_file' : 'file';
-        if (!empty($_FILES[$fileField]['name'])) {
+        $fileField = (!empty($_FILES['report_file']['name']) && isset($_FILES['report_file'])) ? 'report_file' : (isset($_FILES['file']) ? 'file' : null);
+        if ($fileField && !empty($_FILES[$fileField]['name'])) {
             require_once '../app/helpers/upload.php';
             $uploadResult = uploadFile($_FILES[$fileField], 'submissions');
             if (!$uploadResult['status']) {
@@ -155,8 +155,8 @@ class SubmissionController {
         }
 
         $db = Database::getInstance()->getConnection();
-        $stmtAttempt = $db->prepare("SELECT MAX(attempt) FROM submissions WHERE student_id = ? AND topic_id <=> ? AND milestone_id = ?");
-        $stmtAttempt->execute([$studentId, $topicId, $milestoneId]);
+        $stmtAttempt = $db->prepare("SELECT MAX(attempt) FROM submissions WHERE student_id = ? AND (topic_id = ? OR (topic_id IS NULL AND ? IS NULL)) AND milestone_id = ?");
+        $stmtAttempt->execute([$studentId, $topicId, $topicId, $milestoneId]);
         $maxAttempt = (int)$stmtAttempt->fetchColumn();
         $attempt = $maxAttempt + 1;
 
