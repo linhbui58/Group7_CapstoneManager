@@ -196,6 +196,20 @@ class DashboardController {
 
         $this->sendDeadlineReminders($userId, $upcomingMilestones);
 
+        // My Scores
+        $stmtScores = $db->prepare("
+            SELECT m.title AS milestone, es.score, es.feedback, es.graded_at,
+                   t.title AS topic_title
+            FROM evaluation_scores es
+            JOIN submissions s ON es.submission_id = s.id
+            JOIN milestones m  ON s.milestone_id   = m.id
+            JOIN topics t      ON s.topic_id        = t.id
+            WHERE s.student_id = ?
+            ORDER BY es.graded_at DESC
+        ");
+        $stmtScores->execute([$studentId]);
+        $myScores = $stmtScores->fetchAll(PDO::FETCH_ASSOC);
+
         require '../app/views/dashboard/student_dashboard.php';
     }
 

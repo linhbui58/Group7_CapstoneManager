@@ -337,16 +337,18 @@
                         </div>
                     </div>
 
-                    <div class="grid-2">
-                        <div class="field-group">
-                            <div class="field-header"><label for="student_code">Mã SV/CB</label></div>
-                            <div class="input-wrapper">
-                                <input type="text" id="student_code" name="student_code"
-                                       placeholder="VD: 2005XXXX"
-                                       value="<?= htmlspecialchars($old['student_code'] ?? '') ?>" required>
-                                <i class="fa-solid fa-id-badge"></i>
-                            </div>
+                    <!-- Mã sinh viên: chỉ hiện với sinh viên -->
+                    <div class="field-group" id="student-code-field">
+                        <div class="field-header"><label for="student_code">Mã sinh viên</label></div>
+                        <div class="input-wrapper">
+                            <input type="text" id="student_code" name="student_code"
+                                   placeholder="VD: 2005XXXX"
+                                   value="<?= htmlspecialchars($old['student_code'] ?? '') ?>">
+                            <i class="fa-solid fa-id-badge"></i>
                         </div>
+                    </div>
+
+                    <div class="grid-2">
                         <div class="field-group">
                             <div class="field-header"><label for="phone">Điện thoại</label></div>
                             <div class="input-wrapper">
@@ -356,9 +358,6 @@
                                 <i class="fa-solid fa-phone"></i>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="grid-2">
                         <div class="field-group">
                             <div class="field-header"><label for="department">Khoa/Viện</label></div>
                             <div class="input-wrapper">

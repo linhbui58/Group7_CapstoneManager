@@ -233,8 +233,9 @@ class AuthController {
 
             $db = Database::getInstance()->getConnection();
             try {
-                $db->beginTransaction();
 
+                $db->beginTransaction();
+                
                 $userId = $this->userModel->create([
                     'email' => $email,
                     'password' => $password,
