@@ -187,7 +187,7 @@ class SubmissionController {
         // Gửi cho admin
         $admins = $db->query("SELECT id FROM users WHERE role = 'admin'")->fetchAll(PDO::FETCH_ASSOC);
         foreach ($admins as $admin) {
-            $notifModel->create(['user_id' => $admin['id'], 'content' => $content, 'type' => 'submission']);
+            $notifModel->create(['user_id' => $admin['id'], 'content' => $content, 'type' => 'system']);
         }
 
         // Gửi cho lecturer phụ trách (qua topic_assignments hoặc desired_lecturer_id)
@@ -211,7 +211,7 @@ class SubmissionController {
         }
         $lecturerUsers = $stmtL->fetchAll(PDO::FETCH_ASSOC);
         foreach ($lecturerUsers as $lu) {
-            $notifModel->create(['user_id' => $lu['id'], 'content' => $content, 'type' => 'submission']);
+            $notifModel->create(['user_id' => $lu['id'], 'content' => $content, 'type' => 'system']);
         }
 
         $_SESSION['success'] = "Nộp bài thành công.";
@@ -284,7 +284,7 @@ class SubmissionController {
                 $notifModel->create([
                     'user_id' => $row['user_id'],
                     'content' => "Bài nộp cột mốc \"{$row['milestone_title']}\" của bạn $label.",
-                    'type'    => 'submission',
+                    'type'    => 'approval',
                 ]);
             }
 
