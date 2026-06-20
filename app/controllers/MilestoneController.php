@@ -75,8 +75,8 @@ class MilestoneController {
                 
                 if ($deadlineTime < $startTime || $deadlineTime > $endTime) {
                     $_SESSION['error'] = "Hạn chót phải nằm trong thời gian của học kỳ (" . date('d/m/Y', $startTime) . " - " . date('d/m/Y', $endTime) . ").";
-                    redirect("milestone-edit&id=$id");
-                    return;
+                    header("Location: " . BASE_URL . "index.php?page=milestone-edit&id=$id");
+                    exit();
                 }
             }
 

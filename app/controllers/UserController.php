@@ -67,20 +67,20 @@ class UserController {
             verifyCSRF();
             if (!validateRequired([$_POST['email'], $_POST['role']])) {
                 $_SESSION['error'] = "Email and role are required.";
-                redirect("user-edit&id=$id");
-                return;
+                header("Location: " . BASE_URL . "index.php?page=user-edit&id=$id");
+                exit();
             }
             if (!validateEmail($_POST['email'])) {
                 $_SESSION['error'] = "Invalid email format.";
-                redirect("user-edit&id=$id");
-                return;
+                header("Location: " . BASE_URL . "index.php?page=user-edit&id=$id");
+                exit();
             }
             
             $existing = $this->userModel->findByEmail($_POST['email']);
             if ($existing && $existing['id'] != $id) {
                 $_SESSION['error'] = "Email already exists.";
-                redirect("user-edit&id=$id");
-                return;
+                header("Location: " . BASE_URL . "index.php?page=user-edit&id=$id");
+                exit();
             }
 
             $this->userModel->update($id, $_POST);

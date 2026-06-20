@@ -197,8 +197,8 @@ class ScoreController {
             $scoreValue = $_POST['score'] ?? '';
             if (!is_numeric($scoreValue) || $scoreValue < 0 || $scoreValue > 10) {
                 $_SESSION['error'] = "Điểm phải là số từ 0 đến 10.";
-                redirect('score-edit&id=' . $id);
-                return;
+                header("Location: " . BASE_URL . "index.php?page=score-edit&id=$id");
+                exit();
             }
             $this->scoreModel->update($id, [
                 'score'    => $_POST['score']    ?? 0,
