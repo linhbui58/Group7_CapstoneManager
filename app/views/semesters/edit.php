@@ -8,7 +8,7 @@
     </div>
 
     <div class="card border-0 shadow-sm p-4" style="border-radius: 20px; max-width: 600px;">
-        <form action="index.php?page=semester-update&id=<?= $semester['id'] ?>" method="POST">
+        <form action="index.php?page=semester-update&id=<?= $semester['id'] ?>" method="POST"> <?= csrfField() ?>
             <div class="mb-3">
                 <label class="fw-bold small text-muted">TÊN HỌC KỲ</label>
                 <input type="text" name="name" class="form-control rounded-pill px-3" value="<?= htmlspecialchars($semester['name']) ?>" required>

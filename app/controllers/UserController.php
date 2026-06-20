@@ -90,6 +90,11 @@ class UserController {
     }
 
     public function lock() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            exit("Method Not Allowed");
+        }
+        verifyCSRF();
         $id = (int)($_GET['id'] ?? 0);
         if ($id === 1) {
             abort(403, "Cannot lock admin");
@@ -101,6 +106,11 @@ class UserController {
     }
 
     public function unlock() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            exit("Method Not Allowed");
+        }
+        verifyCSRF();
         $id = (int)($_GET['id'] ?? 0);
         if ($id) {
             $this->userModel->unlock($id);
@@ -109,6 +119,11 @@ class UserController {
     }
 
     public function delete() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            exit("Method Not Allowed");
+        }
+        verifyCSRF();
         $id = (int)($_GET['id'] ?? 0);
         if ($id === 1) {
             abort(403, "Cannot delete admin");

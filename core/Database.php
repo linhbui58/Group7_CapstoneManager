@@ -6,10 +6,10 @@ class Database {
 
     private $conn;
 
-    private $host = "localhost";
-    private $dbname = "capstone_manager";
-    private $username = "root";
-    private $password = "";
+    private $host = DB_HOST;
+    private $dbname = DB_NAME;
+    private $username = DB_USER;
+    private $password = DB_PASS;
 
     private function __construct(){
 

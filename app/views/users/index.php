@@ -68,20 +68,26 @@
                                                 <i class="fa-solid fa-pen-to-square"></i>
                                             </a>
                                             <?php if (($u['status'] ?? 'active') === 'active'): ?>
-                                                <a href="index.php?page=user-lock&id=<?= $u['id'] ?>"
-                                                   class="btn-action bg-danger bg-opacity-10 text-danger" title="Khóa">
-                                                    <i class="fa-solid fa-lock"></i>
-                                                </a>
+                                                <form action="index.php?page=user-lock&id=<?= $u['id'] ?>" method="POST" class="d-inline" onsubmit="return confirm('Bạn có chắc muốn khóa?');">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+    <button type="submit" class="btn-action bg-danger bg-opacity-10 text-danger border-0" title="Khóa">
+        <i class="fa-solid fa-lock"></i>
+    </button>
+</form>
                                             <?php else: ?>
-                                                <a href="index.php?page=user-unlock&id=<?= $u['id'] ?>"
-                                                   class="btn-action bg-success bg-opacity-10 text-success" title="Mở khóa">
-                                                    <i class="fa-solid fa-lock-open"></i>
-                                                </a>
+                                                <form action="index.php?page=user-unlock&id=<?= $u['id'] ?>" method="POST" class="d-inline" onsubmit="return confirm('Bạn có chắc muốn mở khóa?');">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+    <button type="submit" class="btn-action bg-success bg-opacity-10 text-success border-0" title="Mở khóa">
+        <i class="fa-solid fa-lock-open"></i>
+    </button>
+</form>
                                             <?php endif; ?>
-                                            <a href="index.php?page=user-delete&id=<?= $u['id'] ?>"
-                                               class="btn-action btn-delete bg-danger bg-opacity-10 text-danger" title="Xóa">
-                                                <i class="fa-solid fa-trash-can"></i>
-                                            </a>
+                                            <form action="index.php?page=user-delete&id=<?= $u['id'] ?>" method="POST" class="d-inline" onsubmit="return confirm('Bạn có chắc muốn xóa?');">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+    <button type="submit" class="btn-action btn-delete bg-danger bg-opacity-10 text-danger border-0" title="Xóa">
+        <i class="fa-solid fa-trash-can"></i>
+    </button>
+</form>
                                         <?php endif; ?>
                                     </div>
                                 </td>

@@ -6,7 +6,7 @@
 <div class="main-content" style="padding: 40px; background-color: #f4f7fe; min-height: 100vh;">
     <div class="mx-auto" style="max-width: 800px;">
         <div class="mb-4">
-        <a href="index.php?page=topics" class="text-decoration-none text-muted small">
+        <a href="index.php?page=topic-management&tab=topics" class="text-decoration-none text-muted small">
             <i class="fa-solid fa-arrow-left me-1"></i> Trở về danh sách
         </a>
         <h2 class="fw-bold mt-2">
@@ -71,7 +71,7 @@
                 <button type="submit" class="btn btn-primary rounded-pill px-5 fw-bold shadow-sm">
                     <?= $role === 'admin' ? 'Lưu Đề Tài' : 'Gửi Đăng Ký' ?>
                 </button>
-                <a href="index.php?page=topics" class="btn btn-light rounded-pill px-4">Hủy</a>
+                <a href="index.php?page=topic-management&tab=topics" class="btn btn-light rounded-pill px-4">Hủy</a>
             </div>
         </form>
     </div>

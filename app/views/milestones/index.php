@@ -66,7 +66,12 @@
                             <?php if($isAdmin): ?>
                             <td class="text-end pe-3">
                                 <a href="index.php?page=milestone-edit&id=<?= $m['id'] ?>" class="btn btn-sm btn-outline-dark rounded-pill px-3">Sửa</a>
-                                <a href="index.php?page=milestone-delete&id=<?= $m['id'] ?>" class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="return confirm('Xóa?')">Xóa</a>
+                                <form action="index.php?page=milestone-delete&id=<?= $m['id'] ?>" method="POST" class="d-inline" onsubmit="return confirm('Xóa?');">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+    <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3 border-0" >
+        Xóa
+    </button>
+</form>
                             </td>
                             <?php endif; ?>
                         </tr>

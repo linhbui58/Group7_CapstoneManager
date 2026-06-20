@@ -44,8 +44,8 @@ class TopicManagementController {
             }
             $topics = $this->topicModel->getByLecturer($lecturerId, $search, $filterSem, $filterStat);
         } else {
-            // student: chá»‰ xem approved
-            $topics = $this->topicModel->search($search, $filterSem, 'approved');
+            // student: xem approved + của mình
+            $topics = $this->topicModel->getForStudent($_SESSION['user']['id'], $search, $filterSem);
         }
 
         // â”€â”€ REGISTRATIONS DATA â”€â”€

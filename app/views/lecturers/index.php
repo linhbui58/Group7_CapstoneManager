@@ -162,11 +162,12 @@
                                                    class="btn-action bg-warning bg-opacity-10 text-warning" title="Chỉnh sửa">
                                                     <i class="fa-solid fa-pen-to-square"></i>
                                                 </a>
-                                                <a href="index.php?page=lecturer-delete&id=<?= $lecturer['id'] ?>" 
-                                                   class="btn-action bg-danger bg-opacity-10 text-danger" 
-                                                   onclick="return confirm('Bạn chắc chắn muốn xóa giảng viên này?')" title="Xóa">
-                                                    <i class="fa-solid fa-trash-can"></i>
-                                                </a>
+                                                <form action="index.php?page=lecturer-delete&id=<?= $lecturer['id'] ?>" method="POST" class="d-inline" onsubmit="return confirm('Bạn chắc chắn muốn xóa giảng viên này?');">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+    <button type="submit" class="btn-action bg-danger bg-opacity-10 text-danger border-0" title="Xóa">
+        <i class="fa-solid fa-trash-can"></i>
+    </button>
+</form>
                                             </div>
                                         </td>
                                     <?php endif; ?>

@@ -91,11 +91,12 @@
                       style="background:#eff6ff;color:#2563eb;font-size:12px">
                     <?= $unreadCount ?> chưa đọc
                 </span>
-                <a href="index.php?page=notification-read-all"
-                   class="btn btn-light rounded-pill px-3 fw-bold"
-                   style="font-size:13px;border:1.5px solid #e2e8f0">
-                    <i class="fa-solid fa-check-double me-1"></i>Đánh dấu tất cả đã đọc
-                </a>
+                <form action="index.php?page=notification-read-all" method="POST" class="d-inline">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+    <button type="submit" class="btn btn-light rounded-pill px-3 fw-bold border-0" style="font-size:13px;border:1.5px solid #e2e8f0">
+        <i class="fa-solid fa-check-double me-1"></i>Đánh dấu tất cả đã đọc
+    </button>
+</form>
             <?php endif; ?>
         </div>
     </div>
@@ -187,19 +188,21 @@
                         <!-- Actions -->
                         <div class="d-flex gap-1 flex-shrink-0">
                             <?php if (!$isRead): ?>
-                                <a href="index.php?page=notification-read&id=<?= $n['id'] ?>"
-                                   class="action-btn text-white"
-                                   style="background:#6366f1"
+                                <form action="index.php?page=notification-read&id=<?= $n['id'] ?>" method="POST" class="d-inline">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+    <button type="submit" class="action-btn text-white border-0 bg-transparent" style="background:#6366f1"
                                    title="Đánh dấu đã đọc">
-                                    <i class="fa-solid fa-check"></i>
-                                </a>
+        <i class="fa-solid fa-check"></i>
+    </button>
+</form>
                             <?php endif; ?>
-                            <a href="index.php?page=notification-delete&id=<?= $n['id'] ?>"
-                               class="action-btn text-white btn-delete"
-                               style="background:#ef4444"
+                            <form action="index.php?page=notification-delete&id=<?= $n['id'] ?>" method="POST" class="d-inline" onsubmit="return confirm('Bạn có chắc muốn xóa?');">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+    <button type="submit" class="action-btn text-white btn-delete border-0" style="background:#ef4444"
                                title="Xóa thông báo">
-                                <i class="fa-solid fa-trash"></i>
-                            </a>
+        <i class="fa-solid fa-trash"></i>
+    </button>
+</form>
                         </div>
 
                     </div>

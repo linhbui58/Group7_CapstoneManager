@@ -26,8 +26,6 @@ class AuthController {
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
             verifyCSRF();
 
-            verifyCSRF();
-
             $email = trim($_POST['email']);
             $password = trim($_POST['password']);
 
@@ -157,8 +155,6 @@ class AuthController {
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
             verifyCSRF();
 
-            verifyCSRF();
-
             /*
             |--------------------------------------------------------------------------
             | GET DATA
@@ -166,7 +162,6 @@ class AuthController {
             */
 
             $full_name = trim($_POST['full_name'] ?? $_POST['name'] ?? '');
-            $faculty = trim($_POST['department'] ?? '');
             $faculty = trim($_POST['department'] ?? '');
 
             $email = trim($_POST['email'] ?? '');

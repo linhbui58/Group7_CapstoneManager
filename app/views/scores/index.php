@@ -67,7 +67,12 @@
                                     <td class="text-end pe-4">
                                         <div class="d-flex justify-content-end gap-2">
                                             <a href="index.php?page=score-edit&id=<?= $s['id'] ?>" class="text-warning p-2"><i class="fa-solid fa-pen-to-square"></i></a>
-                                            <a href="index.php?page=score-delete&id=<?= $s['id'] ?>" class="text-danger p-2" onclick="return confirm('Xóa điểm này?')"><i class="fa-solid fa-trash-can"></i></a>
+                                            <form action="index.php?page=score-delete&id=<?= $s['id'] ?>" method="POST" class="d-inline" onsubmit="return confirm('Xóa điểm này?');">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+    <button type="submit" class="text-danger p-2 border-0 bg-transparent" >
+        <i class="fa-solid fa-trash-can"></i>
+    </button>
+</form>
                                         </div>
                                     </td>
                                 </tr>
