@@ -55,13 +55,14 @@ class Lecturer {
                 // Gọi từ AuthController — user đã tồn tại
                 $userId = (int)$data['user_id'];
             } else {
-                // Gọi từ Admin panel — tạo user mới
+                // Gọi từ Admin panel — tạo user mới với mật khẩu được tạo ngẫu nhiên
+                $tempPassword = bin2hex(random_bytes(8));
                 $stmtUser = $this->conn->prepare(
                     "INSERT INTO users (email, password, role, status) VALUES (?, ?, 'lecturer', 'active')"
                 );
                 $stmtUser->execute([
                     $data['email'],
-                    password_hash('123456', PASSWORD_DEFAULT),
+                    password_hash($tempPassword, PASSWORD_DEFAULT),
                 ]);
                 $userId = (int)$this->conn->lastInsertId();
             }
