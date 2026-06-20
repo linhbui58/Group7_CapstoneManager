@@ -5,7 +5,7 @@
     <h2 class="fw-bold mb-4">Cập nhật đánh giá</h2>
 
     <div class="card border-0 shadow-sm p-4" style="border-radius: 20px; max-width: 600px;">
-        <form action="index.php?page=score-update&id=<?= $score['id'] ?>" method="POST">
+        <form action="index.php?page=score-update&id=<?= $score['id'] ?>" method="POST"> <?= csrfField() ?>
             <div class="mb-3">
                 <label class="fw-bold small text-muted">HỌ VÀ TÊN SINH VIÊN</label>
                 <input type="text" class="form-control rounded-pill bg-light" value="<?= htmlspecialchars($score['student_name']) ?>" readonly>

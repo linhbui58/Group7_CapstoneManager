@@ -53,6 +53,7 @@ require_once '../app/models/Submission.php';
 require_once '../app/models/Score.php';
 require_once '../app/models/Notification.php';
 require_once '../app/models/SystemLog.php';
+require_once '../app/models/SupervisionAssignment.php';
 
 // 5. Controllers
 require_once '../app/controllers/AuthController.php';
@@ -66,6 +67,7 @@ require_once '../app/controllers/TopicController.php';
 require_once '../app/controllers/RegistrationController.php';
 require_once '../app/controllers/AssignmentController.php';
 require_once '../app/controllers/MilestoneController.php';
+require_once '../app/controllers/SupervisionController.php';
 require_once '../app/controllers/SubmissionController.php';
 require_once '../app/controllers/ScoreController.php';
 require_once '../app/controllers/NotificationController.php';
@@ -293,8 +295,45 @@ switch ($page) {
         (new RegistrationController())->store();
         break;
 
+    case 'registration-edit':
+        (new RegistrationController())->edit();
+        break;
+
+    case 'registration-update':
+        (new RegistrationController())->update();
+        break;
+
+    case 'registration-delete':
+        (new RegistrationController())->delete();
+        break;
+
+    case 'registration-register':
+        (new RegistrationController())->register();
+        break;
+
     case 'registration-status':
         (new RegistrationController())->updateStatus();
+        break;
+
+    /*
+    |--------------------------------------------------------------------------
+    | SUPERVISIONS
+    |--------------------------------------------------------------------------
+    */
+    case 'supervisions':
+        (new SupervisionController())->index();
+        break;
+
+    case 'supervision-create':
+        (new SupervisionController())->create();
+        break;
+
+    case 'supervision-store':
+        (new SupervisionController())->store();
+        break;
+
+    case 'supervision-delete':
+        (new SupervisionController())->delete();
         break;
 
     /*

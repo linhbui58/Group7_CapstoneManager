@@ -111,54 +111,24 @@ class User {
     */
 
     public function create($data){
-
         $stmt = $this->conn->prepare(
-            "INSERT INTO users
-            (
-                email,
-                password,
-                role,
-                status
-            )
-            VALUES(?,?,?,?)"
+            "INSERT INTO users ( email, password, role, status)
+             VALUES(?,?,?,?)"
         );
 
         $stmt->execute([
-
             $data['email'],
-
-            password_hash(
-                $data['password'],
-                PASSWORD_DEFAULT
-            ),
-
+            password_hash( $data['password'], PASSWORD_DEFAULT ),
             $data['role'],
-
             'active'
         ]);
-
         return $this->conn->lastInsertId();
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | UPDATE USER
-    |--------------------------------------------------------------------------
-    */
-
     public function update($id,$data){
-
         $stmt = $this->conn->prepare(
-            "UPDATE users
-             SET
-                email=?,
-                role=?,
-                status=?
-             WHERE id=?"
+            "UPDATE users SET email=?, role=?, status=? WHERE id=?"
         );
-
         return $stmt->execute([
-
             $data['email'],
             $data['role'],
             $data['status'] ?? 'active',

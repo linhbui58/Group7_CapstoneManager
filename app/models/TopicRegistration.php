@@ -43,6 +43,22 @@ class TopicRegistration {
         return $stmt->fetch() ? true : false;
     }
 
+    public function hasRegistered($studentId, $semesterId) {
+        $stmt = $this->conn->prepare("SELECT id FROM topic_registrations WHERE student_id = ? AND semester_id = ? AND status = 'registered'");
+        $stmt->execute([$studentId, $semesterId]);
+        return $stmt->fetch() ? true : false;
+    }
+
+    public function updateContent($id, $topicId, $keywords) {
+        $stmt = $this->conn->prepare("UPDATE topic_registrations SET topic_id = ?, keywords = ? WHERE id = ?");
+        return $stmt->execute([$topicId, $keywords, $id]);
+    }
+
+    public function delete($id) {
+        $stmt = $this->conn->prepare("DELETE FROM topic_registrations WHERE id = ?");
+        return $stmt->execute([$id]);
+    }
+
     // Tìm 1 bản ghi theo id
     public function find($id) {
         $stmt = $this->conn->prepare("SELECT * FROM topic_registrations WHERE id = ?");
@@ -52,10 +68,11 @@ class TopicRegistration {
 
     // Tạo đăng ký mới
     public function create($data) {
+        $status = $data['status'] ?? 'pending';
         $stmt = $this->conn->prepare(
             "INSERT INTO topic_registrations 
              (student_id, topic_id, semester_id, desired_lecturer_id, keywords, status, created_at)
-             VALUES (?, ?, ?, ?, ?, 'pending', NOW())"
+             VALUES (?, ?, ?, ?, ?, ?, NOW())"
         );
         return $stmt->execute([
             $data['student_id'],
@@ -63,6 +80,7 @@ class TopicRegistration {
             $data['semester_id'],
             $data['desired_lecturer_id'],
             $data['keywords'],
+            $status
         ]);
     }
 

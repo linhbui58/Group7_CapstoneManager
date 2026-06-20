@@ -118,7 +118,7 @@ $topicChart = buildMonthSeries($topicsByMonth ?? []);
             <div class="dash-box">
                 <div class="dash-box-header">
                     <div class="dash-box-title"><span class="title-dot" style="background:#0ea5e9"></span>Đề tài gần đây</div>
-                    <a href="index.php?page=topics" class="btn btn-light btn-sm">Xem tất cả</a>
+                    <a href="index.php?page=topic-management&tab=topics" class="btn btn-light btn-sm">Xem tất cả</a>
                 </div>
                 <div class="table-responsive">
                     <table class="table">

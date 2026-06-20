@@ -77,11 +77,14 @@ class Submission {
     public function getByStudent($studentId){
         $stmt = $this->conn->prepare(
             "SELECT submissions.*,
-                    students.full_name AS student_name,
-                    milestones.title   AS milestone_title
+                    students.full_name  AS student_name,
+                    milestones.title    AS milestone_title,
+                    es.score            AS score,
+                    es.feedback         AS feedback
              FROM submissions
              JOIN students   ON students.id   = submissions.student_id
              JOIN milestones ON milestones.id  = submissions.milestone_id
+             LEFT JOIN evaluation_scores es ON es.submission_id = submissions.id
              WHERE submissions.student_id = ?
              ORDER BY submissions.submitted_at DESC"
         );

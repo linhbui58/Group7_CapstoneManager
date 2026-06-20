@@ -9,13 +9,9 @@ class RoleMiddleware {
             header("Location: index.php?page=login");
             exit;
         }
-
         $userRole = $_SESSION['user']['role'];
-
         if(!in_array($userRole, $roles)){
-
             http_response_code(403);
-
             abort(403, "Access Denied");
         }
     }

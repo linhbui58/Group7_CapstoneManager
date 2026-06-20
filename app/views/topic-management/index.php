@@ -29,7 +29,7 @@ $activeTab  = $_GET['tab'] ?? 'topics';
             <?php endif; ?>
             <?php if ($role === 'student'): ?>
                 <a href="index.php?page=registration-create"
-                   class="btn btn-primary rounded-pill px-4 shadow-sm fw-bold">
+                   class="btn btn-dark rounded-pill px-4 shadow-sm fw-bold">
                     <i class="fa fa-file-signature me-1"></i> Đăng ký mới
                 </a>
             <?php endif; ?>
@@ -137,6 +137,118 @@ $activeTab  = $_GET['tab'] ?? 'topics';
                 </div>
 
                 <!-- Topics Table -->
+                <?php if ($role === 'student'): 
+                    $myTopics = array_filter($topics, fn($t) => isset($t['created_by']) && $t['created_by'] == $_SESSION['user']['id']);
+                    $generalTopics = array_filter($topics, fn($t) => !isset($t['created_by']) || $t['created_by'] != $_SESSION['user']['id']);
+                ?>
+                    <!-- Bảng đề tài cá nhân -->
+                    <h5 class="fw-bold mb-3 text-primary"><i class="fa fa-user-edit me-2"></i>Đề tài cá nhân</h5>
+                    <div class="table-responsive mb-5 shadow-sm rounded-3">
+                        <table class="table table-hover align-middle mb-0" id="myTopicsTable">
+                            <thead class="table-light">
+                                <tr class="text-muted small text-uppercase">
+                                    <th class="ps-3">Tiêu Đề</th>
+                                    <th>Học Kỳ</th>
+                                    <th class="text-center">Trạng Thái</th>
+                                    <th class="text-center">Thao Tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (!empty($myTopics)): foreach ($myTopics as $t): 
+                                    $ts   = $t['status'];
+                                    $tcls = $ts === 'approved' ? 'bg-success' : ($ts === 'rejected' ? 'bg-danger' : 'bg-warning text-dark');
+                                    $tlbl = $ts === 'approved' ? 'Đã duyệt'  : ($ts === 'rejected' ? 'Từ chối'   : 'Chờ duyệt');
+                                    $tico = $ts === 'approved' ? 'fa-circle-check' : ($ts === 'rejected' ? 'fa-circle-xmark' : 'fa-clock');
+                                ?>
+                                <tr>
+                                    <td class="ps-3">
+                                        <div class="fw-semibold"><?= htmlspecialchars($t['title']) ?></div>
+                                        <?php if (!empty($t['description'])): ?>
+                                            <div class="text-muted small" style="max-width:280px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                                                <?= htmlspecialchars($t['description']) ?>
+                                            </div>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-light text-dark border" style="font-size:11px;">
+                                            <i class="fa fa-calendar-alt me-1 text-muted"></i><?= htmlspecialchars($t['semester']) ?>
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge rounded-pill <?= $tcls ?> px-3 py-2" style="font-size:11px;">
+                                            <i class="fa <?= $tico ?> me-1"></i><?= $tlbl ?>
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <?php if ($ts === 'pending'): ?>
+                                        <div class="d-flex justify-content-center gap-1">
+                                            <a href="index.php?page=topic-edit&id=<?= $t['id'] ?>"
+                                               class="btn btn-sm btn-outline-warning rounded-circle" data-bs-toggle="tooltip" title="Sửa" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;">
+                                                <i class="fa fa-pen"></i>
+                                            </a>
+                                            <form action="index.php?page=topic-delete&id=<?= $t['id'] ?>" method="POST" class="d-inline" onsubmit="return confirm('Xác nhận xóa đề tài này?');">
+                                                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger rounded-circle border-0" data-bs-toggle="tooltip" title="Xóa" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                                <?php endforeach; else: ?>
+                                <tr><td colspan="4" class="text-center py-4 text-muted">Bạn chưa đề xuất đề tài nào.</td></tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Bảng đề tài chung -->
+                    <h5 class="fw-bold mb-3 text-success"><i class="fa fa-globe me-2"></i>Ngân hàng đề tài chung</h5>
+                    <div class="table-responsive shadow-sm rounded-3">
+                        <table class="table table-hover align-middle mb-0" id="generalTopicsTable">
+                            <thead class="table-light">
+                                <tr class="text-muted small text-uppercase">
+                                    <th class="ps-3">Tiêu Đề</th>
+                                    <th>Học Kỳ</th>
+                                    <th class="text-center">Trạng Thái</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (!empty($generalTopics)): foreach ($generalTopics as $t): 
+                                    $ts   = $t['status'];
+                                    $tcls = $ts === 'approved' ? 'bg-success' : ($ts === 'rejected' ? 'bg-danger' : 'bg-warning text-dark');
+                                    $tlbl = $ts === 'approved' ? 'Đã duyệt'  : ($ts === 'rejected' ? 'Từ chối'   : 'Chờ duyệt');
+                                    $tico = $ts === 'approved' ? 'fa-circle-check' : ($ts === 'rejected' ? 'fa-circle-xmark' : 'fa-clock');
+                                ?>
+                                <tr>
+                                    <td class="ps-3">
+                                        <div class="fw-semibold"><?= htmlspecialchars($t['title']) ?></div>
+                                        <?php if (!empty($t['description'])): ?>
+                                            <div class="text-muted small" style="max-width:280px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                                                <?= htmlspecialchars($t['description']) ?>
+                                            </div>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-light text-dark border" style="font-size:11px;">
+                                            <i class="fa fa-calendar-alt me-1 text-muted"></i><?= htmlspecialchars($t['semester']) ?>
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge rounded-pill <?= $tcls ?> px-3 py-2" style="font-size:11px;">
+                                            <i class="fa <?= $tico ?> me-1"></i><?= $tlbl ?>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <?php endforeach; else: ?>
+                                <tr><td colspan="3" class="text-center py-4 text-muted">Không có đề tài chung nào.</td></tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                <?php else: ?>
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0" id="topicsTable">
                         <thead>
@@ -144,9 +256,7 @@ $activeTab  = $_GET['tab'] ?? 'topics';
                                 <th class="ps-2">Tiêu Đề</th>
                                 <th>Học Kỳ</th>
                                 <th class="text-center">Trạng Thái</th>
-                                <?php if (in_array($role, ['admin', 'lecturer'])): ?>
-                                    <th class="text-center">Thao Tác</th>
-                                <?php endif; ?>
+                                <th class="text-center">Thao Tác</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -173,12 +283,11 @@ $activeTab  = $_GET['tab'] ?? 'topics';
                                             <?= htmlspecialchars($t['semester']) ?>
                                         </span>
                                     </td>
-                                    <td>
+                                    <td class="text-center">
                                         <span class="badge rounded-pill <?= $tcls ?> px-3 py-2" style="font-size:11px;">
                                             <i class="fa <?= $tico ?> me-1"></i><?= $tlbl ?>
                                         </span>
                                     </td>
-                                    <?php if (in_array($role, ['admin', 'lecturer'])): ?>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center gap-1 flex-wrap">
                                             <?php if ($role === 'admin'): ?>
@@ -240,16 +349,15 @@ $activeTab  = $_GET['tab'] ?? 'topics';
                                             <?php endif; ?>
                                         </div>
                                     </td>
-                                    <?php endif; ?>
                                 </tr>
                             <?php endforeach; else: ?>
                                 <tr>
-                                    <td colspan="<?= in_array($role, ['admin', 'lecturer']) ? 5 : 4 ?>"
+                                     <td colspan="5"
                                         class="text-center py-5 text-muted">
                                         <i class="fa fa-inbox fa-2x mb-3 d-block opacity-25"></i>
                                         <div class="fw-semibold">Chưa có đề tài nào</div>
                                         <div class="small mt-1 text-muted">
-                                            <?= $role === 'student' ? 'Chưa có đề tài nào được duyệt.' : 'Thêm đề tài mới để bắt đầu.' ?>
+                                            Thêm đề tài mới để bắt đầu.
                                         </div>
                                     </td>
                                 </tr>
@@ -257,6 +365,7 @@ $activeTab  = $_GET['tab'] ?? 'topics';
                         </tbody>
                     </table>
                 </div>
+                <?php endif; ?>
 
             <?php endif; /* end tab topics */ ?>
 
@@ -287,9 +396,9 @@ $activeTab  = $_GET['tab'] ?? 'topics';
                         <tbody>
                             <?php if (!empty($registrations)): foreach ($registrations as $r):
                                 $s         = $r['status'];
-                                $badgeCls  = $s === 'approved' ? 'bg-success' : ($s === 'rejected' ? 'bg-danger' : 'bg-warning text-dark');
-                                $badgeLbl  = $s === 'approved' ? 'Đã duyệt'  : ($s === 'rejected' ? 'Từ chối'   : 'Chờ duyệt');
-                                $badgeIcon = $s === 'approved' ? 'fa-circle-check' : ($s === 'rejected' ? 'fa-circle-xmark' : 'fa-clock');
+                                $badgeCls  = $s === 'approved' ? 'bg-success' : ($s === 'rejected' ? 'bg-danger' : ($s === 'registered' ? 'bg-primary' : 'bg-warning text-dark'));
+                                $badgeLbl  = $s === 'approved' ? 'Đã duyệt'  : ($s === 'rejected' ? 'Từ chối'   : ($s === 'registered' ? 'Đã đăng ký' : 'Chờ duyệt'));
+                                $badgeIcon = $s === 'approved' ? 'fa-check' : ($s === 'rejected' ? 'fa-xmark' : ($s === 'registered' ? 'fa-check-double' : 'fa-clock'));
                             ?>
                                 <tr>
                                     <!-- Đề tài -->
@@ -357,36 +466,38 @@ $activeTab  = $_GET['tab'] ?? 'topics';
                                     <!-- Thao tác -->
                                     <?php if (in_array($role, ['admin', 'lecturer'])): ?>
                                     <td class="text-center">
-                                        <?php if ($s === 'pending'): ?>
-                                            <div class="d-flex justify-content-center gap-2">
-                                                <form action="index.php?page=registration-status&id=<?= $r['id'] ?>&status=approved" method="POST" class="d-inline" onsubmit="return confirm('Duyệt đăng ký này?');">
-    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
-    <button type="submit" class="btn btn-sm btn-success rounded-pill px-2 shadow-sm border-0" >
-        <i class="fa fa-check me-1"></i>Duyệt
-    </button>
-</form>
-                                                <form action="index.php?page=registration-status&id=<?= $r['id'] ?>&status=rejected" method="POST" class="d-inline" onsubmit="return confirm('Từ chối đăng ký này?');">
-    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
-    <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-2 border-0" >
-        <i class="fa fa-xmark me-1"></i>Từ chối
-    </button>
-</form>
-                                            </div>
-                                        <?php elseif ($s === 'approved'): ?>
-                                            <form action="index.php?page=registration-status&id=<?= $r['id'] ?>&status=rejected" method="POST" class="d-inline" onsubmit="return confirm('Thu hồi duyệt đăng ký này?');">
-    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
-    <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-2 border-0" >
-        <i class="fa fa-rotate-left me-1"></i>Thu hồi
-    </button>
-</form>
-                                        <?php else: ?>
-                                            <form action="index.php?page=registration-status&id=<?= $r['id'] ?>&status=approved" method="POST" class="d-inline" onsubmit="return confirm('Duyệt lại đăng ký này?');">
-    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
-    <button type="submit" class="btn btn-sm btn-outline-success rounded-pill px-2 border-0" >
-        <i class="fa fa-rotate-left me-1"></i>Duyệt lại
-    </button>
-</form>
-                                        <?php endif; ?>
+                                            <?php if ($s === 'pending'): ?>
+                                                <div class="d-flex justify-content-center gap-2">
+                                                    <form action="index.php?page=registration-status&id=<?= $r['id'] ?>&status=approved" method="POST" class="d-inline" onsubmit="return confirm('Duyệt đăng ký này?');">
+        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+        <button type="submit" class="btn btn-sm btn-success rounded-pill px-2 shadow-sm border-0" >
+            <i class="fa fa-check me-1"></i>Duyệt
+        </button>
+    </form>
+                                                    <form action="index.php?page=registration-status&id=<?= $r['id'] ?>&status=rejected" method="POST" class="d-inline" onsubmit="return confirm('Từ chối đăng ký này?');">
+        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+        <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-2 border-0" >
+            <i class="fa fa-xmark me-1"></i>Từ chối
+        </button>
+    </form>
+                                                </div>
+                                            <?php elseif ($s === 'approved'): ?>
+                                                <form action="index.php?page=registration-status&id=<?= $r['id'] ?>&status=rejected" method="POST" class="d-inline" onsubmit="return confirm('Thu hồi duyệt đăng ký này?');">
+        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+        <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-2 border-0" >
+            <i class="fa fa-rotate-left me-1"></i>Thu hồi
+        </button>
+    </form>
+                                            <?php elseif ($s === 'rejected'): ?>
+                                                <form action="index.php?page=registration-status&id=<?= $r['id'] ?>&status=approved" method="POST" class="d-inline" onsubmit="return confirm('Duyệt lại đăng ký này?');">
+        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+        <button type="submit" class="btn btn-sm btn-outline-success rounded-pill px-2 border-0" >
+            <i class="fa fa-rotate-left me-1"></i>Duyệt lại
+        </button>
+    </form>
+                                            <?php else: ?>
+                                                <span class="text-muted small">Đã đăng ký</span>
+                                            <?php endif; ?>
                                     </td>
                                     <?php endif; ?>
                                 </tr>
@@ -398,7 +509,7 @@ $activeTab  = $_GET['tab'] ?? 'topics';
                                         <div class="fw-semibold">Chưa có đăng ký nào</div>
                                         <div class="small mt-1">
                                             <?= $role === 'student'
-                                                ? 'Nhấn "Đăng ký mới" để đăng ký đề tài.'
+                                                ? 'Nhấn "Đăng ký mới" để chọn đề tài.'
                                                 : 'Chưa có sinh viên nào đăng ký.' ?>
                                         </div>
                                     </td>
@@ -439,6 +550,12 @@ $(document).ready(function () {
 
     if ($('#topicsTable').length) {
         $('#topicsTable').DataTable(dtConfig);
+    }
+    if ($('#myTopicsTable').length) {
+        $('#myTopicsTable').DataTable(dtConfig);
+    }
+    if ($('#generalTopicsTable').length) {
+        $('#generalTopicsTable').DataTable(dtConfig);
     }
     if ($('#registrationsTable').length) {
         $('#registrationsTable').DataTable(dtConfig);
