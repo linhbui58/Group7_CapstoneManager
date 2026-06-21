@@ -64,12 +64,6 @@ class SupervisionController {
              exit();
         }
 
-        if ($student['faculty'] !== $lecturer['faculty']) {
-            $_SESSION['error'] = "Giảng viên và Sinh viên phải cùng khoa ({$student['faculty']}).";
-            header("Location: index.php?page=supervision-create");
-            exit();
-        }
-
         // Kiểm tra xem sinh viên đã được phân công trong học kỳ này chưa
         $existing = $this->supervisionModel->findByStudentAndSemester($studentId, $semesterId);
         if ($existing) {
@@ -111,8 +105,7 @@ class SupervisionController {
 
     public function delete() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            http_response_code(405);
-            exit("Method Not Allowed");
+            abort(405, "Method Not Allowed");
         }
         verifyCSRF();
 

@@ -220,8 +220,7 @@ class SubmissionController {
 
     public function updateStatus() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            http_response_code(405);
-            exit("Method Not Allowed");
+            abort(405, "Method Not Allowed");
         }
         verifyCSRF();
         $role = $_SESSION['user']['role'];
@@ -296,8 +295,7 @@ class SubmissionController {
 
     public function delete() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            http_response_code(405);
-            exit("Method Not Allowed");
+            abort(405, "Method Not Allowed");
         }
         verifyCSRF();
         $role = $_SESSION['user']['role'];
