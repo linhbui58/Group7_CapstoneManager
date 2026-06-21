@@ -14,24 +14,14 @@ class Topic {
         return $this->conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Chỉ lấy topic có status = 'approved' (dùng cho student đăng ký)
-    // Cập nhật: Sinh viên chỉ được thấy đề tài do chính mình tạo ra
-    public function getAvailable($userId = null){
+    public function getAvailable(){
         $sql = "SELECT topics.*, semesters.name AS semester
                 FROM topics
                 JOIN semesters ON semesters.id = topics.semester_id
-                WHERE topics.status = 'approved'";
-        $params = [];
-        
-        if ($userId) {
-            $sql .= " AND topics.created_by = ?";
-            $params[] = $userId;
-        }
-        
-        $sql .= " ORDER BY topics.id DESC";
-        
+                WHERE topics.status = 'approved'
+                ORDER BY topics.id DESC";
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute($params);
+        $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

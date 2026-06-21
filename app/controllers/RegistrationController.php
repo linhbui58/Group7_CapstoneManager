@@ -20,7 +20,7 @@ class RegistrationController {
         $topicModel    = new Topic();
         $semesterModel = new Semester();
 
-        $topics    = $topicModel->getAvailable($_SESSION['user']['id']);   // chỉ lấy đề tài của user này đã được duyệt
+        $topics    = $topicModel->getAvailable();   // tất cả đề tài đã được duyệt
         $semesters = $semesterModel->getAll();
 
         require '../app/views/registrations/create.php';

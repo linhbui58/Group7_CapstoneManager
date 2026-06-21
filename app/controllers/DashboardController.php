@@ -77,7 +77,12 @@ class DashboardController {
         $lecturer = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$lecturer) {
-            abort(403, "Lecturer profile not found.");
+            // Tự tạo profile lecturer nếu chưa có
+            $db->prepare("INSERT INTO lecturers (user_id, full_name, expertise, quota) VALUES (?, ?, '', 8)")
+               ->execute([$userId, explode('@', $_SESSION['user']['email'])[0]]);
+            $stmt = $db->prepare("SELECT * FROM lecturers WHERE user_id = ?");
+            $stmt->execute([$userId]);
+            $lecturer = $stmt->fetch(PDO::FETCH_ASSOC);
         }
         
         $lecturerId = $lecturer['id'];
@@ -126,6 +131,21 @@ class DashboardController {
         $stmtSc->execute([$lecturerId]);
         $scoresByMonth = $stmtSc->fetchAll(PDO::FETCH_ASSOC);
 
+        // Sinh viên đang được hướng dẫn
+        $stmtSv = $db->prepare("
+            SELECT s.full_name, s.faculty, sa.assigned_at, sem.name AS semester_name,
+                   t.title AS topic_title
+            FROM supervision_assignments sa
+            JOIN students s   ON s.id   = sa.student_id
+            JOIN semesters sem ON sem.id = sa.semester_id
+            LEFT JOIN topic_registrations tr ON tr.student_id = s.id AND tr.status IN ('approved','registered')
+            LEFT JOIN topics t ON t.id = tr.topic_id
+            WHERE sa.lecturer_id = ?
+            ORDER BY sa.assigned_at DESC
+        ");
+        $stmtSv->execute([$lecturerId]);
+        $supervisedStudents = $stmtSv->fetchAll(PDO::FETCH_ASSOC);
+
         require '../app/views/dashboard/lecturer_dashboard.php';
     }
 
@@ -137,7 +157,12 @@ class DashboardController {
         $student = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$student) {
-            abort(403, "Student profile not found.");
+            // Tự tạo profile student nếu chưa có
+            $db->prepare("INSERT INTO students (user_id, full_name) VALUES (?, ?)")
+               ->execute([$userId, explode('@', $_SESSION['user']['email'])[0]]);
+            $stmt = $db->prepare("SELECT * FROM students WHERE user_id = ?");
+            $stmt->execute([$userId]);
+            $student = $stmt->fetch(PDO::FETCH_ASSOC);
         }
 
         $studentId = $student['id'];

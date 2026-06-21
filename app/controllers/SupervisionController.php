@@ -64,6 +64,13 @@ class SupervisionController {
              exit();
         }
 
+        // Check cùng khoa
+        if (!empty($student['faculty']) && !empty($lecturer['faculty']) && $student['faculty'] !== $lecturer['faculty']) {
+            $_SESSION['error'] = "Giảng viên và Sinh viên phải cùng khoa. Sinh viên: {$student['faculty']} — Giảng viên: {$lecturer['faculty']}.";
+            header("Location: index.php?page=supervision-create");
+            exit();
+        }
+
         // Kiểm tra xem sinh viên đã được phân công trong học kỳ này chưa
         $existing = $this->supervisionModel->findByStudentAndSemester($studentId, $semesterId);
         if ($existing) {

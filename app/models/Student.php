@@ -99,13 +99,12 @@ class Student {
 
     public function update($id, $data){
         $stmt = $this->conn->prepare(
-            "UPDATE students
-             SET full_name=?, faculty=?
-             WHERE id=?"
+            "UPDATE students SET full_name=?, student_code=?, phone=?, faculty=? WHERE id=?"
         );
-
         return $stmt->execute([
             $data['full_name'],
+            $data['student_code'] ?? '',
+            $data['phone'] ?? '',
             $data['faculty'] ?? '',
             $id
         ]);

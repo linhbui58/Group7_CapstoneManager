@@ -90,15 +90,29 @@ class Lecturer {
     }
 
     public function update($id, $data) {
-        $stmt = $this->conn->prepare(
-            "UPDATE lecturers SET full_name = ?, expertise = ?, faculty = ? WHERE id = ?"
-        );
-        return $stmt->execute([
-            $data['full_name'], 
-            $data['expertise'] ?? '', 
-            $data['faculty'] ?? '', 
-            $id
-        ]);
+        // Kiểm tra cột faculty có tồn tại không
+        try {
+            $stmt = $this->conn->prepare(
+                "UPDATE lecturers SET full_name = ?, expertise = ?, faculty = ?, phone = ? WHERE id = ?"
+            );
+            return $stmt->execute([
+                $data['full_name'],
+                $data['expertise'] ?? '',
+                $data['faculty'] ?? '',
+                $data['phone'] ?? '',
+                $id
+            ]);
+        } catch (PDOException $e) {
+            // Fallback nếu faculty/phone chưa có trong DB
+            $stmt = $this->conn->prepare(
+                "UPDATE lecturers SET full_name = ?, expertise = ? WHERE id = ?"
+            );
+            return $stmt->execute([
+                $data['full_name'],
+                $data['expertise'] ?? '',
+                $id
+            ]);
+        }
     }
 
     public function delete($id) {

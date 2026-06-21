@@ -65,7 +65,7 @@ class LecturerController {
     public function update() {
         RoleMiddleware::check(['admin', 'lecturer']);
         $id = (int)($_GET['id'] ?? 0);
-        $role     = $_SESSION['user']['role'] ?? '';
+        $role       = $_SESSION['user']['role'] ?? '';
         $lecturerId = $_SESSION['user']['lecturer_id'] ?? null;
         
         if ($role === 'lecturer' && $id !== (int)$lecturerId) {
@@ -74,9 +74,14 @@ class LecturerController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $id) {
             verifyCSRF();
             $this->lecturerModel->update($id, $_POST);
-            $_SESSION['success'] = "Lecturer updated";
+            $_SESSION['success'] = "Cập nhật thông tin thành công.";
         }
-        redirect('lecturers');
+        // Lecturer redirect về dashboard, admin redirect về danh sách
+        if ($role === 'lecturer') {
+            redirect('dashboard');
+        } else {
+            redirect('lecturers');
+        }
     }
 
     public function delete() {

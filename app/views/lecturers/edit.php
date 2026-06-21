@@ -15,7 +15,20 @@
             </div>
             <div class="mb-3">
                 <label class="form-label small fw-bold text-muted">CHUYÊN MÔN</label>
-                <input type="text" name="expertise" class="form-control rounded-pill px-3" value="<?= htmlspecialchars($lecturer['expertise']) ?>">
+                <input type="text" name="expertise" class="form-control rounded-pill px-3" value="<?= htmlspecialchars($lecturer['expertise'] ?? '') ?>">
+            </div>
+            <div class="mb-3">
+                <label class="form-label small fw-bold text-muted">KHOA/VIỆN</label>
+                <select name="faculty" class="form-select rounded-pill px-3">
+                    <option value="">-- Chọn Khoa --</option>
+                    <?php foreach (['Khoa CNTT', 'Khoa Kinh tế', 'Khoa Ngôn ngữ'] as $f): ?>
+                        <option value="<?= $f ?>" <?= ($lecturer['faculty'] ?? '') === $f ? 'selected' : '' ?>><?= $f ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label class="form-label small fw-bold text-muted">ĐIỆN THOẠI</label>
+                <input type="text" name="phone" class="form-control rounded-pill px-3" value="<?= htmlspecialchars($lecturer['phone'] ?? '') ?>" placeholder="09xx...">
             </div>
             <div class="mb-4">
                 <label class="form-label small fw-bold text-muted">EMAIL (Chỉ xem)</label>
