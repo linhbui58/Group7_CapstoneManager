@@ -90,15 +90,15 @@ class SupervisionController {
         if ($student && !empty($student['user_id'])) {
             $notifModel->create([
                 'user_id' => $student['user_id'],
-                'content' => "Bạn đã được phân công Giảng viên hướng dẫn: {$lecturer['full_name']} trong học kỳ này.",
-                'type'    => 'info'
+                'content' => "Bạn đã được phân công Giảng viên hướng dẫn: {$lecturer['full_name']} 🎓",
+                'type'    => 'system'
             ]);
         }
         if ($lecturer && !empty($lecturer['user_id'])) {
             $notifModel->create([
                 'user_id' => $lecturer['user_id'],
-                'content' => "Bạn đã được phân công hướng dẫn sinh viên: {$student['full_name']} trong học kỳ này.",
-                'type'    => 'info'
+                'content' => "Bạn được phân công hướng dẫn sinh viên: {$student['full_name']} 📋",
+                'type'    => 'system'
             ]);
         }
 

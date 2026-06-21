@@ -313,13 +313,13 @@ class RegistrationController {
                 $student = $studentModel->find($reg['student_id']);
                 
                 if ($student && !empty($student['user_id'])) {
-                    $statusText = $status === 'approved' ? 'đã được DUYỆT' : ($status === 'rejected' ? 'đã bị TỪ CHỐI' : 'được chuyển về CHỜ DUYỆT');
+                    $statusText = $status === 'approved' ? 'đã được DUYỆT ✅' : ($status === 'rejected' ? 'đã bị TỪ CHỐI ❌' : 'được chuyển về CHỜ DUYỆT 🕐');
                     require_once '../app/models/Notification.php';
                     $notifModel = new Notification();
                     $notifModel->create([
                         'user_id' => $student['user_id'],
-                        'content' => "Đề xuất đăng ký đề tài \"{$topicTitle}\" của bạn $statusText.",
-                        'type'    => 'info'
+                        'content' => "Đề xuất đề tài \"{$topicTitle}\" của bạn $statusText.",
+                        'type'    => 'approval'
                     ]);
                 }
             }

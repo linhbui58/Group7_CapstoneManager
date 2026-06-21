@@ -28,18 +28,24 @@ class AssignmentController {
             verifyCSRF();
             $lecturerId = $_POST['lecturer_id'] ?? null;
             if ($lecturerId && !WorkloadService::canAssign($lecturerId)) {
-                $_SESSION['error'] = "Lecturer quota exceeded.";
+                $_SESSION['error'] = "Giảng viên đã đạt giới hạn sinh viên hướng dẫn.";
                 header("Location: index.php?page=assignment-create");
                 exit();
             }
 
-            if ($this->assignmentModel->create($_POST)) {
-                LogService::log('assign_topic', "Assigned Topic to Lecturer ID: " . $_POST['lecturer_id']);
-                $_SESSION['success'] = "Assignment created successfully.";
-                header("Location: index.php?page=assignments");
-                exit();
+            try {
+                if ($this->assignmentModel->create($_POST)) {
+                    LogService::log('assign_topic', "Assigned Topic to Lecturer ID: " . $_POST['lecturer_id']);
+                    $_SESSION['success'] = "Phân công thành công.";
+                } else {
+                    $_SESSION['error'] = "Không thể phân công. Đề tài có thể đã được phân công rồi.";
+                }
+            } catch (Exception $e) {
+                $_SESSION['error'] = "Lỗi: " . $e->getMessage();
             }
         }
+        header("Location: index.php?page=assignments");
+        exit();
     }
 
     public function edit() {
