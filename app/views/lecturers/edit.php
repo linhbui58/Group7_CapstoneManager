@@ -3,7 +3,7 @@
 
 <div class="main-content" style="padding: 30px; background-color: #f8fafc;">
     <div class="mb-4">
-        <a href="index.php?page=lecturers" class="text-decoration-none text-muted small"><i class="fa-solid fa-arrow-left me-1"></i> Back</a>
+        <a href="<?= $_SESSION['user']['role']==='lecturer' ? 'index.php?page=dashboard' : 'index.php?page=lecturers' ?>" class="text-decoration-none text-muted small"><i class="fa-solid fa-arrow-left me-1"></i> Back</a>
         <h2 class="fw-bold mt-2">Chỉnh sửa giảng viên</h2>
     </div>
 
@@ -27,16 +27,12 @@
                 </select>
             </div>
             <div class="mb-4">
-                <label class="form-label small fw-bold text-muted">ĐIỆN THOẠI</label>
-                <input type="text" name="phone" class="form-control rounded-pill px-3" value="<?= htmlspecialchars($lecturer['phone'] ?? '') ?>" placeholder="09xx...">
-            </div>
-            <div class="mb-4">
                 <label class="form-label small fw-bold text-muted">EMAIL (Chỉ xem)</label>
                 <input type="text" class="form-control rounded-pill px-3 bg-light" value="<?= htmlspecialchars($lecturer['email']) ?>" readonly>
             </div>
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-warning rounded-pill px-5 fw-bold shadow-sm text-white">Lưu thay đổi</button>
-                <a href="index.php?page=lecturers" class="btn btn-light rounded-pill px-4">Hủy</a>
+                <a href="<?= $_SESSION['user']['role']==='lecturer' ? 'index.php?page=dashboard' : 'index.php?page=lecturers' ?>" class="btn btn-light rounded-pill px-4">Hủy</a>
             </div>
         </form>
     </div>

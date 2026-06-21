@@ -348,28 +348,17 @@
                         </div>
                     </div>
 
-                    <div class="grid-2">
-                        <div class="field-group">
-                            <div class="field-header"><label for="phone">Điện thoại</label></div>
-                            <div class="input-wrapper">
-                                <input type="text" id="phone" name="phone"
-                                       placeholder="09xx..."
-                                       value="<?= htmlspecialchars($old['phone'] ?? '') ?>">
-                                <i class="fa-solid fa-phone"></i>
-                            </div>
-                        </div>
-                        <div class="field-group">
-                            <div class="field-header"><label for="department">Khoa/Viện</label></div>
-                            <div class="input-wrapper">
-                                <select id="department" name="department" required>
-                                    <option value="">Chọn Khoa</option>
-                                    <option value="Khoa CNTT" <?= (isset($old['department']) && $old['department'] === 'Khoa CNTT') ? 'selected' : '' ?>>Khoa CNTT</option>
-                                    <option value="Khoa Kinh tế" <?= (isset($old['department']) && $old['department'] === 'Khoa Kinh tế') ? 'selected' : '' ?>>Khoa Kinh tế</option>
-                                    <option value="Khoa Ngôn ngữ" <?= (isset($old['department']) && $old['department'] === 'Khoa Ngôn ngữ') ? 'selected' : '' ?>>Khoa Ngôn ngữ</option>
-                                </select>
-                                <i class="fa-solid fa-building"></i>
-                                <i class="fa-solid fa-chevron-down select-arrow"></i>
-                            </div>
+                    <div class="field-group">
+                        <div class="field-header"><label for="department">Khoa/Viện</label></div>
+                        <div class="input-wrapper">
+                            <select id="department" name="department" required>
+                                <option value="">Chọn Khoa</option>
+                                <option value="Khoa CNTT" <?= (isset($old['department']) && $old['department'] === 'Khoa CNTT') ? 'selected' : '' ?>>Khoa CNTT</option>
+                                <option value="Khoa Kinh tế" <?= (isset($old['department']) && $old['department'] === 'Khoa Kinh tế') ? 'selected' : '' ?>>Khoa Kinh tế</option>
+                                <option value="Khoa Ngôn ngữ" <?= (isset($old['department']) && $old['department'] === 'Khoa Ngôn ngữ') ? 'selected' : '' ?>>Khoa Ngôn ngữ</option>
+                            </select>
+                            <i class="fa-solid fa-building"></i>
+                            <i class="fa-solid fa-chevron-down select-arrow"></i>
                         </div>
                     </div>
 

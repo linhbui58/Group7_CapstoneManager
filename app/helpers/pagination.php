@@ -2,7 +2,7 @@
 
 function paginate($total, $limit = 10){
 
-    $page = $_GET['p'] ?? 1;
+    $page = isset($_GET['p']) ? (int)$_GET['p'] : 1;
 
     $page = max($page, 1);
 

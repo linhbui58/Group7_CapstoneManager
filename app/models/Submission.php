@@ -55,7 +55,7 @@ class Submission {
     public function updateStatus($id, $status){
         // Map status từ UI sang enum DB
         $map = [
-            'reviewed' => 'submitted',   // tạm dùng submitted = đã xem
+            'reviewed' => 'reviewed',    // enum DB đã có 'reviewed'
             'rejected' => 'revision_required',
             'submitted'=> 'submitted',
             'late'     => 'late',

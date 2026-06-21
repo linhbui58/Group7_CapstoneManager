@@ -120,7 +120,7 @@
                                 <span class="text-truncate" style="max-width:220px">
                                     <?= htmlspecialchars(basename($submission['file_path'])) ?>
                                 </span>
-                                <a href="assets/uploads/<?= htmlspecialchars($submission['file_path']) ?>"
+                                <a href="assets/uploads/submissions/<?= htmlspecialchars($submission['file_path']) ?>"
                                    target="_blank"
                                    class="btn btn-sm rounded-pill px-3 fw-bold text-white ms-2"
                                    style="background:#10b981;border:none;font-size:12px">

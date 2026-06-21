@@ -28,6 +28,12 @@
             </div>
 
             <div class="mb-3">
+                <label class="fw-bold small text-muted">MÃ SINH VIÊN</label>
+                <input type="text" name="student_code" class="form-control rounded-pill px-3"
+                       placeholder="VD: 2005XXXX">
+            </div>
+
+            <div class="mb-3">
                 <label class="fw-bold small text-muted">EMAIL <span class="text-danger">*</span></label>
                 <input type="email" name="email" class="form-control rounded-pill px-3"
                        placeholder="student@example.com" required>

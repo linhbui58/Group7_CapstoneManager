@@ -3,7 +3,7 @@
 
 <div class="main-content" style="padding: 32px; background: #f4f7fe; min-height: 100vh;">
     <div class="mb-4">
-        <a href="index.php?page=students" class="text-decoration-none text-muted small fw-bold">
+        <a href="<?= $_SESSION['user']['role']==='student' ? 'index.php?page=dashboard' : 'index.php?page=students' ?>" class="text-decoration-none text-muted small fw-bold">
             <i class="fa-solid fa-arrow-left me-1"></i> QUAY LẠI
         </a>
         <h2 class="fw-bold mt-2" style="color:#0f172a">Chỉnh sửa sinh viên</h2>
@@ -27,12 +27,6 @@
                 <label class="fw-bold small text-muted">MÃ SINH VIÊN</label>
                 <input type="text" name="student_code" class="form-control rounded-pill px-3"
                        value="<?= htmlspecialchars($student['student_code'] ?? '') ?>" placeholder="VD: 2005XXXX">
-            </div>
-
-            <div class="mb-3">
-                <label class="fw-bold small text-muted">ĐIỆN THOẠI</label>
-                <input type="text" name="phone" class="form-control rounded-pill px-3"
-                       value="<?= htmlspecialchars($student['phone'] ?? '') ?>" placeholder="09xx...">
             </div>
 
             <div class="mb-3">
