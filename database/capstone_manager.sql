@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th6 19, 2026 lúc 02:43 PM
+-- Thời gian đã tạo: Th6 22, 2026 lúc 04:27 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -73,7 +73,8 @@ INSERT INTO `lecturers` (`id`, `user_id`, `full_name`, `expertise`, `quota`, `cr
 (4, 10, 'Le Van C', 'Cybersecurity', 8, '2026-06-15 20:12:41', 'Khoa CNTT'),
 (6, 14, 'Truong Cong Doan', 'AI', 8, '2026-06-18 06:47:16', 'Khoa Ngôn ngữ'),
 (7, 17, 'Hao Huc', '', 8, '2026-06-18 19:22:50', 'Khoa Kinh tế'),
-(8, 18, 'Lê ÂBC', '', 8, '2026-06-18 19:27:18', 'Khoa CNTT');
+(8, 18, 'Lê ÂBC', '', 8, '2026-06-18 19:27:18', 'Khoa CNTT'),
+(9, 23, 'Võ văn Toàn', '', 8, '2026-06-21 14:18:56', 'Khoa Kinh tế');
 
 -- --------------------------------------------------------
 
@@ -196,21 +197,27 @@ CREATE TABLE `students` (
   `user_id` int(11) DEFAULT NULL,
   `full_name` varchar(150) DEFAULT NULL,
   `faculty` varchar(100) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `student_code` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `students`
 --
 
-INSERT INTO `students` (`id`, `user_id`, `full_name`, `faculty`, `created_at`) VALUES
-(1, 3, 'bui lin', 'Khoa Ngôn ngữ', '2026-05-10 16:40:31'),
-(2, 5, 'Đỗ hà', 'Khoa CNTT', '2026-05-11 15:48:04'),
-(4, 8, 'Tran Duy', 'Khoa CNTT', '2026-05-14 09:25:42'),
-(5, 9, 'Linh Nguyễn', 'Khoa Kinh tế', '2026-05-19 01:58:41'),
-(6, 11, 'Nguyen Thi E', 'Khoa CNTT', '2026-06-15 20:12:41'),
-(7, 12, 'Linh Nguyễn', 'Khoa Ngôn ngữ', '2026-06-18 03:50:42'),
-(8, 15, 'Ho Minh Hoang', 'Khoa Ngôn ngữ', '2026-06-18 18:24:15');
+INSERT INTO `students` (`id`, `user_id`, `full_name`, `faculty`, `created_at`, `student_code`) VALUES
+(1, 3, 'bui lin', 'Khoa Ngôn ngữ', '2026-05-10 16:40:31', NULL),
+(2, 5, 'Đỗ hà', 'Khoa CNTT', '2026-05-11 15:48:04', NULL),
+(4, 8, 'Tran Duy', 'Khoa CNTT', '2026-05-14 09:25:42', NULL),
+(5, 9, 'Linh Nguyễn', 'Khoa Kinh tế', '2026-05-19 01:58:41', NULL),
+(6, 11, 'Nguyen Thi E', 'Khoa CNTT', '2026-06-15 20:12:41', NULL),
+(7, 12, 'Linh Nguyễn', 'Khoa Ngôn ngữ', '2026-06-18 03:50:42', NULL),
+(8, 15, 'Ho Minh Hoang', 'Khoa Ngôn ngữ', '2026-06-18 18:24:15', NULL),
+(9, 19, 'Bi', 'Khoa Kinh tế', '2026-06-19 12:45:29', NULL),
+(10, 20, 'ABC', 'Khoa CNTT', '2026-06-19 18:56:43', NULL),
+(11, 21, 'fueiw', 'Khoa CNTT', '2026-06-19 20:09:00', NULL),
+(12, 22, '434', 'Khoa Ngôn ngữ', '2026-06-19 20:25:48', NULL),
+(13, 24, 'Lung Linh', 'Khoa Kinh tế', '2026-06-21 16:33:45', '23232323');
 
 -- --------------------------------------------------------
 
@@ -237,7 +244,7 @@ CREATE TABLE `submissions` (
   `topic_id` int(11) DEFAULT NULL,
   `milestone_id` int(11) DEFAULT NULL,
   `file_path` varchar(255) DEFAULT NULL,
-  `status` enum('submitted','late','revision_required') DEFAULT 'submitted',
+  `status` enum('submitted','reviewed','late','revision_required') DEFAULT 'submitted',
   `attempt` int(11) DEFAULT 1,
   `submitted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -294,6 +301,29 @@ CREATE TRIGGER `increase_submission_attempt` BEFORE INSERT ON `submissions` FOR 
 END
 $$
 DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `supervision_assignments`
+--
+
+CREATE TABLE `supervision_assignments` (
+  `id` int(11) NOT NULL,
+  `student_id` int(11) NOT NULL,
+  `lecturer_id` int(11) NOT NULL,
+  `semester_id` int(11) NOT NULL,
+  `assigned_by` int(11) DEFAULT NULL,
+  `assigned_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `supervision_assignments`
+--
+
+INSERT INTO `supervision_assignments` (`id`, `student_id`, `lecturer_id`, `semester_id`, `assigned_by`, `assigned_at`) VALUES
+(1, 11, 4, 1, 2, '2026-06-20 03:23:35'),
+(2, 12, 6, 1, 2, '2026-06-20 03:26:55');
 
 -- --------------------------------------------------------
 
@@ -491,7 +521,75 @@ INSERT INTO `system_logs` (`id`, `user_id`, `action`, `description`, `created_at
 (172, 14, 'login', 'User logged in', '2026-06-19 11:08:06', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
 (173, 14, 'logout', 'User logged out', '2026-06-19 11:08:20', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
 (174, 2, 'login', 'User logged in', '2026-06-19 11:08:28', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
-(175, 2, 'logout', 'User logged out', '2026-06-19 11:08:55', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success');
+(175, 2, 'logout', 'User logged out', '2026-06-19 11:08:55', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(176, 19, 'login', 'User logged in', '2026-06-19 12:46:03', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(177, 19, 'create_topic', 'Created topic: ikgviwfe', '2026-06-19 12:48:13', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(178, 19, 'logout', 'User logged out', '2026-06-19 13:15:53', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(179, 12, 'login', 'User logged in', '2026-06-19 14:59:25', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(180, 12, 'logout', 'User logged out', '2026-06-19 15:00:27', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(181, 14, 'login', 'User logged in', '2026-06-19 18:55:39', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(182, 14, 'logout', 'User logged out', '2026-06-19 18:56:16', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(183, 20, 'login', 'User logged in', '2026-06-19 18:56:53', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(184, 20, 'create_topic', 'Created topic: abc', '2026-06-19 18:57:17', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(185, 20, 'create_topic', 'Created topic: akvd', '2026-06-19 18:57:35', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(186, 20, 'logout', 'User logged out', '2026-06-19 18:57:39', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(187, 14, 'login', 'User logged in', '2026-06-19 18:57:48', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(188, 14, 'logout', 'User logged out', '2026-06-19 20:08:21', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(189, 21, 'login', 'User logged in', '2026-06-19 20:09:25', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(190, 21, 'create_topic', 'Created topic: mss', '2026-06-19 20:09:49', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(191, 21, 'logout', 'User logged out', '2026-06-19 20:10:57', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(192, 2, 'login', 'User logged in', '2026-06-19 20:11:04', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(193, 2, 'logout', 'User logged out', '2026-06-19 20:11:54', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(194, 21, 'login', 'User logged in', '2026-06-19 20:12:00', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(195, 21, 'logout', 'User logged out', '2026-06-19 20:19:05', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(196, 2, 'login', 'User logged in', '2026-06-19 20:19:13', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(197, 2, 'create_supervision', 'Assigned student 11 to lecturer 4 for semester 1', '2026-06-19 20:23:35', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(198, 2, 'logout', 'User logged out', '2026-06-19 20:23:44', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(199, 21, 'login', 'User logged in', '2026-06-19 20:23:57', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(200, 21, 'create_topic', 'Created topic: hvvv', '2026-06-19 20:24:08', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(201, 21, 'logout', 'User logged out', '2026-06-19 20:24:15', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(202, 22, 'login', 'User logged in', '2026-06-19 20:26:01', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(203, 22, 'logout', 'User logged out', '2026-06-19 20:26:27', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(204, 2, 'login', 'User logged in', '2026-06-19 20:26:38', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(205, 2, 'create_supervision', 'Assigned student 12 to lecturer 6 for semester 1', '2026-06-19 20:26:55', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(206, 2, 'logout', 'User logged out', '2026-06-19 20:27:00', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(207, 14, 'login', 'User logged in', '2026-06-19 20:27:12', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(208, 14, 'logout', 'User logged out', '2026-06-19 20:27:51', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(209, 22, 'login', 'User logged in', '2026-06-19 20:28:03', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(210, 22, 'create_topic', 'Created topic: dfgdgdf', '2026-06-19 20:28:22', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(211, 22, 'create_topic', 'Created topic: e', '2026-06-19 20:28:32', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(212, 22, 'logout', 'User logged out', '2026-06-19 20:28:42', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(213, 14, 'login', 'User logged in', '2026-06-19 20:28:56', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(214, 14, 'update_topic_status', 'Updated status of topic ID: 30 to approved', '2026-06-19 20:33:13', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(215, 14, 'logout', 'User logged out', '2026-06-19 20:33:41', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(216, 22, 'login', 'User logged in', '2026-06-19 20:34:05', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(217, 22, 'update_topic', 'Updated topic ID: 29', '2026-06-19 20:46:42', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(218, 22, 'delete_topic', 'Deleted topic ID: 29', '2026-06-19 20:46:49', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(219, 22, 'logout', 'User logged out', '2026-06-19 20:47:03', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(220, 14, 'login', 'User logged in', '2026-06-19 20:47:16', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(221, 14, 'logout', 'User logged out', '2026-06-19 20:51:28', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(222, 22, 'login', 'User logged in', '2026-06-19 20:51:36', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(223, 22, 'propose_topic', 'Student ID: 12 proposed Topic ID: 30', '2026-06-19 20:51:52', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(224, 22, 'logout', 'User logged out', '2026-06-19 21:59:35', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(225, 14, 'login', 'User logged in', '2026-06-19 21:59:51', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(226, 12, 'login', 'User logged in', '2026-06-20 10:59:00', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(227, 12, 'logout', 'User logged out', '2026-06-20 11:02:55', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(228, 2, 'login', 'User logged in', '2026-06-20 14:27:57', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(229, 23, 'login', 'User logged in', '2026-06-21 14:20:27', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(230, 23, 'logout', 'User logged out', '2026-06-21 14:27:21', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(231, 14, 'login', 'User logged in', '2026-06-21 16:01:15', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(232, 14, 'logout', 'User logged out', '2026-06-21 16:01:46', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(233, 23, 'login', 'User logged in', '2026-06-21 16:29:20', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(234, 23, 'logout', 'User logged out', '2026-06-21 16:32:31', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(235, 24, 'login', 'User logged in', '2026-06-21 16:33:53', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(236, 24, 'logout', 'User logged out', '2026-06-21 17:16:44', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(237, 2, 'login', 'User logged in', '2026-06-21 17:17:12', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(238, 2, 'logout', 'User logged out', '2026-06-21 17:18:28', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(239, 24, 'login', 'User logged in', '2026-06-21 17:19:48', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(240, 24, 'logout', 'User logged out', '2026-06-21 18:30:42', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(241, 2, 'login', 'User logged in', '2026-06-21 19:58:11', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(242, 2, 'logout', 'User logged out', '2026-06-21 20:17:05', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success'),
+(243, 14, 'login', 'User logged in', '2026-06-21 20:17:13', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36', 'success');
 
 -- --------------------------------------------------------
 
@@ -522,7 +620,13 @@ INSERT INTO `topics` (`id`, `title`, `description`, `keywords`, `semester_id`, `
 (19, 'Nghiên cứu hành vi  người dùng', 'aaaaaaaaaaaaaaaaa', 'AI', 1, 12, 'approved', '2026-06-18 03:52:13'),
 (21, 'ffhfvkc', 'khcgcg', 'KT', 1, 12, 'rejected', '2026-06-18 20:17:35'),
 (22, 'vdslvnlskdvs', 'dvsv', 'd', 1, 12, 'approved', '2026-06-18 20:19:44'),
-(23, 'ànhakfncikdbcsd', 'nvklsdnvkn', 'K', 1, 12, 'approved', '2026-06-19 06:31:01');
+(23, 'ànhakfncikdbcsd', 'nvklsdnvkn', 'K', 1, 12, 'approved', '2026-06-19 06:31:01'),
+(24, 'ikgviwfe', 'daiabfa', '', 1, 19, 'pending', '2026-06-19 12:48:13'),
+(25, 'abc', 'abc', '', 1, 20, 'pending', '2026-06-19 18:57:17'),
+(26, 'akvd', 'dcsc', '', 1, 20, 'pending', '2026-06-19 18:57:35'),
+(27, 'mss', 'scsc', '', 1, 21, 'pending', '2026-06-19 20:09:49'),
+(28, 'hvvv', 'vvvvvvvvvv', '', 1, 21, 'pending', '2026-06-19 20:24:08'),
+(30, 'e', '6', '', 1, 22, 'approved', '2026-06-19 20:28:32');
 
 -- --------------------------------------------------------
 
@@ -589,7 +693,7 @@ CREATE TABLE `topic_registrations` (
   `description` text DEFAULT NULL,
   `keywords` varchar(255) DEFAULT NULL,
   `desired_lecturer_id` int(11) DEFAULT NULL,
-  `status` enum('pending','approved','rejected') DEFAULT 'pending',
+  `status` enum('pending','approved','rejected','registered') DEFAULT 'pending',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -598,12 +702,13 @@ CREATE TABLE `topic_registrations` (
 --
 
 INSERT INTO `topic_registrations` (`id`, `student_id`, `topic_id`, `semester_id`, `description`, `keywords`, `desired_lecturer_id`, `status`, `created_at`) VALUES
-(1, 1, 11, 1, NULL, 'machine learning, AI', NULL, 'pending', '2026-05-14 09:28:51'),
+(1, 1, 11, 1, NULL, 'machine learning, AI', NULL, 'registered', '2026-05-14 09:28:51'),
 (2, 2, 10, 1, NULL, 'deep learning', NULL, 'approved', '2026-05-14 09:28:51'),
 (3, 4, 9, 2, NULL, 'web development', NULL, 'approved', '2026-05-14 09:28:51'),
 (4, 5, 13, 1, 'Interested in blockchain', 'blockchain', 2, 'approved', '2026-06-15 20:12:41'),
 (5, 6, 14, 2, 'ML is cool', 'ml', 3, 'approved', '2026-06-15 20:12:41'),
-(6, 7, 19, 1, NULL, '', NULL, 'approved', '2026-06-18 04:12:00');
+(6, 7, 19, 1, NULL, '', NULL, 'approved', '2026-06-18 04:12:00'),
+(7, 12, 30, 1, NULL, '', 6, 'registered', '2026-06-19 20:51:52');
 
 -- --------------------------------------------------------
 
@@ -638,7 +743,13 @@ INSERT INTO `users` (`id`, `email`, `password`, `role`, `status`, `created_at`) 
 (14, 'cdoan1@gmail.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'lecturer', 'active', '2026-06-18 06:47:16'),
 (15, '2372817@vnu.edu.vn', '$2y$10$VLdXrY3w/L00.nRTeFeOrengDMgj9OP6bOkIi6NQNsGk49liMEYvy', 'student', 'active', '2026-06-18 18:24:15'),
 (17, 'kcjdn88@gmail.com', '$2y$10$qCnLPSbW15bOxERCCnLZ0ufM5sGxKiz4TSzBtWocUw74T5PwB6m/6', 'lecturer', 'active', '2026-06-18 19:22:50'),
-(18, '342341@gmail.com', '$2y$10$v88cF72KLz7rsEhcfiWMke.IOdQJW/Myyq6ASqyBqjn5jOLhSdZSy', 'lecturer', 'active', '2026-06-18 19:27:18');
+(18, '342341@gmail.com', '$2y$10$v88cF72KLz7rsEhcfiWMke.IOdQJW/Myyq6ASqyBqjn5jOLhSdZSy', 'lecturer', 'active', '2026-06-18 19:27:18'),
+(19, 'cdkns@gmail.com', '$2y$10$HKbUeBxAlgZbxbG3FwggSu0555gyENDI5wMU8KU7SqO0EDAjKD12e', 'student', 'active', '2026-06-19 12:45:29'),
+(20, 'abc@gmail.com', '$2y$10$4MYa.4cnkGAt8YGg2RvPOuKwD85O8LNnQmErU7mA7DvoMFj/pvLAK', 'student', 'active', '2026-06-19 18:56:43'),
+(21, 'befw@gmail.com', '$2y$10$9B/4zMK34a4kTcngom5j9u/ZRKsyutkGY/LnTvra4VQfECSPYNWGq', 'student', 'active', '2026-06-19 20:09:00'),
+(22, '34@gmail.com', '$2y$10$gZRTa2XVFuxSwRlxbNlJTOMEyjDst9ihQ49KURUggXhheh2./ioBC', 'student', 'active', '2026-06-19 20:25:48'),
+(23, 'linh@mail.com', '$2y$10$XK5AQB8H68xoNWc0TJVbeu8hqkkyZdYx17LrM/33Z9IXm/ogYL2iO', 'lecturer', 'active', '2026-06-21 14:18:56'),
+(24, 'loo@gmail.com', '$2y$10$Ny3HS9sez50xZvGf1YTHDuO0RlwgG8muN3glBIalMwGB2silUyHau', 'student', 'active', '2026-06-21 16:33:45');
 
 --
 -- Bẫy `users`
@@ -680,13 +791,7 @@ DELIMITER ;
 --
 DROP TABLE IF EXISTS `lecturer_workload`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `lecturer_workload`  AS 
-SELECT `l`.`id` AS `id`, `l`.`full_name` AS `full_name`, count(`tr`.`id`) AS `total_students` 
-FROM ((`lecturers` `l` 
-left join `topic_assignments` `ta` on(`l`.`id` = `ta`.`lecturer_id`)) 
-left join `topic_registrations` `tr` on(`ta`.`topic_id` = `tr`.`topic_id` 
-    and `tr`.`status` = 'approved')) 
-GROUP BY `l`.`id` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `lecturer_workload`  AS SELECT `l`.`id` AS `id`, `l`.`full_name` AS `full_name`, count(`tr`.`id`) AS `total_students` FROM ((`lecturers` `l` left join `topic_assignments` `ta` on(`l`.`id` = `ta`.`lecturer_id`)) left join `topic_registrations` `tr` on(`ta`.`topic_id` = `tr`.`topic_id` and `tr`.`status` = 'approved')) GROUP BY `l`.`id` ;
 
 -- --------------------------------------------------------
 
@@ -762,6 +867,16 @@ ALTER TABLE `submissions`
   ADD KEY `idx_submissions_student` (`student_id`);
 
 --
+-- Chỉ mục cho bảng `supervision_assignments`
+--
+ALTER TABLE `supervision_assignments`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uq_student_semester` (`student_id`,`semester_id`),
+  ADD KEY `lecturer_id` (`lecturer_id`),
+  ADD KEY `semester_id` (`semester_id`),
+  ADD KEY `assigned_by` (`assigned_by`);
+
+--
 -- Chỉ mục cho bảng `system_logs`
 --
 ALTER TABLE `system_logs`
@@ -815,7 +930,7 @@ ALTER TABLE `evaluation_scores`
 -- AUTO_INCREMENT cho bảng `lecturers`
 --
 ALTER TABLE `lecturers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT cho bảng `milestones`
@@ -845,7 +960,7 @@ ALTER TABLE `semesters`
 -- AUTO_INCREMENT cho bảng `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT cho bảng `submissions`
@@ -854,16 +969,22 @@ ALTER TABLE `submissions`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
+-- AUTO_INCREMENT cho bảng `supervision_assignments`
+--
+ALTER TABLE `supervision_assignments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT cho bảng `system_logs`
 --
 ALTER TABLE `system_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=176;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=244;
 
 --
 -- AUTO_INCREMENT cho bảng `topics`
 --
 ALTER TABLE `topics`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT cho bảng `topic_assignments`
@@ -875,13 +996,13 @@ ALTER TABLE `topic_assignments`
 -- AUTO_INCREMENT cho bảng `topic_registrations`
 --
 ALTER TABLE `topic_registrations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
@@ -932,6 +1053,15 @@ ALTER TABLE `submissions`
   ADD CONSTRAINT `submissions_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `submissions_ibfk_2` FOREIGN KEY (`topic_id`) REFERENCES `topics` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `submissions_ibfk_3` FOREIGN KEY (`milestone_id`) REFERENCES `milestones` (`id`) ON DELETE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `supervision_assignments`
+--
+ALTER TABLE `supervision_assignments`
+  ADD CONSTRAINT `supervision_assignments_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `supervision_assignments_ibfk_2` FOREIGN KEY (`lecturer_id`) REFERENCES `lecturers` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `supervision_assignments_ibfk_3` FOREIGN KEY (`semester_id`) REFERENCES `semesters` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `supervision_assignments_ibfk_4` FOREIGN KEY (`assigned_by`) REFERENCES `users` (`id`) ON DELETE SET NULL;
 
 --
 -- Các ràng buộc cho bảng `system_logs`

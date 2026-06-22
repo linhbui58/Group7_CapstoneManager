@@ -60,15 +60,34 @@
 
         <div class="kpi-card teal">
             <div class="kpi-icon"><i class="fa-solid fa-gauge"></i></div>
-            <div class="kpi-body">
-                <div class="kpi-label">Khối lượng</div>
-                <div class="kpi-value"><?= $wl ?><span style="font-size:16px;font-weight:500;color:#64748b"> / <?= $qt ?></span></div>
-                <div style="margin-top:8px">
-                    <div class="workload-bar">
-                        <div class="workload-bar-fill <?= $wlCls ?>" style="width:<?= min($pct,100) ?>%"></div>
+            <div class="kpi-body" style="min-width:0;flex:1">
+                <div class="kpi-label">Khối lượng theo kỳ</div>
+                <?php if (!empty($workloadBySemester)): ?>
+                    <div style="max-height:120px;overflow-y:auto;padding-right:4px">
+                    <?php foreach ($workloadBySemester as $wls): ?>
+                        <?php
+                            $wlPct = $wls['quota'] > 0 ? round($wls['total_students'] / $wls['quota'] * 100) : 0;
+                            $wlCls2 = $wlPct >= 90 ? 'workload-full' : ($wlPct >= 60 ? 'workload-warn' : 'workload-ok');
+                        ?>
+                        <div style="margin-top:6px">
+                            <div style="font-size:11px;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
+                                <?= htmlspecialchars($wls['semester_name']) ?>
+                            </div>
+                            <div style="font-size:17px;font-weight:800;color:#0f172a;line-height:1.2">
+                                <?= $wls['total_students'] ?>
+                                <span style="font-size:13px;font-weight:500;color:#64748b">/ <?= $wls['quota'] ?></span>
+                                <span style="font-size:11px;font-weight:700;color:<?= $wlPct>=90?'#ef4444':($wlPct>=60?'#f97316':'#22c55e') ?>"><?= $wlPct ?>%</span>
+                            </div>
+                            <div class="workload-bar" style="margin-top:4px">
+                                <div class="workload-bar-fill <?= $wlCls2 ?>" style="width:<?= min($wlPct,100) ?>%"></div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
                     </div>
-                    <div class="kpi-sub"><?= $pct ?>% công suất</div>
-                </div>
+                <?php else: ?>
+                    <div class="kpi-value">0</div>
+                    <div class="kpi-sub">Chưa có học kỳ nào</div>
+                <?php endif; ?>
             </div>
         </div>
 

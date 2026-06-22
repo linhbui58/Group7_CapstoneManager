@@ -86,7 +86,18 @@ class RegistrationController {
             exit();
         }
 
-        $desiredLec = (int)($_POST['desired_lecturer_id'] ?? 0) ?: null;
+        // Lấy GVHD tự động từ supervision_assignments
+        require_once '../app/models/SupervisionAssignment.php';
+        $supervisionModel = new SupervisionAssignment();
+        $assignment = $supervisionModel->findByStudentAndSemester($studentId, $semesterId);
+
+        if (!$assignment) {
+            $_SESSION['error'] = "Bạn chưa được phân công Giảng viên hướng dẫn trong học kỳ này. Vui lòng liên hệ admin.";
+            header("Location: index.php?page=registration-create");
+            exit();
+        }
+
+        $desiredLec = $assignment['lecturer_id']; // Gắn tự động, SV không tự chọn
 
         try {
             $this->regModel->create([
@@ -301,6 +312,27 @@ class RegistrationController {
                 }
             }
             $this->regModel->updateStatus($id, $status);
+
+            // Khi duyệt approved → tự động tạo topic_assignment với đúng GVHD
+            if ($status === 'approved') {
+                $reg = $this->regModel->find($id);
+                if ($reg && !empty($reg['desired_lecturer_id']) && !empty($reg['topic_id'])) {
+                    $db = Database::getInstance()->getConnection();
+                    // Kiểm tra chưa có assignment này chưa
+                    $chk = $db->prepare("SELECT COUNT(*) FROM topic_assignments WHERE topic_id = ?");
+                    $chk->execute([$reg['topic_id']]);
+                    if ((int)$chk->fetchColumn() === 0) {
+                        try {
+                            $ins = $db->prepare(
+                                "INSERT INTO topic_assignments (topic_id, lecturer_id) VALUES (?, ?)"
+                            );
+                            $ins->execute([$reg['topic_id'], $reg['desired_lecturer_id']]);
+                        } catch (Exception $e) {
+                            // Bỏ qua nếu trùng hoặc quota exceeded
+                        }
+                    }
+                }
+            }
 
             $reg = $this->regModel->find($id);
             if ($reg) {

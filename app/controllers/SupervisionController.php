@@ -79,12 +79,52 @@ class SupervisionController {
             exit();
         }
 
+        // Kiểm tra quota 8 SV/lecturer/học kỳ
+        $db2 = Database::getInstance()->getConnection();
+        $quotaStmt = $db2->prepare("
+            SELECT COUNT(*) FROM supervision_assignments
+            WHERE lecturer_id = ? AND semester_id = ?
+        ");
+        $quotaStmt->execute([$lecturerId, $semesterId]);
+        $currentCount = (int)$quotaStmt->fetchColumn();
+
+        $quotaLimit = (int)($lecturer['quota'] ?? 8);
+        if ($currentCount >= $quotaLimit) {
+            $_SESSION['error'] = "Giảng viên đã đạt giới hạn $quotaLimit sinh viên hướng dẫn trong học kỳ này.";
+            header("Location: index.php?page=supervision-create");
+            exit();
+        }
+
         $this->supervisionModel->create([
             'student_id'  => $studentId,
             'lecturer_id' => $lecturerId,
             'semester_id' => $semesterId,
             'assigned_by' => $_SESSION['user']['id']
         ]);
+
+        // Tự động gắn topic của SV vào lecturer nếu SV đã có topic_registration approved/pending
+        $db = Database::getInstance()->getConnection();
+        $stmtTopic = $db->prepare("
+            SELECT topic_id FROM topic_registrations
+            WHERE student_id = ? AND semester_id = ? AND status IN ('approved','registered')
+            LIMIT 1
+        ");
+        $stmtTopic->execute([$studentId, $semesterId]);
+        $topicRow = $stmtTopic->fetch(PDO::FETCH_ASSOC);
+
+        if ($topicRow && !empty($topicRow['topic_id'])) {
+            // Kiểm tra chưa có assignment này
+            $chk = $db->prepare("SELECT COUNT(*) FROM topic_assignments WHERE topic_id = ?");
+            $chk->execute([$topicRow['topic_id']]);
+            if ((int)$chk->fetchColumn() === 0) {
+                try {
+                    $ins = $db->prepare("INSERT INTO topic_assignments (topic_id, lecturer_id) VALUES (?, ?)");
+                    $ins->execute([$topicRow['topic_id'], $lecturerId]);
+                } catch (Exception $e) {
+                    // Bỏ qua nếu trùng
+                }
+            }
+        }
 
         require_once '../app/models/Notification.php';
         $notifModel = new Notification();

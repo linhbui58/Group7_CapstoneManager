@@ -136,15 +136,35 @@ class DashboardController {
             SELECT s.full_name, s.faculty, sa.assigned_at, sem.name AS semester_name,
                    t.title AS topic_title
             FROM supervision_assignments sa
-            JOIN students s   ON s.id   = sa.student_id
+            JOIN students s    ON s.id   = sa.student_id
             JOIN semesters sem ON sem.id = sa.semester_id
-            LEFT JOIN topic_registrations tr ON tr.student_id = s.id AND tr.status IN ('approved','registered')
+            LEFT JOIN (
+                SELECT student_id, topic_id
+                FROM topic_registrations
+                WHERE status IN ('approved','registered')
+                GROUP BY student_id
+            ) tr ON tr.student_id = s.id
             LEFT JOIN topics t ON t.id = tr.topic_id
             WHERE sa.lecturer_id = ?
             ORDER BY sa.assigned_at DESC
         ");
         $stmtSv->execute([$lecturerId]);
         $supervisedStudents = $stmtSv->fetchAll(PDO::FETCH_ASSOC);
+
+        // Khối lượng theo từng học kỳ
+        $stmtWl = $db->prepare("
+            SELECT sem.name AS semester_name, sem.id AS semester_id,
+                   COUNT(sa.id) AS total_students,
+                   l.quota
+            FROM supervision_assignments sa
+            JOIN semesters sem ON sem.id = sa.semester_id
+            JOIN lecturers l   ON l.id   = sa.lecturer_id
+            WHERE sa.lecturer_id = ?
+            GROUP BY sem.id, sem.name, l.quota
+            ORDER BY sem.id DESC
+        ");
+        $stmtWl->execute([$lecturerId]);
+        $workloadBySemester = $stmtWl->fetchAll(PDO::FETCH_ASSOC);
 
         require '../app/views/dashboard/lecturer_dashboard.php';
     }
