@@ -20,7 +20,7 @@ class RegistrationController {
         $topicModel    = new Topic();
         $semesterModel = new Semester();
 
-        $topics    = $topicModel->getAvailable($_SESSION['user']['id']);   // chỉ lấy đề tài của user này đã được duyệt
+        $topics    = $topicModel->getAvailable();   // tất cả đề tài đã được duyệt
         $semesters = $semesterModel->getAll();
 
         require '../app/views/registrations/create.php';
@@ -79,27 +79,29 @@ class RegistrationController {
             exit();
         }
 
-        // Kiểm tra xem đã được phân công GVHD chưa
-        require_once '../app/models/SupervisionAssignment.php';
-        $supervisionModel = new SupervisionAssignment();
-        $assignment = $supervisionModel->findByStudentAndSemester($studentId, $semesterId);
-        
-        if (!$assignment) {
-            $_SESSION['error'] = "Bạn cần được phân công giảng viên hướng dẫn trước khi đề xuất đề tài trong học kỳ này.";
+        // Kiểm tra đã có đề xuất pending/approved trong học kỳ này chưa
+        if ($this->regModel->hasAlreadyRegistered($studentId, $semesterId)) {
+            $_SESSION['error'] = "Bạn đã có đề xuất đề tài trong học kỳ này rồi.";
             header("Location: index.php?page=registration-create");
             exit();
         }
 
-        $desiredLec = $assignment['lecturer_id'];
+        $desiredLec = (int)($_POST['desired_lecturer_id'] ?? 0) ?: null;
 
-        $this->regModel->create([
-            'student_id'          => $studentId,
-            'topic_id'            => $topicId,
-            'semester_id'         => $semesterId,
-            'desired_lecturer_id' => $desiredLec,
-            'keywords'            => $keywords,
-            'status'              => 'pending',
-        ]);
+        try {
+            $this->regModel->create([
+                'student_id'          => $studentId,
+                'topic_id'            => $topicId,
+                'semester_id'         => $semesterId,
+                'desired_lecturer_id' => $desiredLec,
+                'keywords'            => $keywords,
+                'status'              => 'pending',
+            ]);
+        } catch (Exception $e) {
+            $_SESSION['error'] = "Bạn đã có đề xuất đề tài trong học kỳ này rồi.";
+            header("Location: index.php?page=registration-create");
+            exit();
+        }
 
         LogService::log('propose_topic', "Student ID: $studentId proposed Topic ID: $topicId");
 
@@ -251,8 +253,7 @@ class RegistrationController {
      ────────────────────────────────────────────────────────── */
     public function updateStatus() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            http_response_code(405);
-            exit("Method Not Allowed");
+            abort(405, "Method Not Allowed");
         }
         verifyCSRF();
         $role = $_SESSION['user']['role'];

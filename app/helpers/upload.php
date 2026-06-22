@@ -2,15 +2,21 @@
 
 function uploadFile($file, $folder = 'general'){
 
-    if(!isset($file)){
-        return false;
+    if(!isset($file) || $file['error'] !== UPLOAD_ERR_OK){
+        return [
+            'status' => false,
+            'message' => 'Lỗi khi upload file hoặc file bị hỏng.'
+        ];
     }
 
     $allowed = ['pdf','doc','docx'];
     $allowedMimes = [
         'application/pdf', 
         'application/msword', 
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'application/zip',
+        'application/x-zip-compressed',
+        'application/x-ole-storage'
     ];
 
     $filename = $file['name'];

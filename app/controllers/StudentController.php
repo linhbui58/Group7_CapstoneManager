@@ -82,15 +82,18 @@ class StudentController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $id) {
             verifyCSRF();
             $this->studentModel->update($id, $_POST);
-            $_SESSION['success'] = "Cập nhật sinh viên thành công.";
+            $_SESSION['success'] = "Cập nhật thông tin thành công.";
         }
-        redirect('students');
+        if ($role === 'student') {
+            redirect('dashboard');
+        } else {
+            redirect('students');
+        }
     }
 
     public function delete() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            http_response_code(405);
-            exit("Method Not Allowed");
+            abort(405, "Method Not Allowed");
         }
         verifyCSRF();
         RoleMiddleware::check(['admin']);

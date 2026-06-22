@@ -6,7 +6,58 @@ $role       = $_SESSION['user']['role'];
 $activeTab  = $_GET['tab'] ?? 'topics';
 ?>
 
-<div class="main-content" style="padding: 40px; background-color: #f4f7fe; min-height: 100vh;">
+<style>
+/* ── Tab nav đẹp hơn ── */
+#mainTabs .nav-link {
+    color: #64748b; font-weight: 600; font-size: 14px;
+    border: none; border-bottom: 3px solid transparent;
+    padding: 10px 20px; border-radius: 0;
+    transition: all .2s;
+}
+#mainTabs .nav-link:hover { color: #4f46e5; background: #f8f9ff; }
+#mainTabs .nav-link.active {
+    color: #4f46e5; border-bottom-color: #4f46e5;
+    background: transparent;
+}
+
+/* ── Table đẹp hơn ── */
+.table thead th {
+    font-size: 11px !important; font-weight: 700 !important;
+    color: #94a3b8 !important; text-transform: uppercase;
+    letter-spacing: .6px; background: #fafbff !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    padding: 13px 12px !important;
+}
+.table tbody td { padding: 13px 12px !important; vertical-align: middle; border-color: #f8fafc; }
+.table tbody tr:hover td { background: #f8faff; }
+
+/* ── Badge status ── */
+.badge.bg-success  { background: #dcfce7 !important; color: #16a34a !important; }
+.badge.bg-danger   { background: #fee2e2 !important; color: #dc2626 !important; }
+.badge.bg-warning  { background: #fff7ed !important; color: #ea580c !important; }
+.badge.bg-primary  { background: #eff6ff !important; color: #2563eb !important; }
+
+/* ── Action buttons ── */
+.btn-sm.rounded-circle {
+    width: 30px !important; height: 30px !important;
+    padding: 0 !important; border-radius: 8px !important;
+    display: inline-flex !important; align-items: center !important;
+    justify-content: center !important; font-size: 12px !important;
+}
+
+/* ── Filter bar ── */
+.filter-bar {
+    background: #fff; border-radius: 16px;
+    padding: 16px 20px; margin-bottom: 20px;
+    border: 1px solid #f1f5f9;
+    box-shadow: 0 2px 10px rgba(0,0,0,.04);
+}
+
+/* ── Card container ── */
+.main-content .card { box-shadow: 0 4px 20px rgba(0,0,0,.06) !important; }
+</style>
+
+<div class="main-content" style="padding: 28px 32px; background-color: #f4f7fe; min-height: 100vh;">
 
     <!-- ── Page Header ── -->
     <div class="d-flex justify-content-between align-items-center mb-4">

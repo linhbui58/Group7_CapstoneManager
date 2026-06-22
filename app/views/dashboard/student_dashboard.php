@@ -27,6 +27,9 @@
             </div>
         </div>
         <div class="dash-hero-right">
+            <a href="index.php?page=student-edit&id=<?= $_SESSION['user']['student_id'] ?? 0 ?>" class="btn-hero btn-hero-primary">
+                <i class="fa-solid fa-pen"></i> Cập nhật profile
+            </a>
             <a href="index.php?page=topic-create" class="btn-hero btn-hero-primary">
                 <i class="fa-solid fa-book-open"></i> Đề tài
             </a>

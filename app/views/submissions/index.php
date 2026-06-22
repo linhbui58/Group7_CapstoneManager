@@ -186,15 +186,24 @@
                                 <div class="d-flex justify-content-end gap-1">
                                     <a href="index.php?page=submission-show&id=<?=$sub['id']?>" class="act-btn" style="background:#f1f5f9;color:#64748b" title="Xem"><i class="fa-solid fa-eye"></i></a>
                                     <?php if (!empty($sub['file_path'])): ?>
-                                        <a href="assets/uploads/<?= htmlspecialchars($sub['file_path']) ?>" target="_blank" class="act-btn text-white" style="background:#10b981" title="Tải file"><i class="fa-solid fa-download"></i></a>
+                                        <a href="assets/uploads/submissions/<?= htmlspecialchars($sub['file_path']) ?>" target="_blank" class="act-btn text-white" style="background:#10b981" title="Tải file"><i class="fa-solid fa-download"></i></a>
                                     <?php endif; ?>
                                     <?php if (in_array($_SESSION['user']['role'],['admin','lecturer'])): ?>
                                         <a href="index.php?page=score-create&submission_id=<?=$sub['id']?>" class="act-btn text-white" style="background:#6366f1" title="Chấm điểm"><i class="fa-solid fa-star"></i></a>
                                         <?php if ($status!=='submitted'): ?>
-                                            <a href="index.php?page=submission-status&id=<?=$sub['id']?>&status=submitted" class="act-btn text-white" style="background:#22c55e" title="Xác nhận"><i class="fa-solid fa-check"></i></a>
+                                            <form action="index.php?page=submission-status&id=<?=$sub['id']?>&status=submitted" method="POST" class="d-inline">
+                                                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+                                                <button type="submit" class="act-btn text-white" style="background:#22c55e; border:none;" title="Xác nhận"><i class="fa-solid fa-check"></i></button>
+                                            </form>
                                         <?php endif; ?>
-                                        <a href="index.php?page=submission-status&id=<?=$sub['id']?>&status=revision_required" class="act-btn text-white" style="background:#f59e0b" title="Yêu cầu sửa" onclick="return confirm('Yêu cầu sửa lại?')"><i class="fa-solid fa-rotate-left"></i></a>
-                                        <a href="index.php?page=submission-delete&id=<?=$sub['id']?>" class="act-btn text-white" style="background:#ef4444" title="Xóa" onclick="return confirm('Xóa bài nộp này?')"><i class="fa-solid fa-trash"></i></a>
+                                        <form action="index.php?page=submission-status&id=<?=$sub['id']?>&status=revision_required" method="POST" class="d-inline" onsubmit="return confirm('Yêu cầu sửa lại?')">
+                                            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+                                            <button type="submit" class="act-btn text-white" style="background:#f59e0b; border:none;" title="Yêu cầu sửa"><i class="fa-solid fa-rotate-left"></i></button>
+                                        </form>
+                                        <form action="index.php?page=submission-delete&id=<?=$sub['id']?>" method="POST" class="d-inline" onsubmit="return confirm('Xóa bài nộp này?')">
+                                            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+                                            <button type="submit" class="act-btn text-white" style="background:#ef4444; border:none;" title="Xóa"><i class="fa-solid fa-trash"></i></button>
+                                        </form>
                                     <?php endif; ?>
                                 </div>
                             </td>

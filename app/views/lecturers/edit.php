@@ -3,7 +3,7 @@
 
 <div class="main-content" style="padding: 30px; background-color: #f8fafc;">
     <div class="mb-4">
-        <a href="index.php?page=lecturers" class="text-decoration-none text-muted small"><i class="fa-solid fa-arrow-left me-1"></i> Back</a>
+        <a href="<?= $_SESSION['user']['role']==='lecturer' ? 'index.php?page=dashboard' : 'index.php?page=lecturers' ?>" class="text-decoration-none text-muted small"><i class="fa-solid fa-arrow-left me-1"></i> Back</a>
         <h2 class="fw-bold mt-2">Chỉnh sửa giảng viên</h2>
     </div>
 
@@ -15,7 +15,16 @@
             </div>
             <div class="mb-3">
                 <label class="form-label small fw-bold text-muted">CHUYÊN MÔN</label>
-                <input type="text" name="expertise" class="form-control rounded-pill px-3" value="<?= htmlspecialchars($lecturer['expertise']) ?>">
+                <input type="text" name="expertise" class="form-control rounded-pill px-3" value="<?= htmlspecialchars($lecturer['expertise'] ?? '') ?>">
+            </div>
+            <div class="mb-3">
+                <label class="form-label small fw-bold text-muted">KHOA/VIỆN</label>
+                <select name="faculty" class="form-select rounded-pill px-3">
+                    <option value="">-- Chọn Khoa --</option>
+                    <?php foreach (['Khoa CNTT', 'Khoa Kinh tế', 'Khoa Ngôn ngữ'] as $f): ?>
+                        <option value="<?= $f ?>" <?= ($lecturer['faculty'] ?? '') === $f ? 'selected' : '' ?>><?= $f ?></option>
+                    <?php endforeach; ?>
+                </select>
             </div>
             <div class="mb-4">
                 <label class="form-label small fw-bold text-muted">EMAIL (Chỉ xem)</label>
@@ -23,7 +32,7 @@
             </div>
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-warning rounded-pill px-5 fw-bold shadow-sm text-white">Lưu thay đổi</button>
-                <a href="index.php?page=lecturers" class="btn btn-light rounded-pill px-4">Hủy</a>
+                <a href="<?= $_SESSION['user']['role']==='lecturer' ? 'index.php?page=dashboard' : 'index.php?page=lecturers' ?>" class="btn btn-light rounded-pill px-4">Hủy</a>
             </div>
         </form>
     </div>

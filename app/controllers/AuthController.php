@@ -163,6 +163,7 @@ class AuthController {
 
             $full_name = trim($_POST['full_name'] ?? $_POST['name'] ?? '');
             $faculty = trim($_POST['department'] ?? '');
+            $student_code = trim($_POST['student_code'] ?? '');
 
             $email = trim($_POST['email'] ?? '');
             $password = trim($_POST['password'] ?? '');
@@ -242,6 +243,7 @@ class AuthController {
                     $studentModel->create([
                         'user_id' => $userId,
                         'full_name' => $full_name,
+                        'student_code' => $student_code,
                         'faculty' => $faculty
                     ]);
                 }

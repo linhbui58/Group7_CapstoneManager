@@ -18,12 +18,11 @@ class AuthMiddleware {
         | SAFE STATUS CHECK
         |--------------------------------------------------------------------------
         */
-        $status = $_SESSION['user']['status'] ?? 'active';
+        $userModel = new User();
+        $user = $userModel->findByEmail($_SESSION['user']['email']);
 
-        if($status == 'locked'){
-
+        if(!$user || $user['status'] == 'locked'){
             session_destroy();
-
             abort(403, "Your account has been locked.");
         }
     }

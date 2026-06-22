@@ -40,7 +40,12 @@
                             <option value="">-- Chọn sinh viên --</option>
                             <?php foreach ($students as $stu): ?>
                                 <option value="<?= $stu['id'] ?>" data-faculty="<?= htmlspecialchars($stu['faculty'] ?? '') ?>">
-                                    <?= htmlspecialchars($stu['full_name']) ?> (ID: <?= htmlspecialchars($stu['id']) ?>) - Khoa: <?= htmlspecialchars($stu['faculty']) ?>
+                                    <?= htmlspecialchars($stu['full_name']) ?>
+                                    <?php if (!empty($stu['faculty'])): ?>
+                                        — <?= htmlspecialchars($stu['faculty']) ?>
+                                    <?php else: ?>
+                                        — <em>Chưa có khoa</em>
+                                    <?php endif; ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
@@ -52,12 +57,17 @@
                             <option value="">-- Chọn giảng viên --</option>
                             <?php foreach ($lecturers as $lec): ?>
                                 <option value="<?= $lec['id'] ?>" data-faculty="<?= htmlspecialchars($lec['faculty'] ?? '') ?>">
-                                    <?= htmlspecialchars($lec['full_name']) ?> (ID: <?= htmlspecialchars($lec['id']) ?>) - Khoa: <?= htmlspecialchars($lec['faculty']) ?>
+                                    <?= htmlspecialchars($lec['full_name']) ?>
+                                    <?php if (!empty($lec['faculty'])): ?>
+                                        — <?= htmlspecialchars($lec['faculty']) ?>
+                                    <?php else: ?>
+                                        — <em>Chưa có khoa</em>
+                                    <?php endif; ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
                         <div class="form-text text-muted small mt-1">
-                            <i class="fa fa-info-circle me-1"></i>Danh sách giảng viên sẽ được tự động lọc theo khoa của sinh viên.
+                            <i class="fa fa-info-circle me-1"></i>Danh sách giảng viên sẽ tự động lọc theo khoa của sinh viên. Nếu không có kết quả, sinh viên hoặc giảng viên chưa cập nhật khoa.
                         </div>
                     </div>
 

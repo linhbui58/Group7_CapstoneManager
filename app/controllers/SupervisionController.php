@@ -64,8 +64,9 @@ class SupervisionController {
              exit();
         }
 
-        if ($student['faculty'] !== $lecturer['faculty']) {
-            $_SESSION['error'] = "Giảng viên và Sinh viên phải cùng khoa ({$student['faculty']}).";
+        // Check cùng khoa
+        if (!empty($student['faculty']) && !empty($lecturer['faculty']) && $student['faculty'] !== $lecturer['faculty']) {
+            $_SESSION['error'] = "Giảng viên và Sinh viên phải cùng khoa. Sinh viên: {$student['faculty']} — Giảng viên: {$lecturer['faculty']}.";
             header("Location: index.php?page=supervision-create");
             exit();
         }
@@ -111,8 +112,7 @@ class SupervisionController {
 
     public function delete() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            http_response_code(405);
-            exit("Method Not Allowed");
+            abort(405, "Method Not Allowed");
         }
         verifyCSRF();
 

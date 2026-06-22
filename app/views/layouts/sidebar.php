@@ -73,8 +73,13 @@ if (isset($_SESSION['user']['id'])) {
                             </a>
                         </li>
                         <li>
-                            <a href="index.php?page=assignments" class="<?= in_array($currentPage, ['assignments', 'supervisions', 'supervision-create']) ? 'active' : '' ?>">
-                                <i class="fa fa-user-check"></i> <span>Phân công & Duyệt GV</span>
+                            <a href="index.php?page=assignments" class="<?= in_array($currentPage, ['assignments']) ? 'active' : '' ?>">
+                                <i class="fa fa-user-check"></i> <span>Duyệt đề tài - GV</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="index.php?page=supervisions" class="<?= in_array($currentPage, ['supervisions', 'supervision-create']) ? 'active' : '' ?>">
+                                <i class="fa fa-user-tie"></i> <span>Phân công GVHD</span>
                             </a>
                         </li>
                     </ul>
