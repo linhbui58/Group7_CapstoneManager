@@ -30,7 +30,17 @@ class Score {
     }
 
     public function find($id) {
-        $stmt = $this->conn->prepare("SELECT * FROM evaluation_scores WHERE id = ?");
+        $sql = "SELECT es.*,
+                       s.full_name  AS student_name,
+                       m.title      AS topic_title,
+                       l.full_name  AS lecturer_name
+                FROM evaluation_scores es
+                JOIN submissions sub ON es.submission_id = sub.id
+                JOIN students    s   ON sub.student_id   = s.id
+                JOIN milestones  m   ON sub.milestone_id = m.id
+                JOIN lecturers   l   ON es.lecturer_id   = l.id
+                WHERE es.id = ?";
+        $stmt = $this->conn->prepare($sql);
         $stmt->execute([$id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
